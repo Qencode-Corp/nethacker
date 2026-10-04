@@ -170,6 +170,7 @@ class AutoAscendDriver:
                 jf_log.log(f'[s0 t0 d0 0:0 xl0 hp0/0] TRAJ fp={fp} pid={os.getpid()} start={time.time():.0f}')
             except Exception:  # noqa: BLE001
                 pass
+        self._end_written = False
         self._restarts = 0
         self._episode_start = time.monotonic()
         self._gave_up = False
@@ -182,6 +183,8 @@ class AutoAscendDriver:
         self._env = ArenaEnvAdapter()
         self._agent = autoascend_agent.Agent(self._env, panic_on_errors=True)
         self._agent.resumed_game = not fresh_game
+        if not fresh_game and previous is not None:
+            self._agent._jf_ring = getattr(previous, '_jf_ring', self._agent._jf_ring)
         if not fresh_game and previous is not None:
             self._agent.previous_character = previous.character
         # the prayer state survives a restart: a fresh agent took the game for prayer-free and could pray
@@ -226,6 +229,7 @@ class AutoAscendDriver:
         if time.monotonic() - self._episode_start > self.WALL_BUDGET_SECONDS:
             jf_log.log("DRIVER wall-clock budget exhausted: ending the episode")
             self._gave_up = True
+            self._write_end('wall-budget')
             self.close()
             return self._fallback_action
         if self._thread is None or not self._thread.is_alive() or self._thread_error is not None:
@@ -262,7 +266,27 @@ class AutoAscendDriver:
         self._warm = True
         return action
 
+    def _write_end(self, reason: str) -> None:
+        """Jev instrument (logging only): the END block, the last 30 steps at the arena's close (the death observation
+        never reaches the bot; the killer is joined from the results row by trajectory id)."""
+        if not jf_log.enabled() or getattr(self, '_end_written', True):
+            return
+        self._end_written = True
+        try:
+            agent = self._agent
+            ring = list(getattr(agent, '_jf_ring', ()) or ())
+            bl = getattr(agent, 'blstats', None)
+            where = (f't{bl.time} d{bl.depth} {bl.dungeon_number}:{bl.level_number} xl{bl.experience_level} '
+                     f'hp{bl.hitpoints}/{bl.max_hitpoints}') if bl is not None else 't0 d0 0:0 xl0 hp0/0'
+            step = getattr(agent, 'step_count', 0)
+            jf_log.log(f'[s{step} {where}] END reason={reason} restarts={self._restarts} ring={len(ring)}')
+            for st, t, d, hp, mons, msg in ring:
+                jf_log.log(f'[s{step} {where}] END msg s{st} t{t} d{d} hp{hp} close={mons} | {msg}')
+        except Exception:  # noqa: BLE001
+            pass
+
     def close(self) -> None:
+        self._write_end('close')
         if self._env is not None:
             self._env.close()
         self._env = None

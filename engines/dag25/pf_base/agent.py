@@ -2,7 +2,7 @@ import contextlib
 import re
 import sys
 import traceback
-from collections import namedtuple, Counter, defaultdict
+from collections import namedtuple, Counter, defaultdict, deque
 from functools import partial
 
 import nle.nethack as nh
@@ -112,6 +112,7 @@ class Agent:
         self._allow_walking_through_traps_turn = -float('inf')
         self._allow_attack_all_turn = -float('inf')
         self._hb_actions = Counter()   # actions and go_to targets since the last STATUS heartbeat
+        self._jf_ring = deque(maxlen=30)   # Jev instrument (logging only): the last 30 steps for the END block
         self._hb_gotos = Counter()
         self._fight_stall = None       # (turn a contactless fight began, XP then, last fight2 turn) FIGHT_STALL_TURNS
         self._fight_ignored = {}       # (level key, glyph) -> [y, x, until turn, anywhere]: monsters fight2 let go
@@ -691,11 +692,28 @@ class Agent:
                     finally:
                         self.message = message
                         self.popup = popup
+                if jf_log.enabled():
+                    self._jf_instrument()
 
             if allow_callbacks:
                 self.call_update_functions()
         finally:
             self._is_updating_state = False
+
+    def _jf_instrument(self):
+        """Jev instrument (logging only): the last 30 steps (message, HP, close hostiles) for the END block. Reads the
+        monster mask and glyphs directly: never bfs() (its per-step cache would hand the strategies a stale copy)."""
+        try:
+            bl = self.blstats
+            mask = self.monster_tracker.monster_mask & ~self.monster_tracker.peaceful_monster_mask
+            close = []
+            for y, x in zip(*mask.nonzero()):
+                if max(abs(int(y) - bl.y), abs(int(x) - bl.x)) <= 2:
+                    g = self.glyphs[y, x]
+                    close.append(MON.permonst(g).mname if MON.is_monster(g) and g != nh.GLYPH_INVISIBLE else 'unknown')
+            self._jf_ring.append((self.step_count, bl.time, bl.depth, bl.hitpoints, close, (self.message or '')[:160]))
+        except Exception:  # noqa: BLE001
+            pass
 
     def call_update_functions(self, funcs=None):
         if funcs is None:
