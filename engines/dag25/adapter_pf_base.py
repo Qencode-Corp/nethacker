@@ -2,6 +2,9 @@ from __future__ import annotations
 
 import contextlib
 import ctypes
+import hashlib
+import os
+import random
 import queue
 import threading
 import time
@@ -158,6 +161,15 @@ class AutoAscendDriver:
             self._initial_message = None
         del initial_observation
         self.close()
+        # TRAJ (Jev instrument, logging only): the game's identity in its log. The arena never passes the trajectory id
+        # to the bot; the sandbox seeded `random` with the trajectory's bot_seed and nothing here draws from it, so a
+        # fingerprint of the untouched state names the game (jev-nethack tools/frontier_logs.py maps it to the id).
+        if jf_log.enabled():
+            try:
+                fp = hashlib.sha1(repr(random.getstate()).encode()).hexdigest()[:12]
+                jf_log.log(f'[s0 t0 d0 0:0 xl0 hp0/0] TRAJ fp={fp} pid={os.getpid()} start={time.time():.0f}')
+            except Exception:  # noqa: BLE001
+                pass
         self._restarts = 0
         self._episode_start = time.monotonic()
         self._gave_up = False
