@@ -1,0 +1,112 @@
+[s0 t0 d0 0:0 xl0 hp0/0] TRAJ fp=1060613cf143 pid=19577 start=1791208905
+[s24 t7 d3 0:3 xl5 hp55/55] STATUS milestone=BE_ON_FIRST_LEVEL diving=False hunger=1 pos=(np.int64(4), np.int64(8)) acts=[SPACE:8 ESC:3 ATTRIBUTES:1 ENHANCE:1 NW:1] gotos=[]
+[s24 t7 d3 0:3 xl5 hp55/55] DIVE level (np.int64(0), np.int64(3)) depth 3
+[s124 t81 d3 0:3 xl5 hp55/55] PANIC AgentPanic: no such food is lying here
+Traceback (most recent call last):
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/strategy.py", line 144, in f
+    return agent.preempt(strategies, self, first_func=f2, continue_after_preemption=continue_after_preemption)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/agent.py", line 310, in preempt
+    next(iterator)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/strategy.py", line 68, in f
+    next(it)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/utils.py", line 134, in f
+    next(it)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/agent.py", line 3111, in eat_corpses_from_ground
+    self.inventory.eat(item)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/item/inventory.py", line 857, in eat
+    raise AgentPanic('no such food is lying here')
+pf_base.exceptions.AgentPanic: no such food is lying here
+
+[s273 t196 d3 0:3 xl5 hp55/55] PANIC AgentPanic: no such food is lying here
+Traceback (most recent call last):
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/strategy.py", line 144, in f
+    return agent.preempt(strategies, self, first_func=f2, continue_after_preemption=continue_after_preemption)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/agent.py", line 310, in preempt
+    next(iterator)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/strategy.py", line 68, in f
+    next(it)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/utils.py", line 134, in f
+    next(it)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/agent.py", line 3111, in eat_corpses_from_ground
+    self.inventory.eat(item)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/item/inventory.py", line 857, in eat
+    raise AgentPanic('no such food is lying here')
+pf_base.exceptions.AgentPanic: no such food is lying here
+
+[s690 t500 d3 0:3 xl5 hp55/55] STATUS milestone=BE_ON_FIRST_LEVEL diving=False hunger=1 pos=(np.int64(12), np.int64(60)) acts=[SEARCH:165 E:64 SPACE:49 S:42 SW:34] gotos=[check_items(6, 49):22 open_visit_search(5, 56):15 open_visit_search(1, 7):4]
+[s792 t578 d2 0:2 xl5 hp55/55] DIVE level (np.int64(0), np.int64(2)) depth 2
+[s1350 t1000 d2 0:2 xl5 hp55/55] STATUS milestone=BE_ON_FIRST_LEVEL diving=False hunger=1 pos=(np.int64(7), np.int64(62)) acts=[SEARCH:185 E:62 S:49 W:46 SPACE:44] gotos=[check_items(14, 34):5 open_visit_search(10, 18):5 check_items(12, 36):4]
+[s1560 t1190 d2 0:2 xl5 hp55/55] PANIC AgentPanic: Monster on a next tile when moving: (9,34)
+Traceback (most recent call last):
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/strategy.py", line 144, in f
+    return agent.preempt(strategies, self, first_func=f2, continue_after_preemption=continue_after_preemption)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/agent.py", line 299, in preempt
+    val = f()
+          ^^^
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/strategy.py", line 139, in f2
+    next(gen)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/exploration_logic.py", line 246, in go_to_strategy
+    return self.agent.go_to(y, x, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/agent.py", line 2383, in go_to
+    self.move(y, x)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/agent.py", line 2020, in move
+    raise AgentPanic(f'Monster on a next tile when moving: ({expected_y},{expected_x})')
+pf_base.exceptions.AgentPanic: Monster on a next tile when moving: (9,34)
+
+[s1593 t1206 d3 0:3 xl5 hp55/55] DIVE level (np.int64(0), np.int64(3)) depth 3
+[s1626 t1251 d3 0:3 xl5 hp55/55] PRAY hp=55/55 hunger=3 gap=None reason=None model[ok200=1.00 naughty=0.00 ugangr=0.00 luck>=0=1.00 record=15 p_answered=1.00]
+[s1631 t1254 d3 0:3 xl5 hp55/55] PRAY result ok model[ok200=0.22 naughty=0.00 ugangr=0.00 luck>=0=1.00 record=15] prayers=1 failures=0
+[s1883 t1500 d3 0:3 xl5 hp55/55] STATUS milestone=BE_ON_FIRST_LEVEL diving=False hunger=1 pos=(np.int64(4), np.int64(55)) acts=[SEARCH:84 W:64 NW:46 E:41 NUM_5:38] gotos=[_fight2_perform_action(4, 53):34 open_visit_search(17, 18):8 open_visit_search(13, 40):5]
+[s1889 t1506 d3 0:3 xl5 hp55/55] FIGHT stall of 74 turns ended (contact): ['leprechaun', 'straw golem']
+[s2051 t1643 d3 0:3 xl5 hp55/55] FIGHT stall of 121 turns ended (contact): ['fog cloud', 'leprechaun', 'monkey', 'straw golem']
+[s2159 t1727 d3 0:3 xl5 hp55/55] FIGHT stall of 66 turns ended (contact): ['jackal', 'leprechaun']
+[s2264 t1812 d3 0:3 xl5 hp55/55] FIGHT stall of 84 turns ended (contact): ['leprechaun', 'straw golem']
+[s2318 t1856 d3 0:3 xl5 hp55/55] FIGHT stall of 41 turns ended (contact): ['leprechaun', 'rothe']
+[s2400 t1925 d3 0:3 xl5 hp55/55] FIGHT stall of 68 turns ended (contact): ['giant ant', 'leprechaun']
+[s2483 t2000 d3 0:3 xl5 hp55/55] STATUS milestone=BE_ON_FIRST_LEVEL diving=False hunger=2 pos=(np.int64(3), np.int64(50)) acts=[S:228 N:221 SPACE:25 W:22 NW:14] gotos=[]
+[s2648 t2142 d3 0:3 xl5 hp55/55] FIGHT stall of 208 turns ended (contact): ['hobgoblin', 'leprechaun']
+[s2708 t2265 d3 0:3 xl5 hp55/55] PRAY hp=55/55 hunger=4 gap=1011 reason=hunger-threat no-elbereth:leprechaun est=None model[ok200=0.95 naughty=0.00 ugangr=0.00 luck>=0=1.00 record=21 p_answered=0.95]
+[s2713 t2268 d3 0:3 xl5 hp55/55] PRAY result ok model[ok200=0.22 naughty=0.00 ugangr=0.00 luck>=0=1.00 record=21] prayers=2 failures=0
+[s2872 t2401 d3 0:3 xl5 hp55/55] FIGHT stall of 131 turns ended (contact): ['jackal', 'leprechaun']
+[s2909 t2428 d3 0:3 xl5 hp54/55] FIGHT stall of 25 turns ended (contact): ['leprechaun', 'rothe']
+[s2987 t2500 d3 0:3 xl5 hp55/55] STATUS milestone=BE_ON_FIRST_LEVEL diving=False hunger=1 pos=(np.int64(3), np.int64(50)) acts=[S:196 N:196 SPACE:22 SW:13 EXTCMD:10] gotos=[]
+[s3096 t2587 d3 0:3 xl5 hp53/55] FIGHT stall of 157 turns ended (contact): ['floating eye', 'giant bat', 'leprechaun']
+[s3155 t2634 d3 0:3 xl5 hp54/55] FIGHT stall of 44 turns ended (contact): ['floating eye', 'leprechaun', 'little dog']
+[s3265 t2718 d3 0:3 xl5 hp55/55] FIGHT stall of 80 turns ended (contact): ['fox', 'leprechaun']
+[s3545 t2943 d3 0:3 xl5 hp53/55] FIGHT stall of 224 turns ended (contact): ['floating eye', 'giant bat', 'leprechaun']
+[s3621 t3000 d3 0:3 xl6 hp58/67] STATUS milestone=BE_ON_FIRST_LEVEL diving=False hunger=2 pos=(np.int64(3), np.int64(50)) acts=[N:238 S:231 SPACE:31 WHATIS:20 MOVEFAR:20] gotos=[_fight2_perform_action(4, 53):1]
+[s3632 t3007 d3 0:3 xl6 hp59/67] END reason=close restarts=0 ring=30
+[s3632 t3007 d3 0:3 xl6 hp59/67] END msg s3593 t2978 d3 hp54 close=[] | 
+[s3632 t3007 d3 0:3 xl6 hp59/67] END msg s3600 t2979 d3 hp54 close=[] | 
+[s3632 t3007 d3 0:3 xl6 hp59/67] END msg s3601 t2980 d3 hp54 close=[] | 
+[s3632 t3007 d3 0:3 xl6 hp59/67] END msg s3602 t2981 d3 hp54 close=[] | 
+[s3632 t3007 d3 0:3 xl6 hp59/67] END msg s3603 t2982 d3 hp55 close=[] | 
+[s3632 t3007 d3 0:3 xl6 hp59/67] END msg s3604 t2983 d3 hp55 close=[] | 
+[s3632 t3007 d3 0:3 xl6 hp59/67] END msg s3605 t2984 d3 hp55 close=[] | 
+[s3632 t3007 d3 0:3 xl6 hp59/67] END msg s3606 t2985 d3 hp55 close=[] | 
+[s3632 t3007 d3 0:3 xl6 hp59/67] END msg s3607 t2986 d3 hp55 close=[] | 
+[s3632 t3007 d3 0:3 xl6 hp59/67] END msg s3608 t2987 d3 hp55 close=[] | 
+[s3632 t3007 d3 0:3 xl6 hp59/67] END msg s3609 t2988 d3 hp56 close=[] | 
+[s3632 t3007 d3 0:3 xl6 hp59/67] END msg s3610 t2989 d3 hp56 close=[] | 
+[s3632 t3007 d3 0:3 xl6 hp59/67] END msg s3611 t2990 d3 hp56 close=[] | 
+[s3632 t3007 d3 0:3 xl6 hp59/67] END msg s3612 t2991 d3 hp56 close=[] | 
+[s3632 t3007 d3 0:3 xl6 hp59/67] END msg s3613 t2992 d3 hp56 close=[] | 
+[s3632 t3007 d3 0:3 xl6 hp59/67] END msg s3614 t2993 d3 hp56 close=[] | 
+[s3632 t3007 d3 0:3 xl6 hp59/67] END msg s3615 t2994 d3 hp57 close=[] | 
+[s3632 t3007 d3 0:3 xl6 hp59/67] END msg s3616 t2995 d3 hp57 close=[] | 
+[s3632 t3007 d3 0:3 xl6 hp59/67] END msg s3617 t2996 d3 hp57 close=[] | 
+[s3632 t3007 d3 0:3 xl6 hp59/67] END msg s3618 t2997 d3 hp57 close=[] | 
+[s3632 t3007 d3 0:3 xl6 hp59/67] END msg s3619 t2998 d3 hp57 close=[] | 
+[s3632 t3007 d3 0:3 xl6 hp59/67] END msg s3620 t2999 d3 hp57 close=[] | You are beginning to feel hungry.
+[s3632 t3007 d3 0:3 xl6 hp59/67] END msg s3621 t3000 d3 hp58 close=[] | 
+[s3632 t3007 d3 0:3 xl6 hp59/67] END msg s3626 t3001 d3 hp58 close=[] | 
+[s3632 t3007 d3 0:3 xl6 hp59/67] END msg s3627 t3002 d3 hp58 close=[] | 
+[s3632 t3007 d3 0:3 xl6 hp59/67] END msg s3628 t3003 d3 hp58 close=[] | You hear the chime of a cash register.
+[s3632 t3007 d3 0:3 xl6 hp59/67] END msg s3629 t3004 d3 hp58 close=[] | 
+[s3632 t3007 d3 0:3 xl6 hp59/67] END msg s3630 t3005 d3 hp58 close=[] | 
+[s3632 t3007 d3 0:3 xl6 hp59/67] END msg s3631 t3006 d3 hp59 close=[] | 
+[s3632 t3007 d3 0:3 xl6 hp59/67] END msg s3632 t3007 d3 hp59 close=[] | 

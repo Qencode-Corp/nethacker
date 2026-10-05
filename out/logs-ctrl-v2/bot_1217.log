@@ -1,0 +1,221 @@
+[s0 t0 d0 0:0 xl0 hp0/0] TRAJ fp=70a55af4bf8e pid=19903 start=1791209098
+[s24 t7 d3 0:3 xl5 hp47/47] STATUS milestone=BE_ON_FIRST_LEVEL diving=False hunger=1 pos=(np.int64(10), np.int64(72)) acts=[SPACE:8 ESC:3 ATTRIBUTES:1 ENHANCE:1 NW:1] gotos=[]
+[s24 t7 d3 0:3 xl5 hp47/47] DIVE level (np.int64(0), np.int64(3)) depth 3
+[s250 t170 d3 0:3 xl5 hp47/47] PANIC AgentPanic: no such food is lying here
+Traceback (most recent call last):
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/strategy.py", line 144, in f
+    return agent.preempt(strategies, self, first_func=f2, continue_after_preemption=continue_after_preemption)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/agent.py", line 310, in preempt
+    next(iterator)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/strategy.py", line 68, in f
+    next(it)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/utils.py", line 134, in f
+    next(it)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/agent.py", line 3111, in eat_corpses_from_ground
+    self.inventory.eat(item)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/item/inventory.py", line 857, in eat
+    raise AgentPanic('no such food is lying here')
+pf_base.exceptions.AgentPanic: no such food is lying here
+
+[s412 t282 d3 0:3 xl5 hp42/47] PANIC AgentPanic: items below me changed
+Traceback (most recent call last):
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/item/inventory.py", line 602, in get_items_below_me
+    with self.agent.atom_operation():
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.12/3.12.14/Frameworks/Python.framework/Versions/3.12/lib/python3.12/contextlib.py", line 144, in __exit__
+    next(self.gen)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/agent.py", line 189, in atom_operation
+    self.update_state()
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/agent.py", line 699, in update_state
+    self.call_update_functions()
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/agent.py", line 725, in call_update_functions
+    func()
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/item/inventory.py", line 159, in f
+    raise AgentPanic('items below me changed')
+pf_base.exceptions.AgentPanic: items below me changed
+
+[s720 t500 d3 0:3 xl5 hp45/47] STATUS milestone=BE_ON_FIRST_LEVEL diving=False hunger=1 pos=(np.int64(10), np.int64(15)) acts=[SEARCH:196 W:84 SPACE:49 E:44 SW:43] gotos=[check_items(6, 53):11 open_visit_search(9, 46):7 open_visit_search(11, 7):7]
+[s1159 t863 d3 0:3 xl5 hp47/47] PRAY hp=47/47 hunger=3 gap=None reason=None model[ok200=1.00 naughty=0.00 ugangr=0.00 luck>=0=1.00 record=14 p_answered=1.00]
+[s1164 t866 d3 0:3 xl5 hp47/47] PRAY result ok model[ok200=0.22 naughty=0.00 ugangr=0.00 luck>=0=1.00 record=14] prayers=1 failures=0
+[s1190 t904 d3 0:3 xl5 hp47/47] PANIC AgentPanic: agent position do not match after "move": expected (11, 23), got (11, 22)
+Traceback (most recent call last):
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/strategy.py", line 165, in f
+    next(gen)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/strategy.py", line 100, in f
+    next(v1)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/utils.py", line 134, in f
+    next(it)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/item/inventory.py", line 1682, in check_items
+    self.agent.go_to(target_y, target_x, debug_tiles_args=dict(color=(255, 0, 255), is_path=True))
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/agent.py", line 2383, in go_to
+    self.move(y, x)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/agent.py", line 2052, in move
+    raise AgentPanic(f'agent position do not match after "move": '
+pf_base.exceptions.AgentPanic: agent position do not match after "move": expected (11, 23), got (11, 22)
+
+[s1294 t980 d3 0:3 xl5 hp47/47] INTRINSIC telepathy
+[s1296 t981 d3 0:3 xl5 hp47/47] PANIC AgentPanic: no such food is lying here
+Traceback (most recent call last):
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/strategy.py", line 144, in f
+    return agent.preempt(strategies, self, first_func=f2, continue_after_preemption=continue_after_preemption)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/agent.py", line 310, in preempt
+    next(iterator)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/strategy.py", line 68, in f
+    next(it)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/utils.py", line 134, in f
+    next(it)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/agent.py", line 3111, in eat_corpses_from_ground
+    self.inventory.eat(item)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/item/inventory.py", line 857, in eat
+    raise AgentPanic('no such food is lying here')
+pf_base.exceptions.AgentPanic: no such food is lying here
+
+[s1334 t1001 d3 0:3 xl5 hp47/47] STATUS milestone=BE_ON_FIRST_LEVEL diving=False hunger=1 pos=(np.int64(10), np.int64(29)) acts=[N:92 S:88 SW:61 SPACE:58 SEARCH:55] gotos=[open_visit_search(4, 45):28 check_items(14, 14):24 open_visit_search(11, 17):4]
+[s1428 t1137 d3 0:3 xl5 hp47/47] DIGGER dwarf in rock/tunnel at (7, 61)
+[s1436 t1139 d3 0:3 xl5 hp47/47] DIGGER dwarf in rock/tunnel at (7, 62)
+[s1437 t1140 d3 0:3 xl5 hp47/47] DIGGER dwarf in rock/tunnel at (8, 51)
+[s1440 t1143 d3 0:3 xl5 hp47/47] DIGGER dwarf in rock/tunnel at (8, 52)
+[s1450 t1147 d3 0:3 xl5 hp47/47] DIGGER dwarf in rock/tunnel at (7, 64)
+[s1461 t1150 d3 0:3 xl5 hp47/47] DIGGER dwarf in rock/tunnel at (8, 53)
+[s1471 t1158 d3 0:3 xl5 hp39/47] DIGGER dwarf in rock/tunnel at (10, 53)
+[s1474 t1161 d3 0:3 xl5 hp39/47] DIGGER dwarf in rock/tunnel at (10, 52)
+[s1639 t1281 d3 0:3 xl5 hp43/47] DIGGER dwarf in rock/tunnel at (5, 57)
+[s1640 t1282 d3 0:3 xl5 hp43/47] DIGGER dwarf in rock/tunnel at (5, 58)
+[s1891 t1437 d3 0:3 xl5 hp47/47] DIGGER dwarf in rock/tunnel at (3, 48)
+[s1894 t1440 d3 0:3 xl5 hp47/47] DIGGER dwarf in rock/tunnel at (3, 47)
+[s1945 t1463 d3 0:3 xl5 hp47/47] DIGGER dwarf in rock/tunnel at (13, 48)
+[s1993 t1490 d3 0:3 xl5 hp47/47] DIGGER dwarf in rock/tunnel at (13, 49)
+[s2012 t1497 d3 0:3 xl5 hp47/47] DIGGER dwarf in rock/tunnel at (11, 50)
+[s2021 t1500 d3 0:3 xl5 hp47/47] STATUS milestone=BE_ON_FIRST_LEVEL diving=False hunger=1 pos=(np.int64(9), np.int64(54)) acts=[NE:113 SW:112 SPACE:81 WHATIS:59 MOVEFAR:59] gotos=[eat_corpses_from_ground(5, 48):8 check_items(7, 50):8 open_visit_search(11, 28):4]
+[s2026 t1502 d3 0:3 xl5 hp47/47] DIGGER dwarf in rock/tunnel at (5, 46)
+[s2027 t1503 d3 0:3 xl5 hp47/47] DIGGER dwarf in rock/tunnel at (11, 47)
+[s2046 t1510 d3 0:3 xl5 hp47/47] DIGGER dwarf in rock/tunnel at (3, 46)
+[s2063 t1518 d3 0:3 xl5 hp47/47] DIGGER dwarf in rock/tunnel at (11, 48)
+[s2101 t1532 d3 0:3 xl5 hp47/47] DIGGER dwarf in rock/tunnel at (5, 44)
+[s2167 t1558 d3 0:3 xl5 hp47/47] DIGGER dwarf in rock/tunnel at (3, 45)
+[s2206 t1576 d3 0:3 xl5 hp47/47] DIGGER dwarf in rock/tunnel at (11, 46)
+[s2232 t1587 d3 0:3 xl5 hp47/47] FEYE_TELE telepathic already: not meleeing the floating eye
+[s2261 t1598 d3 0:3 xl5 hp47/47] DIGGER dwarf in rock/tunnel at (11, 45)
+[s2271 t1600 d3 0:3 xl5 hp47/47] FEYE_TELE telepathic already: not meleeing the floating eye
+[s2274 t1601 d3 0:3 xl5 hp47/47] FIGHT stall of 273 turns ended (kill): ['floating eye', 'leprechaun']
+[s2281 t1603 d3 0:3 xl5 hp47/47] DIGGER dwarf in rock/tunnel at (8, 44)
+[s2307 t1608 d3 0:3 xl5 hp47/47] DIGGER dwarf in rock/tunnel at (8, 43)
+[s2341 t1620 d3 0:3 xl5 hp47/47] DIGGER dwarf in rock/tunnel at (8, 45)
+[s2375 t1633 d3 0:3 xl5 hp47/47] DIGGER dwarf in rock/tunnel at (8, 42)
+[s2391 t1640 d3 0:3 xl5 hp47/47] DIGGER dwarf in rock/tunnel at (13, 44)
+[s2403 t1646 d3 0:3 xl5 hp47/47] DIGGER dwarf in rock/tunnel at (13, 43)
+[s2419 t1652 d3 0:3 xl5 hp47/47] DIGGER dwarf in rock/tunnel at (13, 42)
+[s2448 t1669 d3 0:3 xl5 hp47/47] FIGHT stall of 67 turns ended (contact): ['gecko', 'leprechaun']
+[s2489 t1689 d3 0:3 xl5 hp47/47] DIGGER dwarf in rock/tunnel at (8, 47)
+[s2512 t1700 d3 0:3 xl5 hp46/47] FIGHT stall of 29 turns ended (contact): ['leprechaun']
+[s2527 t1706 d3 0:3 xl5 hp45/47] DIGGER dwarf in rock/tunnel at (11, 49)
+[s2534 t1710 d3 0:3 xl5 hp46/47] DIGGER dwarf in rock/tunnel at (13, 47)
+[s2551 t1714 d3 0:3 xl5 hp46/47] DIGGER dwarf in rock/tunnel at (12, 36)
+[s2660 t1760 d3 0:3 xl5 hp47/47] DIGGER dwarf in rock/tunnel at (8, 49)
+[s2667 t1764 d3 0:3 xl5 hp47/47] DIGGER dwarf in rock/tunnel at (8, 50)
+[s2721 t1803 d3 0:3 xl5 hp29/47] FIGHT stall of 88 turns ended (contact): ['leprechaun']
+[s2814 t1880 d3 0:3 xl6 hp54/59] PRAY hp=54/59 hunger=4 gap=1014 reason=hunger-threat no-elbereth:leprechaun est=None model[ok200=0.95 naughty=0.00 ugangr=0.00 luck>=0=1.00 record=19 p_answered=0.95]
+[s2819 t1883 d3 0:3 xl6 hp54/59] PRAY result ok model[ok200=0.22 naughty=0.00 ugangr=0.00 luck>=0=1.00 record=19] prayers=2 failures=0
+[s2951 t1939 d3 0:3 xl6 hp59/59] FIGHT stall of 52 turns ended (contact): ['fog cloud', 'leprechaun']
+[s2988 t1951 d3 0:3 xl6 hp59/59] DIGGER dwarf in rock/tunnel at (3, 44)
+[s3130 t2000 d3 0:3 xl6 hp59/59] STATUS milestone=BE_ON_FIRST_LEVEL diving=False hunger=1 pos=(np.int64(10), np.int64(53)) acts=[SPACE:219 WHATIS:184 MOVEFAR:184 NW:111 S:108] gotos=[]
+[s3197 t2024 d3 0:3 xl6 hp59/59] FIGHT stall of 81 turns ended (contact): ['coyote', 'fog cloud', 'leprechaun']
+[s3201 t2025 d3 0:3 xl6 hp59/59] DIGGER dwarf in rock/tunnel at (11, 44)
+[s3238 t2041 d3 0:3 xl6 hp58/59] DIGGER dwarf in rock/tunnel at (13, 45)
+[s3319 t2074 d3 0:3 xl6 hp59/59] DIGGER dwarf in rock/tunnel at (4, 44)
+[s3528 t2159 d3 0:3 xl6 hp59/59] DIGGER dwarf in rock/tunnel at (13, 35)
+[s3622 t2192 d3 0:3 xl6 hp59/59] DIGGER dwarf in rock/tunnel at (11, 56)
+[s3645 t2200 d3 0:3 xl6 hp59/59] FIGHT stall of 150 turns ended (contact): ['leprechaun']
+[s3656 t2205 d3 0:3 xl6 hp59/59] DIGGER dwarf in rock/tunnel at (10, 54)
+[s3660 t2206 d3 0:3 xl6 hp59/59] DIGGER dwarf in rock/tunnel at (10, 38)
+[s3686 t2214 d3 0:3 xl6 hp59/59] DIGGER dwarf in rock/tunnel at (8, 41)
+[s3706 t2222 d3 0:3 xl6 hp59/59] DIGGER dwarf in rock/tunnel at (10, 57)
+[s3737 t2232 d3 0:3 xl6 hp59/59] DIGGER dwarf in rock/tunnel at (10, 59)
+[s3743 t2235 d3 0:3 xl6 hp59/59] DIGGER dwarf in rock/tunnel at (9, 60)
+[s3761 t2241 d3 0:3 xl6 hp59/59] DIGGER dwarf in rock/tunnel at (9, 61)
+[s3810 t2271 d3 0:3 xl6 hp59/59] DIGGER dwarf in rock/tunnel at (7, 44)
+[s3827 t2279 d3 0:3 xl6 hp59/59] DIGGER dwarf in rock/tunnel at (7, 45)
+[s3876 t2316 d3 0:3 xl6 hp59/59] FEYE_TELE telepathic already: not meleeing the floating eye
+[s4033 t2400 d3 0:3 xl6 hp59/59] FEYE_TELE telepathic already: not meleeing the floating eye
+[s4082 t2428 d3 0:3 xl6 hp59/59] DIGGER dwarf in rock/tunnel at (17, 59)
+[s4089 t2432 d3 0:3 xl6 hp59/59] DIGGER dwarf in rock/tunnel at (17, 58)
+[s4104 t2438 d3 0:3 xl6 hp59/59] DIGGER dwarf in rock/tunnel at (18, 57)
+[s4106 t2440 d3 0:3 xl6 hp59/59] DIGGER dwarf in rock/tunnel at (18, 58)
+[s4142 t2464 d3 0:3 xl6 hp59/59] DIGGER dwarf in rock/tunnel at (9, 57)
+[s4164 t2477 d3 0:3 xl6 hp59/59] DIGGER dwarf in rock/tunnel at (9, 58)
+[s4215 t2500 d3 0:3 xl6 hp59/59] STATUS milestone=BE_ON_FIRST_LEVEL diving=False hunger=1 pos=(np.int64(10), np.int64(52)) acts=[E:192 SPACE:185 WHATIS:167 MOVEFAR:167 NW:106] gotos=[]
+[s4215 t2500 d3 0:3 xl6 hp59/59] FEYE_TELE telepathic already: not meleeing the floating eye
+[s4243 t2519 d3 0:3 xl6 hp59/59] DIGGER dwarf in rock/tunnel at (9, 59)
+[s4247 t2523 d3 0:3 xl6 hp59/59] DIGGER dwarf in rock/tunnel at (10, 60)
+[s4268 t2532 d3 0:3 xl6 hp59/59] DIGGER dwarf in rock/tunnel at (11, 57)
+[s4270 t2534 d3 0:3 xl6 hp59/59] DIGGER dwarf in rock/tunnel at (12, 56)
+[s4284 t2542 d3 0:3 xl6 hp59/59] DIGGER dwarf in rock/tunnel at (9, 61)
+[s4304 t2556 d3 0:3 xl6 hp59/59] DIGGER dwarf in rock/tunnel at (7, 60)
+[s4312 t2561 d3 0:3 xl6 hp59/59] DIGGER dwarf in rock/tunnel at (7, 58)
+[s4313 t2562 d3 0:3 xl6 hp59/59] DIGGER dwarf in rock/tunnel at (7, 57)
+[s4329 t2572 d3 0:3 xl6 hp58/59] FIGHT stall of 368 turns ended (contact): ['floating eye', 'leprechaun', 'rock mole']
+[s4363 t2591 d3 0:3 xl6 hp53/59] DIGGER dwarf in rock/tunnel at (5, 57)
+[s4378 t2600 d3 0:3 xl6 hp55/59] FEYE_TELE telepathic already: not meleeing the floating eye
+[s4470 t2640 d3 0:3 xl6 hp59/59] DIGGER dwarf in rock/tunnel at (5, 59)
+[s4488 t2649 d3 0:3 xl6 hp59/59] FIGHT stall of 61 turns ended (contact): ['floating eye', 'fog cloud', 'hobgoblin', 'leprechaun']
+[s4492 t2650 d3 0:3 xl6 hp59/59] DIGGER dwarf in rock/tunnel at (5, 61)
+[s4497 t2652 d3 0:3 xl6 hp59/59] DIGGER dwarf in rock/tunnel at (5, 62)
+[s4545 t2676 d3 0:3 xl6 hp59/59] DIGGER dwarf in rock/tunnel at (5, 65)
+[s4593 t2700 d3 0:3 xl6 hp59/59] FEYE_TELE telepathic already: not meleeing the floating eye
+[s4686 t2744 d3 0:3 xl6 hp59/59] FIGHT stall of 94 turns ended (contact): ['floating eye', 'leprechaun']
+[s4698 t2756 d3 0:3 xl6 hp59/59] DIGGER dwarf in rock/tunnel at (5, 58)
+[s4700 t2758 d3 0:3 xl6 hp59/59] DIGGER dwarf in rock/tunnel at (5, 64)
+[s4702 t2760 d3 0:3 xl6 hp59/59] DIGGER dwarf in rock/tunnel at (5, 63)
+[s4736 t2787 d3 0:3 xl6 hp59/59] DIGGER dwarf in rock/tunnel at (7, 59)
+[s4744 t2801 d3 0:3 xl6 hp59/59] FEYE_TELE telepathic already: not meleeing the floating eye
+[s4805 t2898 d3 0:3 xl6 hp59/59] DIGGER dwarf in rock/tunnel at (16, 61)
+[s4805 t2898 d3 0:3 xl6 hp59/59] PRAY hp=59/59 hunger=4 gap=1015 reason=hunger-threat no-elbereth:leprechaun est=None model[ok200=0.95 naughty=0.00 ugangr=0.00 luck>=0=1.00 record=23 p_answered=0.95]
+[s4817 t2901 d3 0:3 xl6 hp59/59] PRAY result ok model[ok200=0.22 naughty=0.00 ugangr=0.00 luck>=0=1.00 record=23] prayers=3 failures=0
+[s4821 t2901 d3 0:3 xl6 hp59/59] FEYE_TELE telepathic already: not meleeing the floating eye
+[s4854 t2913 d3 0:3 xl6 hp59/59] DIGGER dwarf in rock/tunnel at (7, 62)
+[s4860 t2916 d3 0:3 xl6 hp59/59] DIGGER dwarf in rock/tunnel at (7, 61)
+[s4882 t2929 d3 0:3 xl6 hp59/59] DIGGER dwarf in rock/tunnel at (18, 53)
+[s4892 t2933 d3 0:3 xl6 hp59/59] DIGGER dwarf in rock/tunnel at (16, 52)
+[s4903 t2938 d3 0:3 xl6 hp59/59] FIGHT stall of 32 turns ended (contact): ['floating eye', 'leprechaun']
+[s4911 t2940 d3 0:3 xl6 hp59/59] DIGGER dwarf in rock/tunnel at (18, 52)
+[s4915 t2941 d3 0:3 xl6 hp59/59] DIGGER dwarf in rock/tunnel at (7, 63)
+[s4931 t2951 d3 0:3 xl6 hp59/59] DIGGER dwarf in rock/tunnel at (7, 64)
+[s4943 t2960 d3 0:3 xl6 hp59/59] DIGGER dwarf in rock/tunnel at (5, 66)
+[s4953 t2970 d3 0:3 xl6 hp59/59] DIGGER dwarf in rock/tunnel at (17, 52)
+[s5015 t2999 d3 0:3 xl6 hp59/59] DIGGER dwarf in rock/tunnel at (13, 48)
+[s5029 t3000 d3 0:3 xl6 hp59/59] STATUS milestone=BE_ON_FIRST_LEVEL diving=False hunger=1 pos=(np.int64(11), np.int64(53)) acts=[NW:148 SE:141 SPACE:127 WHATIS:111 MOVEFAR:111] gotos=[_fight2_perform_action(10, 53):2 _fight2_perform_action(10, 54):1]
+[s5029 t3000 d3 0:3 xl6 hp59/59] FEYE_TELE telepathic already: not meleeing the floating eye
+[s5045 t3007 d3 0:3 xl6 hp59/59] DIGGER dwarf in rock/tunnel at (13, 47)
+[s5045 t3007 d3 0:3 xl6 hp59/59] END reason=close restarts=0 ring=30
+[s5045 t3007 d3 0:3 xl6 hp59/59] END msg s4964 t2978 d3 hp59 close=['floating eye', 'floating eye'] | 
+[s5045 t3007 d3 0:3 xl6 hp59/59] END msg s4968 t2979 d3 hp59 close=['floating eye', 'floating eye'] | 
+[s5045 t3007 d3 0:3 xl6 hp59/59] END msg s4969 t2980 d3 hp59 close=['floating eye', 'floating eye'] | 
+[s5045 t3007 d3 0:3 xl6 hp59/59] END msg s4973 t2981 d3 hp59 close=['floating eye', 'floating eye'] | 
+[s5045 t3007 d3 0:3 xl6 hp59/59] END msg s4974 t2982 d3 hp59 close=['floating eye', 'floating eye'] | 
+[s5045 t3007 d3 0:3 xl6 hp59/59] END msg s4978 t2983 d3 hp59 close=['floating eye', 'floating eye'] | 
+[s5045 t3007 d3 0:3 xl6 hp59/59] END msg s4979 t2984 d3 hp59 close=['floating eye', 'floating eye'] | 
+[s5045 t3007 d3 0:3 xl6 hp59/59] END msg s4980 t2985 d3 hp59 close=['floating eye', 'floating eye'] | 
+[s5045 t3007 d3 0:3 xl6 hp59/59] END msg s4981 t2986 d3 hp59 close=['floating eye', 'floating eye'] | 
+[s5045 t3007 d3 0:3 xl6 hp59/59] END msg s4982 t2987 d3 hp59 close=['floating eye', 'floating eye'] | 
+[s5045 t3007 d3 0:3 xl6 hp59/59] END msg s4983 t2988 d3 hp59 close=['floating eye', 'floating eye'] | 
+[s5045 t3007 d3 0:3 xl6 hp59/59] END msg s4987 t2989 d3 hp59 close=['floating eye', 'floating eye'] | 
+[s5045 t3007 d3 0:3 xl6 hp59/59] END msg s4991 t2990 d3 hp59 close=['floating eye', 'floating eye'] | 
+[s5045 t3007 d3 0:3 xl6 hp59/59] END msg s4995 t2991 d3 hp59 close=['floating eye', 'floating eye'] | 
+[s5045 t3007 d3 0:3 xl6 hp59/59] END msg s4996 t2992 d3 hp59 close=['floating eye', 'floating eye'] | 
+[s5045 t3007 d3 0:3 xl6 hp59/59] END msg s5000 t2993 d3 hp59 close=['floating eye', 'floating eye'] | 
+[s5045 t3007 d3 0:3 xl6 hp59/59] END msg s5001 t2994 d3 hp59 close=['floating eye', 'floating eye'] | 
+[s5045 t3007 d3 0:3 xl6 hp59/59] END msg s5005 t2995 d3 hp59 close=['floating eye', 'floating eye'] | 
+[s5045 t3007 d3 0:3 xl6 hp59/59] END msg s5006 t2996 d3 hp59 close=['floating eye', 'floating eye'] | 
+[s5045 t3007 d3 0:3 xl6 hp59/59] END msg s5010 t2997 d3 hp59 close=['floating eye', 'floating eye'] | 
+[s5045 t3007 d3 0:3 xl6 hp59/59] END msg s5011 t2998 d3 hp59 close=['floating eye', 'floating eye'] | 
+[s5045 t3007 d3 0:3 xl6 hp59/59] END msg s5015 t2999 d3 hp59 close=['floating eye', 'floating eye'] | 
+[s5045 t3007 d3 0:3 xl6 hp59/59] END msg s5029 t3000 d3 hp59 close=['floating eye', 'floating eye'] | 
+[s5045 t3007 d3 0:3 xl6 hp59/59] END msg s5030 t3001 d3 hp59 close=['floating eye', 'floating eye'] | 
+[s5045 t3007 d3 0:3 xl6 hp59/59] END msg s5034 t3002 d3 hp59 close=['floating eye', 'floating eye'] | 
+[s5045 t3007 d3 0:3 xl6 hp59/59] END msg s5035 t3003 d3 hp59 close=['floating eye', 'floating eye'] | 
+[s5045 t3007 d3 0:3 xl6 hp59/59] END msg s5036 t3004 d3 hp59 close=['floating eye', 'floating eye'] | 
+[s5045 t3007 d3 0:3 xl6 hp59/59] END msg s5037 t3005 d3 hp59 close=['floating eye', 'floating eye'] | 
+[s5045 t3007 d3 0:3 xl6 hp59/59] END msg s5041 t3006 d3 hp59 close=['floating eye', 'floating eye'] | 
+[s5045 t3007 d3 0:3 xl6 hp59/59] END msg s5045 t3007 d3 hp59 close=['floating eye', 'floating eye'] | 

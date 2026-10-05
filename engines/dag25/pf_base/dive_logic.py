@@ -857,6 +857,10 @@ class DiveLogic:
         self._murder_turn = -1
         self._demon_vigil_until = -1       # turn until which a released water demon is kept off with Elbereth
         self._prep_dip_block_until = -1    # PREP_EXCAL_DIVE: no dive dips until this turn (a failed wield)
+        self._fountain_done = set()        # FOUNTAIN_QUAFF: (level key, y, x) of fountains dried or given up
+        self._fountain_quaffs = {}         # FOUNTAIN_QUAFF: (level key, y, x) -> drinks taken
+        self._fountain_block_until = -1    # FOUNTAIN_QUAFF: no drinks until this turn (a refused prompt)
+        self._fountain_last_stop = None    # FOUNTAIN_QUAFF: the last logged stop reason (logging only)
         self.prep_mid_left = set()         # PREP_MID: level keys left early (danger)
         self._prep_picked = {}             # PREP_DIVE_PICKUP: level key -> squares already looked at / picked
         self._prep_pickup_target = None    # PREP_DIVE_PICKUP: (level key, square) being walked to
@@ -1776,6 +1780,10 @@ class DiveLogic:
 
         # PREP_EXCAL_DIVE: a fountain in reach on a Dungeons level -> dip the long sword for Excalibur first
         if self.prep_fountain_dip():
+            return
+
+        # FOUNTAIN_QUAFF: a known fountain in reach on a shallow Dungeons level, no dip wanted -> drink for the wish
+        if jf_config.FOUNTAIN_QUAFF and self.fountain_quaff():
             return
 
         # PREP_DIVE_PICKUP: a ring, wand, amulet, potion or scroll in view a few steps away -> take it first
@@ -3026,6 +3034,166 @@ class DiveLogic:
                 self._prep_dip_block_until = agent.blstats.time + 50
                 raise AgentPanic('no fountain here')
         return True
+
+    # ------------------------------------------------------------- FOUNTAIN_QUAFF (P37)
+
+    _FOUNTAIN_EVENTS = (
+        # (message fragment, event name, the fountain is done for us) -- fountain.c drinkfountain, in test order
+        ('grants you a wish', 'wish', True),
+        ('You unleash', 'demon', True),
+        ('presence of evil', 'demon', True),
+        ('You attract', 'nymph', True),
+        ('seductive voice', 'nymph', True),
+        ('pours forth', 'moccasin', True),
+        ('hissing', 'moccasin', True),
+        ("water's no good", 'curse', False),
+        ('contaminated', 'poison', False),
+        ('unrefrigerated', 'poison', False),
+        ('water is foul', 'foul', False),
+        ('spot a gem', 'gem', False),
+        ('feel a gem', 'gem', False),
+        ('gushes forth', 'gush', False),
+        ('bad breath', 'scare', False),
+        ('self-knowledgeable', 'enlightenment', False),
+        ('stalking you', 'see_invisible', False),
+        ('feel transparent', 'see_invisible', False),
+        ('self-conscious', 'see_invisible', False),
+        ('makes you feel great', 'magic', False),
+        ('bubbles furiously', 'extinct', False),
+        ('bubble rises', 'extinct', False),
+    )
+
+    def _dip_wanted(self):
+        """The fountain is still worth a dip (global_logic.dip_for_excalibur / _safe_to_dip's rule): a lawful hero at
+        the dip XL with a long sword that may become Excalibur, dips not locked out by NO_DIP_WITH_TOOL. Then the dip
+        goes first; the fountain is drunk from once no dip is wanted."""
+        agent = self.agent
+        if agent.character.alignment != Character.LAWFUL or self.excalibur_candidate() is None:
+            return False
+        if agent.blstats.experience_level < (jf_config.PREP_EXCAL_XL or 7) and not \
+                (jf_config.PREP_EXCAL_DIVE and self.diving and agent.blstats.experience_level >= 5):
+            return False
+        if jf_config.NO_DIP_WITH_TOOL and self.digging_tool() is not None and not jf_config.PREP_EXCAL_DIVE:
+            return False
+        return True
+
+    def _fountain_quaff_target(self):
+        """FOUNTAIN_QUAFF: the nearest reachable known fountain not yet done with, within FOUNTAIN_QUAFF_DIST steps, on
+        a Dungeons of Doom level at or above FOUNTAIN_QUAFF_MAX_DLVL, while a drink is safe (XL, HP, hunger, no hostile
+        in view, no demon vigil, not levitating) and no dip is wanted -- or None."""
+        if not jf_config.FOUNTAIN_QUAFF:
+            return None
+        agent = self.agent
+        bl = agent.blstats
+        level = agent.current_level()
+        if level.dungeon_number != Level.DUNGEONS_OF_DOOM or bl.depth > jf_config.FOUNTAIN_QUAFF_MAX_DLVL:
+            return None
+        fountains = utils.isin(level.objects, G.FOUNTAIN)
+        if not fountains.any():
+            return None
+        key = level.key()
+        for (k, y, x) in self._fountain_done:
+            if k == key:
+                fountains[y, x] = False
+        if not fountains.any():
+            return None
+        # logging only: why a known fountain is not drunk from (the harness's read of the stops; once per reason change)
+        def stop(reason):
+            if reason != self._fountain_last_stop:
+                self._fountain_last_stop = reason
+                agent.log(f'FOUNTAIN stop reason={reason} on_fountain={bool(fountains[bl.y, bl.x])}')
+            return None
+
+        if bl.experience_level < jf_config.FOUNTAIN_QUAFF_MIN_XL:
+            return stop('xl')
+        if bl.hunger_state >= Hunger.WEAK:
+            return stop('hunger')
+        if bl.hitpoints < jf_config.FOUNTAIN_QUAFF_HP * bl.max_hitpoints:
+            return stop('hp')
+        if bl.time <= max(self._demon_vigil_until, self._fountain_block_until):
+            return stop('vigil')
+        if self.levitating():
+            return stop('levitating')
+        if self._dip_wanted():
+            return stop('dip')
+        if agent.get_visible_monsters():
+            return stop('monster')
+        dis = agent.bfs()
+        mask = fountains & (dis != -1) & (dis <= jf_config.FOUNTAIN_QUAFF_DIST)
+        if not mask.any():
+            return stop('distance')
+        ys, xs = mask.nonzero()
+        i = int(np.argmin(dis[ys, xs]))
+        return int(ys[i]), int(xs[i])
+
+    def fountain_quaff(self):
+        """FOUNTAIN_QUAFF (see jf_config): walk to the fountain and drink; one drink per call. The demon's wish prompt
+        and the wizard-mode 'Dry up fountain?' question are answered by agent.update (the wish machinery; 'y'). Returns
+        True when it acted."""
+        target = self._fountain_quaff_target()
+        if target is None:
+            return False
+        agent = self.agent
+        y, x = target
+        if (agent.blstats.y, agent.blstats.x) != (y, x):
+            self._task('walk to a fountain (quaff)')
+            agent.go_to(y, x)
+            return True
+        self._task('drink from the fountain')
+        key = (agent.current_level().key(), y, x)
+        n = self._fountain_quaffs.get(key, 0) + 1
+        self._fountain_quaffs[key] = n
+        # logged before the drink: a preempt firing on the drink's own step (a corpse to eat, a fight) unwinds this
+        # body before any line after the step (probe s1003 t989: a drink taken, never logged)
+        agent.log(f'FOUNTAIN quaff n={n} dlvl={agent.blstats.depth}')
+        refused = False
+
+        def text_gen():
+            nonlocal refused
+            if agent.message.startswith('Drink from the fountain?'):
+                yield 'y'
+            elif 'What do you want to drink?' in agent.message:
+                refused = True
+                yield A.Command.ESC
+
+        try:
+            with agent.atom_operation():
+                agent.step(A.Command.QUAFF, text_gen())
+        finally:
+            # also on the way out of a preempt (a demon, nymph or snakes in view fire fight2 on the drink's own step and
+            # unwind this body through agent.step): the result and the events are read from the message here
+            msg = agent.message
+            if refused:
+                # not on a fountain after all (the map was stale): give it up and keep off for a while
+                self._fountain_done.add(key)
+                self._fountain_block_until = agent.blstats.time + 50
+                agent.log(f'FOUNTAIN result n={n} refused msg={msg!r}')
+            else:
+                agent.log(f'FOUNTAIN result n={n} msg={msg!r}')
+                self._fountain_last_stop = None
+                events = [name for frag, name, _ in self._FOUNTAIN_EVENTS if frag in msg]
+                done = any(stop for frag, _, stop in self._FOUNTAIN_EVENTS if frag in msg)
+                if 'dries up' in msg:
+                    events.append('dry')
+                    done = True
+                for name in dict.fromkeys(events):
+                    agent.log(f'FOUNTAIN event={name}')
+                if done:
+                    self._fountain_done.add(key)
+        return True
+
+    @Strategy.wrap
+    def fountain_quaff_strategy(self):
+        """FOUNTAIN_QUAFF for the tour's exploration (global_logic: beside dip_for_excalibur). The walk and the drinks
+        run in one body: as a preempt checked every 10th iteration, a one-step body let the exploration walk away from
+        the fountain between drinks (probe s1003: 3 drinks in 1,300 turns, 215 walks back). The body ends when no
+        fountain is wanted any more (dried, done, a hostile in view, HP down) or after 60 calls."""
+        if self._fountain_quaff_target() is None:
+            yield False
+        yield True
+        for _ in range(60):
+            if not self.fountain_quaff():
+                return
 
     _PREP_PICKUP_GLYPHS = None
 

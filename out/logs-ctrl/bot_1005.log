@@ -1,0 +1,138 @@
+[s0 t0 d0 0:0 xl0 hp0/0] TRAJ fp=bd6658a87aef pid=17073 start=1791207950
+[s24 t7 d3 0:3 xl5 hp43/43] STATUS milestone=BE_ON_FIRST_LEVEL diving=False hunger=1 pos=(np.int64(13), np.int64(41)) acts=[SPACE:8 ESC:3 ATTRIBUTES:1 ENHANCE:1 NW:1] gotos=[]
+[s24 t7 d3 0:3 xl5 hp43/43] DIVE level (np.int64(0), np.int64(3)) depth 3
+[s706 t500 d3 0:3 xl5 hp43/43] STATUS milestone=BE_ON_FIRST_LEVEL diving=False hunger=1 pos=(np.int64(8), np.int64(16)) acts=[SEARCH:182 W:75 E:67 SW:51 SPACE:48] gotos=[open_visit_search(10, 13):8 open_visit_search(7, 46):6 open_visit_search(8, 11):4]
+[s722 t512 d3 0:3 xl5 hp43/43] PANIC AgentPanic: agent position do not match after "move": expected (7, 29), got (6, 28)
+Traceback (most recent call last):
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/strategy.py", line 144, in f
+    return agent.preempt(strategies, self, first_func=f2, continue_after_preemption=continue_after_preemption)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/agent.py", line 299, in preempt
+    val = f()
+          ^^^
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/strategy.py", line 139, in f2
+    next(gen)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/exploration_logic.py", line 246, in go_to_strategy
+    return self.agent.go_to(y, x, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/agent.py", line 2383, in go_to
+    self.move(y, x)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/agent.py", line 2052, in move
+    raise AgentPanic(f'agent position do not match after "move": '
+pf_base.exceptions.AgentPanic: agent position do not match after "move": expected (7, 29), got (6, 28)
+
+[s1022 t665 d4 0:4 xl5 hp43/43] DIVE level (np.int64(0), np.int64(4)) depth 4
+[s1024 t666 d3 0:3 xl5 hp43/43] DIVE level (np.int64(0), np.int64(3)) depth 3
+[s1181 t842 d3 0:3 xl5 hp43/43] PRAY hp=43/43 hunger=3 gap=None reason=None model[ok200=1.00 naughty=0.00 ugangr=0.00 luck>=0=1.00 record=13 p_answered=1.00]
+[s1188 t845 d3 0:3 xl5 hp43/43] PRAY result ok model[ok200=0.22 naughty=0.00 ugangr=0.00 luck>=0=1.00 record=13] prayers=1 failures=0
+[s1293 t1000 d3 0:3 xl5 hp43/43] STATUS milestone=BE_ON_FIRST_LEVEL diving=False hunger=1 pos=(np.int64(12), np.int64(26)) acts=[SEARCH:75 SPACE:66 E:56 NUM_5:52 SW:47] gotos=[open_visit_search(13, 3):4 go_to_strategy(10, 10):3 go_to_strategy(5, 48):2]
+[s1470 t1231 d3 0:3 xl5 hp43/43] PANIC AgentPanic: no such food is lying here
+Traceback (most recent call last):
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/strategy.py", line 144, in f
+    return agent.preempt(strategies, self, first_func=f2, continue_after_preemption=continue_after_preemption)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/agent.py", line 310, in preempt
+    next(iterator)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/strategy.py", line 68, in f
+    next(it)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/utils.py", line 134, in f
+    next(it)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/agent.py", line 3111, in eat_corpses_from_ground
+    self.inventory.eat(item)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/item/inventory.py", line 857, in eat
+    raise AgentPanic('no such food is lying here')
+pf_base.exceptions.AgentPanic: no such food is lying here
+
+[s1627 t1405 d3 0:3 xl5 hp43/43] PANIC AgentPanic: items below me changed
+Traceback (most recent call last):
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/item/inventory.py", line 602, in get_items_below_me
+    with self.agent.atom_operation():
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.12/3.12.14/Frameworks/Python.framework/Versions/3.12/lib/python3.12/contextlib.py", line 144, in __exit__
+    next(self.gen)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/agent.py", line 189, in atom_operation
+    self.update_state()
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/agent.py", line 699, in update_state
+    self.call_update_functions()
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/agent.py", line 725, in call_update_functions
+    func()
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/item/inventory.py", line 159, in f
+    raise AgentPanic('items below me changed')
+pf_base.exceptions.AgentPanic: items below me changed
+
+[s1744 t1502 d3 0:3 xl5 hp43/43] STATUS milestone=BE_ON_FIRST_LEVEL diving=False hunger=1 pos=(np.int64(9), np.int64(52)) acts=[SEARCH:93 NUM_5:71 SPACE:43 E:35 SW:20] gotos=[open_visit_search(14, 41):4 open_visit_search(13, 49):3 open_visit_search(9, 29):2]
+[s1849 t1586 d3 0:3 xl5 hp35/43] PANIC AgentPanic: no such food is lying here
+Traceback (most recent call last):
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/strategy.py", line 144, in f
+    return agent.preempt(strategies, self, first_func=f2, continue_after_preemption=continue_after_preemption)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/agent.py", line 310, in preempt
+    next(iterator)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/strategy.py", line 68, in f
+    next(it)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/utils.py", line 134, in f
+    next(it)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/agent.py", line 3111, in eat_corpses_from_ground
+    self.inventory.eat(item)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/item/inventory.py", line 857, in eat
+    raise AgentPanic('no such food is lying here')
+pf_base.exceptions.AgentPanic: no such food is lying here
+
+[s1967 t1680 d3 0:3 xl5 hp43/43] FIGHT stall of 23 turns ended (gap): ['leprechaun']
+[s2208 t1790 d3 0:3 xl5 hp43/43] FIGHT stall of 96 turns ended (contact): ['floating eye', 'leprechaun', 'manes']
+[s2318 t1874 d3 0:3 xl5 hp43/43] FIGHT stall of 22 turns ended (gap): ['manes']
+[s2345 t1886 d3 0:3 xl5 hp26/43] ELBERETH rest start: ['floating eye', 'pony']
+[s2438 t1902 d3 0:3 xl5 hp12/43] RETREAT upstairs at hp 12/43
+[s2440 t1903 d3 0:3 xl5 hp10/43] LOWHP_CRIT no prayer at 10/43 XL 5 (pray.c sees no HP trouble)
+[s2440 t1903 d3 0:3 xl5 hp10/43] ELBERETH rest start: ['floating eye', 'pony']
+[s2454 t1904 d3 0:3 xl5 hp6/43] PRAY hp=6/43 hunger=2 gap=1059 reason=hp model[ok200=0.95 naughty=0.00 ugangr=0.00 luck>=0=1.00 record=19 p_answered=0.95]
+[s2464 t1907 d3 0:3 xl5 hp43/43] PRAY result ok model[ok200=0.22 naughty=0.00 ugangr=0.00 luck>=0=1.00 record=19] prayers=2 failures=0
+[s2583 t1971 d3 0:3 xl5 hp43/43] FIGHT stall of 21 turns ended (contact): ['manes']
+[s2606 t2000 d3 0:3 xl5 hp43/43] STATUS milestone=BE_ON_FIRST_LEVEL diving=False hunger=1 pos=(np.int64(8), np.int64(57)) acts=[SPACE:161 SEARCH:148 WHATIS:64 MOVEFAR:64 NW:50] gotos=[open_visit_search(7, 58):6 open_visit_search(7, 62):4 open_visit_search(7, 57):4]
+[s2753 t2111 d3 0:3 xl5 hp43/43] FIGHT stall of 47 turns ended (contact): ['floating eye', 'leprechaun']
+[s2813 t2153 d3 0:3 xl5 hp43/43] FIGHT stall of 24 turns ended (contact): ['floating eye', 'leprechaun']
+[s2886 t2217 d3 0:3 xl5 hp43/43] FIGHT stall of 63 turns ended (contact): ['floating eye', 'leprechaun']
+[s3010 t2286 d3 0:3 xl5 hp43/43] FIGHT stall of 53 turns ended (contact): ['floating eye', 'leprechaun', 'manes']
+[s3061 t2312 d3 0:3 xl5 hp43/43] FIGHT stall of 25 turns ended (contact): ['floating eye', 'leprechaun', 'manes']
+[s3094 t2342 d3 0:3 xl5 hp43/43] FIGHT stall of 29 turns ended (contact): ['floating eye', 'leprechaun']
+[s3135 t2364 d3 0:3 xl5 hp43/43] FIGHT stall of 21 turns ended (contact): ['floating eye', 'leprechaun', 'manes']
+[s3256 t2422 d3 0:3 xl6 hp51/52] FIGHT stall of 22 turns ended (hurt): ['floating eye', 'leprechaun', 'manes', 'newt']
+[s3356 t2500 d3 0:3 xl6 hp52/52] STATUS milestone=BE_ON_FIRST_LEVEL diving=False hunger=1 pos=(np.int64(12), np.int64(44)) acts=[E:127 NW:97 SPACE:89 S:88 W:72] gotos=[_fight2_perform_action(12, 46):4 open_visit_search(7, 46):2 _fight2_perform_action(15, 42):2]
+[s3484 t2592 d3 0:3 xl6 hp50/52] FIGHT stall of 159 turns ended (kill): ['acid blob', 'floating eye', 'fog cloud', 'leprechaun']
+[s3534 t2629 d3 0:3 xl6 hp52/52] FIGHT stall of 29 turns ended (contact): ['floating eye', 'leprechaun', 'newt']
+[s3613 t2679 d3 0:3 xl6 hp49/52] FIGHT stall of 32 turns ended (contact): ['floating eye', 'fog cloud', 'leprechaun']
+[s3712 t2774 d3 0:3 xl6 hp52/52] FIGHT stall of 77 turns ended (gap): ['floating eye', 'leprechaun']
+[s3766 t2917 d3 0:3 xl6 hp52/52] PRAY hp=52/52 hunger=4 gap=1010 reason=hunger-threat no-elbereth:leprechaun est=None model[ok200=0.95 naughty=0.00 ugangr=0.00 luck>=0=1.00 record=23 p_answered=0.95]
+[s3771 t2920 d3 0:3 xl6 hp52/52] PRAY result ok model[ok200=0.22 naughty=0.00 ugangr=0.00 luck>=0=1.00 record=23] prayers=3 failures=0
+[s3867 t3000 d3 0:3 xl6 hp52/52] STATUS milestone=BE_ON_FIRST_LEVEL diving=False hunger=1 pos=(np.int64(13), np.int64(45)) acts=[S:118 N:115 E:43 SPACE:37 W:36] gotos=[]
+[s3874 t3007 d3 0:3 xl6 hp52/52] END reason=close restarts=0 ring=30
+[s3874 t3007 d3 0:3 xl6 hp52/52] END msg s3839 t2978 d3 hp52 close=['floating eye', 'floating eye'] | 
+[s3874 t3007 d3 0:3 xl6 hp52/52] END msg s3840 t2979 d3 hp52 close=['floating eye', 'floating eye'] | 
+[s3874 t3007 d3 0:3 xl6 hp52/52] END msg s3841 t2980 d3 hp52 close=['floating eye', 'floating eye'] | 
+[s3874 t3007 d3 0:3 xl6 hp52/52] END msg s3842 t2981 d3 hp52 close=['floating eye', 'floating eye'] | 
+[s3874 t3007 d3 0:3 xl6 hp52/52] END msg s3843 t2982 d3 hp52 close=['floating eye', 'floating eye'] | 
+[s3874 t3007 d3 0:3 xl6 hp52/52] END msg s3844 t2983 d3 hp52 close=['floating eye', 'floating eye'] | 
+[s3874 t3007 d3 0:3 xl6 hp52/52] END msg s3851 t2984 d3 hp52 close=['floating eye', 'floating eye'] | 
+[s3874 t3007 d3 0:3 xl6 hp52/52] END msg s3852 t2985 d3 hp52 close=['floating eye', 'floating eye'] | 
+[s3874 t3007 d3 0:3 xl6 hp52/52] END msg s3853 t2986 d3 hp52 close=['floating eye', 'floating eye'] | 
+[s3874 t3007 d3 0:3 xl6 hp52/52] END msg s3854 t2987 d3 hp52 close=['floating eye', 'floating eye'] | 
+[s3874 t3007 d3 0:3 xl6 hp52/52] END msg s3855 t2988 d3 hp52 close=['floating eye', 'floating eye'] | 
+[s3874 t3007 d3 0:3 xl6 hp52/52] END msg s3856 t2989 d3 hp52 close=['floating eye', 'floating eye'] | 
+[s3874 t3007 d3 0:3 xl6 hp52/52] END msg s3857 t2990 d3 hp52 close=['floating eye', 'floating eye'] | 
+[s3874 t3007 d3 0:3 xl6 hp52/52] END msg s3858 t2991 d3 hp52 close=['floating eye', 'floating eye'] | 
+[s3874 t3007 d3 0:3 xl6 hp52/52] END msg s3859 t2992 d3 hp52 close=['floating eye', 'floating eye'] | 
+[s3874 t3007 d3 0:3 xl6 hp52/52] END msg s3860 t2993 d3 hp52 close=['floating eye', 'floating eye'] | 
+[s3874 t3007 d3 0:3 xl6 hp52/52] END msg s3861 t2994 d3 hp52 close=['floating eye', 'floating eye'] | 
+[s3874 t3007 d3 0:3 xl6 hp52/52] END msg s3862 t2995 d3 hp52 close=['floating eye', 'floating eye'] | 
+[s3874 t3007 d3 0:3 xl6 hp52/52] END msg s3863 t2996 d3 hp52 close=['floating eye', 'floating eye'] | 
+[s3874 t3007 d3 0:3 xl6 hp52/52] END msg s3864 t2997 d3 hp52 close=['floating eye', 'floating eye'] | 
+[s3874 t3007 d3 0:3 xl6 hp52/52] END msg s3865 t2998 d3 hp52 close=['floating eye', 'floating eye'] | 
+[s3874 t3007 d3 0:3 xl6 hp52/52] END msg s3866 t2999 d3 hp52 close=['floating eye', 'floating eye'] | 
+[s3874 t3007 d3 0:3 xl6 hp52/52] END msg s3867 t3000 d3 hp52 close=['floating eye', 'floating eye'] | 
+[s3874 t3007 d3 0:3 xl6 hp52/52] END msg s3868 t3001 d3 hp52 close=['floating eye', 'floating eye'] | 
+[s3874 t3007 d3 0:3 xl6 hp52/52] END msg s3869 t3002 d3 hp52 close=['floating eye', 'floating eye'] | 
+[s3874 t3007 d3 0:3 xl6 hp52/52] END msg s3870 t3003 d3 hp52 close=['floating eye', 'floating eye'] | 
+[s3874 t3007 d3 0:3 xl6 hp52/52] END msg s3871 t3004 d3 hp52 close=['floating eye', 'floating eye'] | 
+[s3874 t3007 d3 0:3 xl6 hp52/52] END msg s3872 t3005 d3 hp52 close=['floating eye', 'floating eye'] | 
+[s3874 t3007 d3 0:3 xl6 hp52/52] END msg s3873 t3006 d3 hp52 close=['floating eye', 'floating eye'] | 
+[s3874 t3007 d3 0:3 xl6 hp52/52] END msg s3874 t3007 d3 hp52 close=['floating eye', 'floating eye'] | 

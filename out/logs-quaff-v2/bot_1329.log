@@ -1,0 +1,110 @@
+[s0 t0 d0 0:0 xl0 hp0/0] TRAJ fp=8af5cc880feb pid=20178 start=1791209229
+[s24 t7 d3 0:3 xl5 hp56/56] STATUS milestone=BE_ON_FIRST_LEVEL diving=False hunger=1 pos=(np.int64(8), np.int64(46)) acts=[SPACE:8 ESC:3 ATTRIBUTES:1 ENHANCE:1 NW:1] gotos=[]
+[s24 t7 d3 0:3 xl5 hp56/56] DIVE level (np.int64(0), np.int64(3)) depth 3
+[s40 t7 d3 0:3 xl5 hp56/56] FOUNTAIN stop reason=distance on_fountain=False
+[s417 t312 d3 0:3 xl5 hp56/56] DIVE task walk to a fountain (quaff)
+[s447 t323 d3 0:3 xl5 hp56/56] DIVE task drink from the fountain
+[s447 t323 d3 0:3 xl5 hp56/56] FOUNTAIN quaff n=1 dlvl=3
+[s451 t324 d3 0:3 xl5 hp56/56] FOUNTAIN result n=1 msg='Drink from the fountain? [yn] (n) This tepid water is tasteless. Dry up fountain? [yn] (n) The fountain dries up!'
+[s451 t324 d3 0:3 xl5 hp56/56] FOUNTAIN event=dry
+[s529 t377 d4 2:1 xl5 hp56/56] DIVE level (np.int64(2), np.int64(1)) depth 4
+[s689 t500 d4 2:1 xl5 hp56/56] STATUS milestone=BE_ON_FIRST_LEVEL diving=False hunger=1 pos=(np.int64(1), np.int64(48)) acts=[SEARCH:183 W:62 SPACE:58 E:57 SW:43] gotos=[open_visit_search(10, 28):7 check_items(8, 40):6 open_visit_search(13, 76):5]
+[s712 t517 d4 2:1 xl5 hp55/56] PANIC AgentPanic: items below me changed
+Traceback (most recent call last):
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/item/inventory.py", line 602, in get_items_below_me
+    with self.agent.atom_operation():
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.12/3.12.14/Frameworks/Python.framework/Versions/3.12/lib/python3.12/contextlib.py", line 144, in __exit__
+    next(self.gen)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/agent.py", line 189, in atom_operation
+    self.update_state()
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/agent.py", line 699, in update_state
+    self.call_update_functions()
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/agent.py", line 725, in call_update_functions
+    func()
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/item/inventory.py", line 159, in f
+    raise AgentPanic('items below me changed')
+pf_base.exceptions.AgentPanic: items below me changed
+
+[s760 t530 d4 2:1 xl5 hp56/56] PANIC AgentPanic: end point is no longer accessible
+Traceback (most recent call last):
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/strategy.py", line 68, in f
+    next(it)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/strategy.py", line 144, in f
+    return agent.preempt(strategies, self, first_func=f2, continue_after_preemption=continue_after_preemption)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/agent.py", line 297, in preempt
+    val = f.run()
+          ^^^^^^^
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/strategy.py", line 48, in run
+    next(gen)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/exploration_logic.py", line 246, in go_to_strategy
+    return self.agent.go_to(y, x, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/agent.py", line 2355, in go_to
+    raise AgentPanic('end point is no longer accessible')
+pf_base.exceptions.AgentPanic: end point is no longer accessible
+
+[s808 t543 d3 0:3 xl5 hp56/56] DIVE level (np.int64(0), np.int64(3)) depth 3
+[s1122 t864 d3 0:3 xl5 hp56/56] PRAY hp=56/56 hunger=3 gap=None reason=None model[ok200=1.00 naughty=0.00 ugangr=0.00 luck>=0=1.00 record=13 p_answered=1.00]
+[s1127 t867 d3 0:3 xl5 hp56/56] PRAY result ok model[ok200=0.22 naughty=0.00 ugangr=0.00 luck>=0=1.00 record=13] prayers=1 failures=0
+[s1171 t906 d3 0:3 xl5 hp56/56] FIGHT stall of 27 turns ended (gap): ['rock mole']
+[s1298 t1000 d3 0:3 xl5 hp56/56] STATUS milestone=BE_ON_FIRST_LEVEL diving=False hunger=1 pos=(np.int64(2), np.int64(16)) acts=[SEARCH:90 SPACE:80 E:58 NUM_5:51 W:40] gotos=[open_visit_search(8, 21):4 go_to_strategy(8, 67):3 open_visit_search(9, 19):3]
+[s1643 t1169 d3 0:3 xl5 hp40/56] PANIC AgentPanic: items below me changed
+Traceback (most recent call last):
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/item/inventory.py", line 602, in get_items_below_me
+    with self.agent.atom_operation():
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.12/3.12.14/Frameworks/Python.framework/Versions/3.12/lib/python3.12/contextlib.py", line 144, in __exit__
+    next(self.gen)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/agent.py", line 189, in atom_operation
+    self.update_state()
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/agent.py", line 699, in update_state
+    self.call_update_functions()
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/agent.py", line 725, in call_update_functions
+    func()
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/item/inventory.py", line 159, in f
+    raise AgentPanic('items below me changed')
+pf_base.exceptions.AgentPanic: items below me changed
+
+[s2107 t1374 d3 0:3 xl5 hp56/56] FIGHT stall of 204 turns ended (contact): ['dwarf zombie', 'green mold', 'leprechaun']
+[s2245 t1500 d3 0:3 xl5 hp56/56] STATUS milestone=BE_ON_FIRST_LEVEL diving=False hunger=1 pos=(np.int64(14), np.int64(12)) acts=[SPACE:176 SEARCH:161 N:121 S:118 WHATIS:56] gotos=[check_items(17, 11):37 check_items(2, 13):3 eat_corpses_from_ground(5, 16):2]
+[s2662 t1781 d3 0:3 xl5 hp56/56] FIGHT stall of 391 turns ended (gap): ['green mold', 'leprechaun']
+[s2830 t1852 d3 0:3 xl5 hp56/56] FIGHT stall of 69 turns ended (contact): ['giant ant', 'green mold', 'leprechaun']
+[s2913 t1885 d3 0:3 xl5 hp56/56] FIGHT stall of 27 turns ended (contact): ['floating eye', 'green mold', 'iguana', 'leprechaun']
+[s3056 t2001 d3 0:3 xl5 hp56/56] STATUS milestone=BE_ON_FIRST_LEVEL diving=False hunger=1 pos=(np.int64(11), np.int64(9)) acts=[SEARCH:144 N:133 S:132 SPACE:123 WHATIS:58] gotos=[check_items(17, 11):25 open_visit_search(11, 8):8 open_visit_search(11, 9):7]
+[s3495 t2501 d3 0:3 xl5 hp56/56] STATUS milestone=BE_ON_FIRST_LEVEL diving=False hunger=1 pos=(np.int64(11), np.int64(9)) acts=[NUM_5:93 SEARCH:93 W:46 E:46 SPACE:39] gotos=[open_visit_search(11, 9):47 open_visit_search(11, 8):46]
+[s3842 t2903 d3 0:3 xl5 hp56/56] PRAY hp=56/56 hunger=3 gap=2036 reason=None model[ok200=1.00 naughty=0.00 ugangr=0.00 luck>=0=1.00 record=19 p_answered=1.00]
+[s3847 t2906 d3 0:3 xl5 hp56/56] PRAY result ok model[ok200=0.22 naughty=0.00 ugangr=0.00 luck>=0=1.00 record=19] prayers=2 failures=0
+[s3913 t3004 d3 0:3 xl5 hp56/56] STATUS milestone=BE_ON_FIRST_LEVEL diving=False hunger=1 pos=(np.int64(11), np.int64(9)) acts=[NUM_5:94 SEARCH:94 W:47 E:47 SPACE:29] gotos=[open_visit_search(11, 8):47 open_visit_search(11, 9):47]
+[s3936 t3007 d3 0:3 xl6 hp66/66] END reason=close restarts=0 ring=30
+[s3936 t3007 d3 0:3 xl6 hp66/66] END msg s3868 t2936 d3 hp56 close=['floating eye'] | 
+[s3936 t3007 d3 0:3 xl6 hp66/66] END msg s3869 t2937 d3 hp56 close=['floating eye'] | 
+[s3936 t3007 d3 0:3 xl6 hp66/66] END msg s3871 t2942 d3 hp56 close=['floating eye'] | 
+[s3936 t3007 d3 0:3 xl6 hp66/66] END msg s3872 t2943 d3 hp56 close=['floating eye'] | 
+[s3936 t3007 d3 0:3 xl6 hp66/66] END msg s3874 t2948 d3 hp56 close=['floating eye'] | 
+[s3936 t3007 d3 0:3 xl6 hp66/66] END msg s3875 t2949 d3 hp56 close=['floating eye'] | 
+[s3936 t3007 d3 0:3 xl6 hp66/66] END msg s3877 t2954 d3 hp56 close=['floating eye'] | 
+[s3936 t3007 d3 0:3 xl6 hp66/66] END msg s3878 t2955 d3 hp56 close=['floating eye'] | 
+[s3936 t3007 d3 0:3 xl6 hp66/66] END msg s3880 t2960 d3 hp56 close=['floating eye'] | 
+[s3936 t3007 d3 0:3 xl6 hp66/66] END msg s3881 t2961 d3 hp56 close=['floating eye'] | 
+[s3936 t3007 d3 0:3 xl6 hp66/66] END msg s3883 t2966 d3 hp56 close=['floating eye'] | 
+[s3936 t3007 d3 0:3 xl6 hp66/66] END msg s3884 t2967 d3 hp56 close=['floating eye'] | 
+[s3936 t3007 d3 0:3 xl6 hp66/66] END msg s3886 t2972 d3 hp56 close=['floating eye'] | 
+[s3936 t3007 d3 0:3 xl6 hp66/66] END msg s3887 t2973 d3 hp56 close=['floating eye'] | 
+[s3936 t3007 d3 0:3 xl6 hp66/66] END msg s3889 t2978 d3 hp56 close=['floating eye'] | 
+[s3936 t3007 d3 0:3 xl6 hp66/66] END msg s3890 t2979 d3 hp56 close=['floating eye'] | 
+[s3936 t3007 d3 0:3 xl6 hp66/66] END msg s3898 t2984 d3 hp56 close=['floating eye'] | 
+[s3936 t3007 d3 0:3 xl6 hp66/66] END msg s3899 t2985 d3 hp56 close=['floating eye'] | 
+[s3936 t3007 d3 0:3 xl6 hp66/66] END msg s3901 t2990 d3 hp56 close=['floating eye'] | 
+[s3936 t3007 d3 0:3 xl6 hp66/66] END msg s3902 t2991 d3 hp56 close=['floating eye'] | 
+[s3936 t3007 d3 0:3 xl6 hp66/66] END msg s3904 t2996 d3 hp56 close=['floating eye'] | 
+[s3936 t3007 d3 0:3 xl6 hp66/66] END msg s3908 t2997 d3 hp56 close=['little dog', 'floating eye'] | 
+[s3936 t3007 d3 0:3 xl6 hp66/66] END msg s3910 t2998 d3 hp56 close=['little dog', 'floating eye'] | You stop searching.
+[s3936 t3007 d3 0:3 xl6 hp66/66] END msg s3911 t2999 d3 hp56 close=['floating eye'] | 
+[s3936 t3007 d3 0:3 xl6 hp66/66] END msg s3913 t3004 d3 hp56 close=['floating eye'] | 
+[s3936 t3007 d3 0:3 xl6 hp66/66] END msg s3914 t3005 d3 hp56 close=['floating eye'] | 
+[s3936 t3007 d3 0:3 xl6 hp66/66] END msg s3918 t3005 d3 hp56 close=['floating eye'] | Advance skills without practice? [yn] (n)   
+[s3936 t3007 d3 0:3 xl6 hp66/66] END msg s3919 t3006 d3 hp66 close=[] | You kill the floating eye!  Welcome to experience level 6.
+[s3936 t3007 d3 0:3 xl6 hp66/66] END msg s3928 t3007 d3 hp66 close=['floating eye', 'garter snake', 'kobold lord'] | The garter snake misses!
+[s3936 t3007 d3 0:3 xl6 hp66/66] END msg s3936 t3007 d3 hp66 close=['floating eye', 'garter snake', 'kobold lord'] | Advance skills without practice? [yn] (n)   

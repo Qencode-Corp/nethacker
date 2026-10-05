@@ -1,0 +1,148 @@
+[s0 t0 d0 0:0 xl0 hp0/0] TRAJ fp=6e0521ac0b83 pid=17940 start=1791208287
+[s24 t7 d3 0:3 xl5 hp56/56] STATUS milestone=BE_ON_FIRST_LEVEL diving=False hunger=1 pos=(np.int64(17), np.int64(59)) acts=[SPACE:8 ESC:3 ATTRIBUTES:1 ENHANCE:1 NW:1] gotos=[]
+[s24 t7 d3 0:3 xl5 hp56/56] DIVE level (np.int64(0), np.int64(3)) depth 3
+[s40 t7 d3 0:3 xl5 hp56/56] DIVE task walk to a fountain (quaff)
+[s65 t32 d3 0:3 xl5 hp56/56] DIVE task drink from the fountain
+[s65 t32 d3 0:3 xl5 hp56/56] FOUNTAIN quaff n=1 dlvl=3
+[s68 t33 d3 0:3 xl5 hp56/56] FOUNTAIN result n=1 msg='Drink from the fountain? [yn] (n) Wow!  This makes you feel great!  You feel strong! A wisp of vapor escapes the fountain...'
+[s68 t33 d3 0:3 xl5 hp56/56] FOUNTAIN event=magic
+[s68 t33 d3 0:3 xl5 hp56/56] FOUNTAIN quaff n=2 dlvl=3
+[s70 t35 d3 0:3 xl5 hp56/56] FOUNTAIN result n=2 msg='Drink from the fountain? [yn] (n) The water is foul!  You gag and vomit.  You can move again.'
+[s70 t35 d3 0:3 xl5 hp56/56] FOUNTAIN event=foul
+[s70 t35 d3 0:3 xl5 hp56/56] FOUNTAIN quaff n=3 dlvl=3
+[s72 t36 d3 0:3 xl5 hp56/56] FOUNTAIN result n=3 msg='Drink from the fountain? [yn] (n) This tepid water is tasteless.'
+[s72 t36 d3 0:3 xl5 hp56/56] FOUNTAIN quaff n=4 dlvl=3
+[s77 t37 d3 0:3 xl5 hp56/56] DEMON vigil: stepping off the fountain to (np.int64(7), np.int64(52)) to engrave
+[s78 t38 d3 0:3 xl5 hp56/56] DEMON vigil: Elbereth against the water demon
+[s249 t85 d3 0:3 xl5 hp56/56] DEMON vigil: Elbereth against the water demon
+[s891 t281 d3 0:3 xl5 hp56/56] DEMON vigil: Elbereth against the water demon
+[s1443 t458 d3 0:3 xl5 hp56/56] DIVE task walk to a fountain (quaff)
+[s1446 t461 d3 0:3 xl5 hp56/56] DIVE task drink from the fountain
+[s1446 t461 d3 0:3 xl5 hp56/56] FOUNTAIN quaff n=5 dlvl=3
+[s1448 t462 d3 0:3 xl5 hp56/56] FOUNTAIN result n=5 msg='Drink from the fountain? [yn] (n) The cool draught refreshes you.  The kitten drops a crossbow bolt.'
+[s1448 t462 d3 0:3 xl5 hp56/56] FOUNTAIN quaff n=6 dlvl=3
+[s1450 t463 d3 0:3 xl5 hp51/56] FOUNTAIN result n=6 msg='Drink from the fountain? [yn] (n) The water is contaminated!'
+[s1450 t463 d3 0:3 xl5 hp51/56] FOUNTAIN event=poison
+[s1450 t463 d3 0:3 xl5 hp51/56] FOUNTAIN quaff n=7 dlvl=3
+[s1454 t464 d3 0:3 xl5 hp51/56] FOUNTAIN result n=7 msg='Drink from the fountain? [yn] (n) This tepid water is tasteless. Dry up fountain? [yn] (n) The fountain dries up!'
+[s1454 t464 d3 0:3 xl5 hp51/56] FOUNTAIN event=dry
+[s1454 t464 d3 0:3 xl5 hp51/56] DIVE task walk to a fountain (quaff)
+[s1498 t477 d3 0:3 xl5 hp35/56] ELBERETH rest start: ['water demon']
+[s1563 t493 d3 0:3 xl5 hp37/56] PANIC AgentPanic: agent position do not match after "move": expected (5, 55), got (4, 55)
+Traceback (most recent call last):
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/strategy.py", line 144, in f
+    return agent.preempt(strategies, self, first_func=f2, continue_after_preemption=continue_after_preemption)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/agent.py", line 310, in preempt
+    next(iterator)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/utils.py", line 134, in f
+    next(it)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/agent.py", line 2714, in fight2
+    wait_counter = self._fight2_perform_action(best_action, wait_counter)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/agent.py", line 2798, in _fight2_perform_action
+    self.move(target_y, target_x)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/agent.py", line 2052, in move
+    raise AgentPanic(f'agent position do not match after "move": '
+pf_base.exceptions.AgentPanic: agent position do not match after "move": expected (5, 55), got (4, 55)
+
+[s1593 t500 d3 0:3 xl5 hp38/56] STATUS milestone=BE_ON_FIRST_LEVEL diving=False hunger=1 pos=(np.int64(3), np.int64(51)) acts=[SPACE:490 LOOK:424 SEARCH:417 NW:26 SW:21] gotos=[fountain_quaff(8, 53):2 fountain_quaff(3, 38):1]
+[s1610 t514 d3 0:3 xl5 hp40/56] FOUNTAIN stop reason=hp on_fountain=False
+[s1625 t521 d3 0:3 xl5 hp41/56] PANIC AgentPanic: items below me changed
+Traceback (most recent call last):
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/item/inventory.py", line 602, in get_items_below_me
+    with self.agent.atom_operation():
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.12/3.12.14/Frameworks/Python.framework/Versions/3.12/lib/python3.12/contextlib.py", line 144, in __exit__
+    next(self.gen)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/agent.py", line 189, in atom_operation
+    self.update_state()
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/agent.py", line 699, in update_state
+    self.call_update_functions()
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/agent.py", line 725, in call_update_functions
+    func()
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/item/inventory.py", line 159, in f
+    raise AgentPanic('items below me changed')
+pf_base.exceptions.AgentPanic: items below me changed
+
+[s1760 t592 d3 0:3 xl5 hp51/56] FOUNTAIN stop reason=monster on_fountain=False
+[s1803 t614 d3 0:3 xl5 hp31/56] ELBERETH rest start: ['water demon']
+[s1852 t618 d3 0:3 xl5 hp28/56] FOUNTAIN stop reason=hp on_fountain=False
+[s1945 t640 d3 0:3 xl5 hp27/56] RANGED hit: holds and Elbereth waits off for 8 turns
+[s1967 t650 d3 0:3 xl5 hp9/56] PRAY hp=9/56 hunger=1 gap=None reason=hp model[ok200=1.00 naughty=0.00 ugangr=0.00 luck>=0=1.00 record=5 p_answered=1.00]
+[s1979 t653 d3 0:3 xl5 hp56/56] PRAY result ok model[ok200=0.22 naughty=0.00 ugangr=0.00 luck>=0=1.00 record=5] prayers=1 failures=0
+[s1999 t658 d3 0:3 xl5 hp33/56] ELBERETH rest start: ['water demon', 'water demon']
+[s2028 t662 d3 0:3 xl5 hp32/56] RANGED hit: holds and Elbereth waits off for 8 turns
+[s2114 t673 d3 0:3 xl5 hp15/56] ELBERETH rest start: ['water demon', 'water demon']
+[s2160 t677 d3 0:3 xl5 hp11/56] RANGED hit: holds and Elbereth waits off for 8 turns
+[s2209 t688 d3 0:3 xl5 hp7/56] DOOM prayer: gap 35 p_hp=0.32 p_die3=1.00
+[s2209 t688 d3 0:3 xl5 hp7/56] PRAY hp=7/56 hunger=1 gap=35 reason=hp-doom p_hp=0.32 p_die3=1.00 model[ok200=0.32 naughty=0.00 ugangr=0.00 luck>=0=1.00 record=5 p_answered=0.32]
+[s2224 t691 d3 0:3 xl5 hp56/56] PRAY result ok model[ok200=0.22 naughty=0.00 ugangr=0.00 luck>=0=1.00 record=5] prayers=2 failures=0
+[s2237 t694 d3 0:3 xl5 hp35/56] ELBERETH rest start: ['water demon', 'water demon']
+[s2263 t696 d3 0:3 xl5 hp34/56] RANGED hit: holds and Elbereth waits off for 8 turns
+[s2312 t705 d3 0:3 xl5 hp28/56] PANIC AgentPanic: agent position do not match after "move": expected (7, 46), got (7, 47)
+Traceback (most recent call last):
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/agent.py", line 310, in preempt
+    next(iterator)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/utils.py", line 134, in f
+    next(it)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/agent.py", line 2714, in fight2
+    wait_counter = self._fight2_perform_action(best_action, wait_counter)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/agent.py", line 2877, in _fight2_perform_action
+    self.go_to(target_y, target_x, stop_one_before=True, max_steps=1,
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/agent.py", line 2383, in go_to
+    self.move(y, x)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/agent.py", line 2052, in move
+    raise AgentPanic(f'agent position do not match after "move": '
+pf_base.exceptions.AgentPanic: agent position do not match after "move": expected (7, 46), got (7, 47)
+
+[s2345 t709 d3 0:3 xl5 hp22/56] ELBERETH rest start: ['water demon']
+[s2386 t716 d3 0:3 xl5 hp16/56] ELBERETH rest start: ['giant ant', 'water demon']
+[s2425 t724 d3 0:3 xl5 hp17/56] ELBERETH rest start: ['water demon']
+[s2487 t735 d3 0:3 xl5 hp15/56] RANGED hit: holds and Elbereth waits off for 8 turns
+[s2500 t744 d3 0:3 xl5 hp10/56] ELBERETH rest start: ['water demon']
+[s2516 t745 d3 0:3 xl5 hp10/56] DOOM prayer: gap 54 p_hp=0.36 p_die3=0.88
+[s2516 t745 d3 0:3 xl5 hp10/56] PRAY hp=10/56 hunger=2 gap=54 reason=hp-doom p_hp=0.36 p_die3=0.88 model[ok200=0.36 naughty=0.00 ugangr=0.00 luck>=0=1.00 record=13 p_answered=0.36]
+[s2524 t748 d3 0:3 xl5 hp56/56] PRAY result ok model[ok200=0.22 naughty=0.00 ugangr=0.00 luck>=0=1.00 record=13] prayers=3 failures=0
+[s2524 t748 d3 0:3 xl5 hp56/56] HOLD over: wiping our Elbereth at (np.int64(7), np.int64(53))
+[s2620 t783 d3 0:3 xl5 hp24/56] ELBERETH rest start: ['water demon']
+[s2679 t806 d3 0:3 xl5 hp19/56] ELBERETH rest start: ['floating eye', 'water demon']
+[s2735 t814 d3 0:3 xl5 hp18/56] RANGED hit: holds and Elbereth waits off for 8 turns
+[s2771 t819 d3 0:3 xl5 hp7/56] DOOM prayer: gap 71 p_hp=0.39 p_die3=1.00
+[s2771 t819 d3 0:3 xl5 hp7/56] PRAY hp=7/56 hunger=1 gap=71 reason=hp-doom p_hp=0.39 p_die3=1.00 model[ok200=0.39 naughty=0.00 ugangr=0.00 luck>=0=1.00 record=13 p_answered=0.39]
+[s2783 t822 d3 0:3 xl5 hp56/56] PRAY result ok model[ok200=0.22 naughty=0.00 ugangr=0.00 luck>=0=1.00 record=13] prayers=4 failures=0
+[s2813 t832 d3 0:3 xl5 hp15/56] ELBERETH rest start: ['water demon', 'water demon']
+[s3813 t1000 d3 0:3 xl5 hp39/56] STATUS milestone=BE_ON_FIRST_LEVEL diving=False hunger=2 pos=(np.int64(10), np.int64(42)) acts=[SPACE:766 LOOK:309 SEARCH:251 PICKUP:178 WHATIS:89] gotos=[open_visit_search(11, 52):6 open_visit_search(10, 58):4 check_items(8, 51):3]
+[s4488 t1124 d3 0:3 xl5 hp12/56] ELBERETH rest start: ['water demon', 'iguana', 'water demon']
+[s4517 t1126 d3 0:3 xl5 hp12/56] END reason=close restarts=0 ring=30
+[s4517 t1126 d3 0:3 xl5 hp12/56] END msg s4325 t1080 d3 hp44 close=['water demon', 'iguana'] | 
+[s4517 t1126 d3 0:3 xl5 hp12/56] END msg s4330 t1081 d3 hp44 close=['water demon'] | The iguana turns to flee.
+[s4517 t1126 d3 0:3 xl5 hp12/56] END msg s4335 t1082 d3 hp44 close=['water demon', 'water demon'] | 
+[s4517 t1126 d3 0:3 xl5 hp12/56] END msg s4340 t1083 d3 hp44 close=['water demon', 'water demon'] | The water demon turns to flee.
+[s4517 t1126 d3 0:3 xl5 hp12/56] END msg s4345 t1084 d3 hp44 close=['water demon'] | 
+[s4517 t1126 d3 0:3 xl5 hp12/56] END msg s4353 t1085 d3 hp45 close=['water demon'] | 
+[s4517 t1126 d3 0:3 xl5 hp12/56] END msg s4358 t1086 d3 hp45 close=['water demon'] | 
+[s4517 t1126 d3 0:3 xl5 hp12/56] END msg s4367 t1096 d3 hp46 close=['water demon'] | You faint from lack of food.  The giant ant turns to flee. You regain consciousness.
+[s4517 t1126 d3 0:3 xl5 hp12/56] END msg s4375 t1097 d3 hp46 close=['water demon', 'iguana'] | The iguana turns to flee.
+[s4517 t1126 d3 0:3 xl5 hp12/56] END msg s4380 t1098 d3 hp46 close=['water demon', 'iguana'] | 
+[s4517 t1126 d3 0:3 xl5 hp12/56] END msg s4385 t1099 d3 hp47 close=['water demon', 'iguana'] | 
+[s4517 t1126 d3 0:3 xl5 hp12/56] END msg s4393 t1100 d3 hp47 close=['water demon', 'iguana'] | 
+[s4517 t1126 d3 0:3 xl5 hp12/56] END msg s4398 t1101 d3 hp47 close=['water demon', 'iguana'] | 
+[s4517 t1126 d3 0:3 xl5 hp12/56] END msg s4407 t1102 d3 hp47 close=['water demon', 'iguana', 'water demon'] | 
+[s4517 t1126 d3 0:3 xl5 hp12/56] END msg s4415 t1103 d3 hp47 close=['water demon', 'iguana'] | 
+[s4517 t1126 d3 0:3 xl5 hp12/56] END msg s4420 t1104 d3 hp47 close=['water demon'] | The iguana turns to flee.
+[s4517 t1126 d3 0:3 xl5 hp12/56] END msg s4425 t1105 d3 hp47 close=['water demon'] | 
+[s4517 t1126 d3 0:3 xl5 hp12/56] END msg s4430 t1106 d3 hp48 close=['water demon'] | 
+[s4517 t1126 d3 0:3 xl5 hp12/56] END msg s4438 t1106 d3 hp48 close=['water demon'] | Advance skills without practice? [yn] (n)   
+[s4517 t1126 d3 0:3 xl5 hp12/56] END msg s4446 t1106 d3 hp48 close=['water demon'] | 
+[s4517 t1126 d3 0:3 xl5 hp12/56] END msg s4451 t1107 d3 hp48 close=['water demon'] | h - 4 daggers.
+[s4517 t1126 d3 0:3 xl5 hp12/56] END msg s4455 t1107 d3 hp48 close=['water demon'] | Something is written here in the dust.  You read: "Elbereth". You see here 2 crossbow bolts.
+[s4517 t1126 d3 0:3 xl5 hp12/56] END msg s4457 t1108 d3 hp48 close=['water demon'] | The water demon picks up 2 crossbow bolts.
+[s4517 t1126 d3 0:3 xl5 hp12/56] END msg s4459 t1109 d3 hp45 close=['water demon'] | You hit the water demon!  The water demon misses! The water demon hits!  The water demon bites!
+[s4517 t1126 d3 0:3 xl5 hp12/56] END msg s4461 t1110 d3 hp38 close=['water demon'] | You miss the water demon.  The water demon hits! The water demon hits!  The water demon bites!
+[s4517 t1126 d3 0:3 xl5 hp12/56] END msg s4462 t1111 d3 hp38 close=['water demon'] | You miss the water demon.  The water demon wields a bow!
+[s4517 t1126 d3 0:3 xl5 hp12/56] END msg s4465 t1112 d3 hp38 close=['water demon'] | The dagger misses the water demon.
+[s4517 t1126 d3 0:3 xl5 hp12/56] END msg s4488 t1124 d3 hp12 close=['water demon', 'water demon', 'iguana'] | The dagger misses the water demon. The water demon wields a +0 dagger!  You faint from lack of food. The iguana misses!  The water demon thrusts his dagger. The
+[s4517 t1126 d3 0:3 xl5 hp12/56] END msg s4505 t1125 d3 hp12 close=['water demon', 'water demon'] | Something is written here in the dust.  You read: "Elbereth". You see no objects here.
+[s4517 t1126 d3 0:3 xl5 hp12/56] END msg s4508 t1126 d3 hp12 close=['water demon', 'water demon'] | The water demon wields a dagger!

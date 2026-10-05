@@ -1,0 +1,143 @@
+[s0 t0 d0 0:0 xl0 hp0/0] TRAJ fp=e19e6a0b54fa pid=20760 start=1791209548
+[s24 t7 d3 0:3 xl5 hp61/61] STATUS milestone=BE_ON_FIRST_LEVEL diving=False hunger=1 pos=(np.int64(5), np.int64(70)) acts=[SPACE:8 ESC:3 ATTRIBUTES:1 ENHANCE:1 NW:1] gotos=[]
+[s24 t7 d3 0:3 xl5 hp61/61] DIVE level (np.int64(0), np.int64(3)) depth 3
+[s47 t10 d3 0:3 xl5 hp61/61] FOUNTAIN stop reason=distance on_fountain=False
+[s340 t216 d3 0:3 xl5 hp61/61] PANIC AgentPanic: items below me changed
+Traceback (most recent call last):
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/item/inventory.py", line 602, in get_items_below_me
+    with self.agent.atom_operation():
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.12/3.12.14/Frameworks/Python.framework/Versions/3.12/lib/python3.12/contextlib.py", line 144, in __exit__
+    next(self.gen)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/agent.py", line 189, in atom_operation
+    self.update_state()
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/agent.py", line 699, in update_state
+    self.call_update_functions()
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/agent.py", line 725, in call_update_functions
+    func()
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/item/inventory.py", line 159, in f
+    raise AgentPanic('items below me changed')
+pf_base.exceptions.AgentPanic: items below me changed
+
+[s465 t310 d3 0:3 xl5 hp61/61] DIVE task walk to a fountain (quaff)
+[s469 t314 d3 0:3 xl5 hp61/61] DIVE task drink from the fountain
+[s469 t314 d3 0:3 xl5 hp61/61] FOUNTAIN quaff n=1 dlvl=3
+[s472 t315 d3 0:3 xl5 hp61/61] FOUNTAIN result n=1 msg='Drink from the fountain? [yn] (n) Wow!  This makes you feel great!  You feel smart! A wisp of vapor escapes the fountain...'
+[s472 t315 d3 0:3 xl5 hp61/61] FOUNTAIN event=magic
+[s472 t315 d3 0:3 xl5 hp61/61] FOUNTAIN quaff n=2 dlvl=3
+[s476 t316 d3 0:3 xl5 hp61/61] FOUNTAIN result n=2 msg='Drink from the fountain? [yn] (n) The cool draught refreshes you. Dry up fountain? [yn] (n) The fountain dries up!'
+[s476 t316 d3 0:3 xl5 hp61/61] FOUNTAIN event=dry
+[s586 t405 d3 0:3 xl5 hp61/61] PANIC AgentPanic: agent position do not match after "move": expected (16, 63), got (15, 62)
+Traceback (most recent call last):
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/strategy.py", line 165, in f
+    next(gen)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/strategy.py", line 100, in f
+    next(v1)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/utils.py", line 134, in f
+    next(it)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/item/inventory.py", line 1682, in check_items
+    self.agent.go_to(target_y, target_x, debug_tiles_args=dict(color=(255, 0, 255), is_path=True))
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/agent.py", line 2383, in go_to
+    self.move(y, x)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/agent.py", line 2052, in move
+    raise AgentPanic(f'agent position do not match after "move": '
+pf_base.exceptions.AgentPanic: agent position do not match after "move": expected (16, 63), got (15, 62)
+
+[s703 t500 d3 0:3 xl5 hp61/61] STATUS milestone=BE_ON_FIRST_LEVEL diving=False hunger=1 pos=(np.int64(5), np.int64(47)) acts=[SEARCH:149 W:64 SPACE:62 NW:48 E:42] gotos=[check_items(4, 52):6 open_visit_search(5, 74):5 open_visit_search(11, 39):4]
+[s712 t505 d2 0:2 xl5 hp61/61] DIVE level (np.int64(0), np.int64(2)) depth 2
+[s1108 t794 d2 0:2 xl5 hp61/61] DIVE task walk to a fountain (quaff)
+[s1110 t796 d2 0:2 xl5 hp61/61] DIVE task drink from the fountain
+[s1110 t796 d2 0:2 xl5 hp61/61] FOUNTAIN quaff n=1 dlvl=2
+[s1117 t797 d2 0:2 xl5 hp61/61] FOUNTAIN result n=1 msg='Drink from the fountain? [yn] (n) You attract a water nymph! Dry up fountain? [yn] (n) The fountain dries up!'
+[s1117 t797 d2 0:2 xl5 hp61/61] FOUNTAIN event=nymph
+[s1117 t797 d2 0:2 xl5 hp61/61] FOUNTAIN event=dry
+[s1238 t876 d2 0:2 xl5 hp61/61] DIVE task walk to a fountain (quaff)
+[s1246 t884 d2 0:2 xl5 hp61/61] DIVE task drink from the fountain
+[s1246 t884 d2 0:2 xl5 hp61/61] FOUNTAIN quaff n=1 dlvl=2
+[s1248 t885 d2 0:2 xl5 hp61/61] FOUNTAIN result n=1 msg='Drink from the fountain? [yn] (n) You see an image of someone stalking you.  But it disappears.'
+[s1248 t885 d2 0:2 xl5 hp61/61] FOUNTAIN event=see_invisible
+[s1248 t885 d2 0:2 xl5 hp61/61] FOUNTAIN quaff n=2 dlvl=2
+[s1250 t886 d2 0:2 xl5 hp61/61] FOUNTAIN result n=2 msg='Drink from the fountain? [yn] (n) The cool draught refreshes you.'
+[s1250 t886 d2 0:2 xl5 hp61/61] FOUNTAIN quaff n=3 dlvl=2
+[s1252 t887 d2 0:2 xl5 hp61/61] FOUNTAIN result n=3 msg='Drink from the fountain? [yn] (n) The cool draught refreshes you.'
+[s1252 t887 d2 0:2 xl5 hp61/61] FOUNTAIN quaff n=4 dlvl=2
+[s1256 t888 d2 0:2 xl5 hp61/61] FOUNTAIN result n=4 msg='Drink from the fountain? [yn] (n) This tepid water is tasteless. Dry up fountain? [yn] (n) The fountain dries up!'
+[s1256 t888 d2 0:2 xl5 hp61/61] FOUNTAIN event=dry
+[s1408 t1000 d2 0:2 xl5 hp61/61] STATUS milestone=BE_ON_FIRST_LEVEL diving=False hunger=1 pos=(np.int64(5), np.int64(17)) acts=[SEARCH:170 W:96 E:62 NW:46 SPACE:44] gotos=[open_visit_search(4, 15):7 check_items(8, 20):5 check_items(9, 16):5]
+[s1728 t1226 d2 0:2 xl5 hp61/61] PRAY hp=61/61 hunger=3 gap=None reason=None model[ok200=1.00 naughty=0.00 ugangr=0.00 luck>=0=1.00 record=16 p_answered=1.00]
+[s1733 t1229 d2 0:2 xl5 hp61/61] PRAY result ok model[ok200=0.22 naughty=0.00 ugangr=0.00 luck>=0=1.00 record=16] prayers=1 failures=0
+[s1741 t1236 d3 0:3 xl5 hp61/61] DIVE level (np.int64(0), np.int64(3)) depth 3
+[s1914 t1504 d3 0:3 xl5 hp61/61] STATUS milestone=BE_ON_FIRST_LEVEL diving=False hunger=1 pos=(np.int64(15), np.int64(61)) acts=[SEARCH:111 E:64 NUM_5:50 SPACE:33 SW:27] gotos=[check_items(14, 2):5 open_visit_search(9, 15):5 open_visit_search(3, 15):4]
+[s2121 t1763 d3 0:3 xl5 hp61/61] APPROACH dwarf at (2, 44) via (5, 47)
+[s2156 t1791 d3 0:3 xl5 hp58/61] DIVE attacking a peaceful dwarf at (6, 43) for its digging tool (digger=False, align~18)
+[s2159 t1792 d3 0:3 xl6 hp67/70] DIVE killed a dwarf (1); piles to check: [(np.int64(6), np.int64(43)), (np.int64(7), np.int64(44)), (np.int64(8), np.int64(45))]
+[s2159 t1792 d3 0:3 xl6 hp67/70] ALIGN estimate 5 (cap 18) after -13
+[s2159 t1792 d3 0:3 xl6 hp67/70] DWARF died near [(6, 43), (7, 44)]: piles to check
+[s2177 t1794 d3 0:3 xl6 hp68/70] DIVE checked the pile at (np.int64(6), np.int64(43)): tool a pick-axe
+[s2398 t2000 d3 0:3 xl6 hp70/70] STATUS milestone=BE_ON_FIRST_LEVEL diving=False hunger=2 pos=(np.int64(9), np.int64(44)) acts=[SEARCH:95 NUM_5:54 SW:40 SPACE:39 NE:31] gotos=[open_visit_search(4, 43):5 open_visit_search(8, 49):4 open_visit_search(18, 48):4]
+[s2514 t2139 d3 0:3 xl6 hp70/70] PANIC AgentPanic: agent position do not match after "move": expected (5, 39), got (6, 40)
+Traceback (most recent call last):
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/agent.py", line 310, in preempt
+    next(iterator)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/strategy.py", line 68, in f
+    next(it)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/utils.py", line 134, in f
+    next(it)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/agent.py", line 3095, in eat_corpses_from_ground
+    self.go_to(target_y, target_x, debug_tiles_args=dict(color=(255, 255, 0), is_path=True))
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/agent.py", line 2383, in go_to
+    self.move(y, x)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/agent.py", line 2052, in move
+    raise AgentPanic(f'agent position do not match after "move": '
+pf_base.exceptions.AgentPanic: agent position do not match after "move": expected (5, 39), got (6, 40)
+
+[s2788 t2372 d3 0:3 xl6 hp70/70] PANIC AgentPanic: no such food is lying here
+Traceback (most recent call last):
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/strategy.py", line 144, in f
+    return agent.preempt(strategies, self, first_func=f2, continue_after_preemption=continue_after_preemption)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/agent.py", line 310, in preempt
+    next(iterator)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/strategy.py", line 68, in f
+    next(it)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/utils.py", line 134, in f
+    next(it)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/agent.py", line 3111, in eat_corpses_from_ground
+    self.inventory.eat(item)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/item/inventory.py", line 857, in eat
+    raise AgentPanic('no such food is lying here')
+pf_base.exceptions.AgentPanic: no such food is lying here
+
+[s2884 t2500 d3 0:3 xl6 hp70/70] STATUS milestone=BE_ON_FIRST_LEVEL diving=False hunger=1 pos=(np.int64(15), np.int64(41)) acts=[SEARCH:95 NUM_5:69 SPACE:49 SW:28 N:26] gotos=[open_visit_search(2, 45):2 eat_corpses_from_ground(5, 38):2 open_visit_search(7, 38):2]
+[s3375 t3002 d3 0:3 xl6 hp70/70] STATUS milestone=BE_ON_FIRST_LEVEL diving=False hunger=1 pos=(np.int64(2), np.int64(72)) acts=[SEARCH:83 NUM_5:66 SPACE:46 N:31 SE:30] gotos=[open_visit_search(9, 51):5 open_visit_search(10, 35):4 open_visit_search(9, 71):4]
+[s3377 t3003 d3 0:3 xl6 hp70/70] END reason=close restarts=0 ring=30
+[s3377 t3003 d3 0:3 xl6 hp70/70] END msg s3324 t2935 d3 hp68 close=[] | 
+[s3377 t3003 d3 0:3 xl6 hp70/70] END msg s3325 t2936 d3 hp68 close=[] | 
+[s3377 t3003 d3 0:3 xl6 hp70/70] END msg s3333 t2938 d3 hp68 close=[] | 
+[s3377 t3003 d3 0:3 xl6 hp70/70] END msg s3334 t2939 d3 hp68 close=[] | The door resists!
+[s3377 t3003 d3 0:3 xl6 hp70/70] END msg s3335 t2940 d3 hp69 close=[] | The door opens.
+[s3377 t3003 d3 0:3 xl6 hp70/70] END msg s3336 t2941 d3 hp69 close=[] | 
+[s3377 t3003 d3 0:3 xl6 hp70/70] END msg s3337 t2942 d3 hp69 close=[] | 
+[s3377 t3003 d3 0:3 xl6 hp70/70] END msg s3338 t2943 d3 hp69 close=[] | 
+[s3377 t3003 d3 0:3 xl6 hp70/70] END msg s3339 t2944 d3 hp69 close=[] | 
+[s3377 t3003 d3 0:3 xl6 hp70/70] END msg s3341 t2947 d3 hp70 close=[] | You are in full health.
+[s3377 t3003 d3 0:3 xl6 hp70/70] END msg s3343 t2952 d3 hp70 close=[] | 
+[s3377 t3003 d3 0:3 xl6 hp70/70] END msg s3345 t2957 d3 hp70 close=[] | 
+[s3377 t3003 d3 0:3 xl6 hp70/70] END msg s3346 t2958 d3 hp70 close=[] | 
+[s3377 t3003 d3 0:3 xl6 hp70/70] END msg s3348 t2963 d3 hp70 close=[] | 
+[s3377 t3003 d3 0:3 xl6 hp70/70] END msg s3349 t2964 d3 hp70 close=[] | 
+[s3377 t3003 d3 0:3 xl6 hp70/70] END msg s3350 t2965 d3 hp70 close=[] | 
+[s3377 t3003 d3 0:3 xl6 hp70/70] END msg s3352 t2970 d3 hp70 close=[] | 
+[s3377 t3003 d3 0:3 xl6 hp70/70] END msg s3353 t2971 d3 hp70 close=[] | 
+[s3377 t3003 d3 0:3 xl6 hp70/70] END msg s3355 t2976 d3 hp70 close=[] | 
+[s3377 t3003 d3 0:3 xl6 hp70/70] END msg s3356 t2977 d3 hp70 close=[] | 
+[s3377 t3003 d3 0:3 xl6 hp70/70] END msg s3358 t2982 d3 hp70 close=[] | 
+[s3377 t3003 d3 0:3 xl6 hp70/70] END msg s3359 t2983 d3 hp70 close=[] | 
+[s3377 t3003 d3 0:3 xl6 hp70/70] END msg s3361 t2988 d3 hp70 close=[] | 
+[s3377 t3003 d3 0:3 xl6 hp70/70] END msg s3368 t2989 d3 hp70 close=[] | 
+[s3377 t3003 d3 0:3 xl6 hp70/70] END msg s3369 t2990 d3 hp70 close=[] | 
+[s3377 t3003 d3 0:3 xl6 hp70/70] END msg s3371 t2995 d3 hp70 close=[] | 
+[s3377 t3003 d3 0:3 xl6 hp70/70] END msg s3372 t2996 d3 hp70 close=[] | 
+[s3377 t3003 d3 0:3 xl6 hp70/70] END msg s3373 t2997 d3 hp70 close=[] | 
+[s3377 t3003 d3 0:3 xl6 hp70/70] END msg s3375 t3002 d3 hp70 close=[] | 
+[s3377 t3003 d3 0:3 xl6 hp70/70] END msg s3376 t3003 d3 hp70 close=[] | 

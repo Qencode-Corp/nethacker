@@ -1,0 +1,136 @@
+[s0 t0 d0 0:0 xl0 hp0/0] TRAJ fp=d18c735bb6ff pid=19939 start=1791209118
+[s24 t7 d3 0:3 xl5 hp58/58] STATUS milestone=BE_ON_FIRST_LEVEL diving=False hunger=1 pos=(np.int64(9), np.int64(3)) acts=[SPACE:8 ESC:3 ATTRIBUTES:1 ENHANCE:1 NW:1] gotos=[]
+[s24 t7 d3 0:3 xl5 hp58/58] DIVE level (np.int64(0), np.int64(3)) depth 3
+[s454 t406 d3 0:3 xl5 hp58/58] PANIC AgentPanic: no such food is lying here
+Traceback (most recent call last):
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/strategy.py", line 144, in f
+    return agent.preempt(strategies, self, first_func=f2, continue_after_preemption=continue_after_preemption)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/agent.py", line 310, in preempt
+    next(iterator)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/strategy.py", line 68, in f
+    next(it)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/utils.py", line 134, in f
+    next(it)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/agent.py", line 3111, in eat_corpses_from_ground
+    self.inventory.eat(item)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/item/inventory.py", line 857, in eat
+    raise AgentPanic('no such food is lying here')
+pf_base.exceptions.AgentPanic: no such food is lying here
+
+[s530 t432 d3 0:3 xl5 hp58/58] PANIC AgentPanic: end point is no longer accessible
+Traceback (most recent call last):
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/strategy.py", line 144, in f
+    return agent.preempt(strategies, self, first_func=f2, continue_after_preemption=continue_after_preemption)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/agent.py", line 310, in preempt
+    next(iterator)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/strategy.py", line 190, in f
+    next(it)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/utils.py", line 134, in f
+    next(it)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/exploration_logic.py", line 608, in untrap_traps
+    self.agent.go_to(target_y, target_x, debug_tiles_args=dict(color=(255, 120, 0), is_path=True))
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/agent.py", line 2355, in go_to
+    raise AgentPanic('end point is no longer accessible')
+pf_base.exceptions.AgentPanic: end point is no longer accessible
+
+[s581 t448 d3 0:3 xl5 hp58/58] PANIC AgentPanic: agent position do not match after "move": expected (10, 46), got (10, 47)
+Traceback (most recent call last):
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/agent.py", line 310, in preempt
+    next(iterator)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/strategy.py", line 190, in f
+    next(it)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/utils.py", line 134, in f
+    next(it)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/exploration_logic.py", line 608, in untrap_traps
+    self.agent.go_to(target_y, target_x, debug_tiles_args=dict(color=(255, 120, 0), is_path=True))
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/agent.py", line 2383, in go_to
+    self.move(y, x)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/agent.py", line 2052, in move
+    raise AgentPanic(f'agent position do not match after "move": '
+pf_base.exceptions.AgentPanic: agent position do not match after "move": expected (10, 46), got (10, 47)
+
+[s608 t453 d3 0:3 xl5 hp58/58] PANIC AgentPanic: items below me changed
+Traceback (most recent call last):
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/item/inventory.py", line 602, in get_items_below_me
+    with self.agent.atom_operation():
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.12/3.12.14/Frameworks/Python.framework/Versions/3.12/lib/python3.12/contextlib.py", line 144, in __exit__
+    next(self.gen)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/agent.py", line 189, in atom_operation
+    self.update_state()
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/agent.py", line 699, in update_state
+    self.call_update_functions()
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/agent.py", line 725, in call_update_functions
+    func()
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/item/inventory.py", line 159, in f
+    raise AgentPanic('items below me changed')
+pf_base.exceptions.AgentPanic: items below me changed
+
+[s691 t500 d3 0:3 xl5 hp58/58] STATUS milestone=BE_ON_FIRST_LEVEL diving=False hunger=1 pos=(np.int64(3), np.int64(35)) acts=[SEARCH:136 SPACE:77 E:52 NUM_5:35 SW:33] gotos=[untrap_traps(7, 42):13 open_visit_search(2, 36):8 _fight2_perform_action(8, 27):7]
+[s917 t591 d3 0:3 xl5 hp49/58] FIGHT stall of 50 turns ended (hurt): ['hill orc', 'kobold shaman', 'red mold']
+[s2118 t1000 d3 0:3 xl5 hp58/58] STATUS milestone=BE_ON_FIRST_LEVEL diving=False hunger=2 pos=(np.int64(10), np.int64(46)) acts=[SPACE:371 SEARCH:152 WHATIS:148 MOVEFAR:148 NW:143] gotos=[_fight2_perform_action(10, 54):129 go_to_item_to_pickup(10, 37):89 open_visit_search(5, 34):2]
+[s2145 t1010 d3 0:3 xl5 hp58/58] FIGHT stalled (400 turns, no contact, kill or damage): letting go of [('red mold', 10, 54), ('hill orc', 10, 56)]
+[s2190 t1031 d3 0:3 xl5 hp57/58] PRAY hp=57/58 hunger=3 gap=None reason=None model[ok200=1.00 naughty=0.00 ugangr=0.00 luck>=0=1.00 record=15 p_answered=1.00]
+[s2199 t1034 d3 0:3 xl5 hp57/58] PRAY result ok model[ok200=0.22 naughty=0.00 ugangr=0.00 luck>=0=1.00 record=15] prayers=1 failures=0
+[s2491 t1156 d3 0:3 xl5 hp58/58] FIGHT stall of 92 turns ended (contact): ['leprechaun']
+[s2586 t1197 d3 0:3 xl5 hp58/58] FIGHT stall of 40 turns ended (contact): ['bat', 'leprechaun']
+[s2797 t1295 d3 0:3 xl5 hp57/58] FIGHT stall of 92 turns ended (hurt): ['leprechaun']
+[s2944 t1363 d3 0:3 xl5 hp56/58] FIGHT stall of 40 turns ended (contact): ['leprechaun', 'monkey']
+[s3032 t1394 d3 0:3 xl5 hp50/58] FIGHT stall of 29 turns ended (contact): ['leprechaun']
+[s3207 t1489 d3 0:3 xl5 hp58/58] FIGHT stall of 93 turns ended (contact): ['acid blob', 'fog cloud', 'leprechaun']
+[s3224 t1500 d3 0:3 xl5 hp58/58] STATUS milestone=BE_ON_FIRST_LEVEL diving=False hunger=1 pos=(np.int64(15), np.int64(44)) acts=[SEARCH:248 SPACE:247 W:84 E:78 WHATIS:75] gotos=[open_visit_search(15, 46):30 go_to_item_to_pickup(16, 43):10 _fight2_perform_action(10, 54):6]
+[s3419 t1655 d3 0:3 xl6 hp62/66] FIGHT stall of 162 turns ended (kill): ['fog cloud', 'leprechaun']
+[s3709 t1927 d3 0:3 xl6 hp66/66] FIGHT stall of 242 turns ended (gap): ['leprechaun']
+[s3752 t2013 d3 0:3 xl6 hp66/66] STATUS milestone=BE_ON_FIRST_LEVEL diving=False hunger=4 pos=(np.int64(15), np.int64(45)) acts=[E:214 W:213 SPACE:19 SW:16 EXTCMD:10] gotos=[]
+[s3762 t2046 d3 0:3 xl6 hp64/66] PRAY hp=64/66 hunger=4 gap=1012 reason=hunger-threat no-elbereth:leprechaun est=None model[ok200=0.95 naughty=0.00 ugangr=0.00 luck>=0=1.00 record=20 p_answered=0.95]
+[s3767 t2049 d3 0:3 xl6 hp64/66] PRAY result ok model[ok200=0.22 naughty=0.00 ugangr=0.00 luck>=0=1.00 record=20] prayers=2 failures=0
+[s4123 t2319 d3 0:3 xl6 hp66/66] FIGHT stall of 268 turns ended (contact): ['gas spore', 'leprechaun', 'newt']
+[s4309 t2450 d3 0:3 xl6 hp66/66] FIGHT stall of 130 turns ended (contact): ['gas spore', 'iguana', 'leprechaun']
+[s4387 t2500 d3 0:3 xl6 hp66/66] STATUS milestone=BE_ON_FIRST_LEVEL diving=False hunger=1 pos=(np.int64(15), np.int64(45)) acts=[W:224 E:224 SPACE:48 WHATIS:34 MOVEFAR:34] gotos=[]
+[s4408 t2518 d3 0:3 xl6 hp66/66] FIGHT stall of 61 turns ended (contact): ['coyote', 'gas spore', 'leprechaun']
+[s4448 t2534 d3 0:3 xl6 hp45/66] LYCAN infected (kind rat)
+[s4610 t2661 d3 0:3 xl6 hp64/66] CFP form: wererat
+[s4614 t2662 d3 0:3 xl6 hp9/9] POLY changed form; HP before: (np.int64(64), np.int64(66)) now 9/9
+[s4614 t2662 d3 0:3 xl6 hp9/9] FIGHT stall of 116 turns ended (hurt): ['gas spore', 'leprechaun']
+[s4808 t2807 d3 0:3 xl6 hp9/9] LYCAN were form Overloaded (hunger 3): dropping 3 items
+[s4950 t2871 d3 0:3 xl6 hp9/9] DOOM faint prayer: gap 822 p_ok=0.92 p_die8=1.00
+[s4950 t2871 d3 0:3 xl6 hp9/9] PRAY hp=9/9 hunger=4 gap=822 reason=faint-doom p_ok=0.92 p_die8=1.00 model[ok200=0.92 naughty=0.00 ugangr=0.00 luck>=0=1.00 record=22 p_answered=0.92]
+[s4956 t2871 d3 0:3 xl6 hp9/9] CFP form: back in our own form
+[s4957 t2874 d3 0:3 xl6 hp64/66] LYCAN cured
+[s4964 t2874 d3 0:3 xl6 hp64/66] PRAY result ok model[ok200=0.22 naughty=0.00 ugangr=0.00 luck>=0=1.00 record=22] prayers=3 failures=0
+[s5063 t2901 d3 0:3 xl6 hp52/66] FIGHT stall of 25 turns ended (hurt): ['gas spore', 'hill orc', 'leprechaun', 'rothe']
+[s5066 t2902 d3 0:3 xl6 hp43/66] ELBERETH rest start: ['acid blob', 'hill orc']
+[s5301 t3001 d3 0:3 xl6 hp60/66] STATUS milestone=BE_ON_FIRST_LEVEL diving=False hunger=1 pos=(np.int64(15), np.int64(44)) acts=[WAIT:183 SPACE:142 E:96 W:93 EAT:53] gotos=[open_visit_search(15, 44):14 check_items(16, 43):1]
+[s5304 t3006 d3 0:3 xl6 hp61/66] END reason=close restarts=0 ring=30
+[s5304 t3006 d3 0:3 xl6 hp61/66] END msg s5211 t2930 d3 hp48 close=[] | 
+[s5304 t3006 d3 0:3 xl6 hp61/66] END msg s5221 t2931 d3 hp48 close=['acid blob'] | 
+[s5304 t3006 d3 0:3 xl6 hp61/66] END msg s5225 t2932 d3 hp48 close=['acid blob', 'gas spore'] | 
+[s5304 t3006 d3 0:3 xl6 hp61/66] END msg s5226 t2933 d3 hp48 close=['acid blob', 'gas spore'] | 
+[s5304 t3006 d3 0:3 xl6 hp61/66] END msg s5227 t2934 d3 hp49 close=['acid blob', 'gas spore'] | 
+[s5304 t3006 d3 0:3 xl6 hp61/66] END msg s5228 t2935 d3 hp49 close=['acid blob', 'gas spore'] | 
+[s5304 t3006 d3 0:3 xl6 hp61/66] END msg s5232 t2936 d3 hp49 close=['gas spore', 'rothe'] | There is an open door here.  You see here a pink potion.
+[s5304 t3006 d3 0:3 xl6 hp61/66] END msg s5236 t2936 d3 hp49 close=['gas spore', 'rothe'] | Advance skills without practice? [yn] (n)   
+[s5304 t3006 d3 0:3 xl6 hp61/66] END msg s5240 t2937 d3 hp49 close=['acid blob', 'gas spore'] | 
+[s5304 t3006 d3 0:3 xl6 hp61/66] END msg s5241 t2938 d3 hp49 close=['acid blob', 'gas spore'] | 
+[s5304 t3006 d3 0:3 xl6 hp61/66] END msg s5242 t2939 d3 hp49 close=['acid blob', 'rothe', 'gas spore'] | 
+[s5304 t3006 d3 0:3 xl6 hp61/66] END msg s5243 t2940 d3 hp50 close=['acid blob', 'gas spore'] | 
+[s5304 t3006 d3 0:3 xl6 hp61/66] END msg s5247 t2941 d3 hp50 close=['acid blob', 'gas spore'] | 
+[s5304 t3006 d3 0:3 xl6 hp61/66] END msg s5248 t2942 d3 hp50 close=['acid blob', 'gas spore'] | 
+[s5304 t3006 d3 0:3 xl6 hp61/66] END msg s5252 t2943 d3 hp50 close=['acid blob', 'gas spore'] | Something is written here in the dust.  You read: "lb retn".
+[s5304 t3006 d3 0:3 xl6 hp61/66] END msg s5254 t2948 d3 hp51 close=['acid blob', 'gas spore'] | 
+[s5304 t3006 d3 0:3 xl6 hp61/66] END msg s5259 t2949 d3 hp51 close=['acid blob', 'rothe', 'gas spore'] | You stop searching.
+[s5304 t3006 d3 0:3 xl6 hp61/66] END msg s5261 t2952 d3 hp52 close=['acid blob', 'gas spore', 'rothe'] | You stop searching.
+[s5304 t3006 d3 0:3 xl6 hp61/66] END msg s5263 t2957 d3 hp52 close=['acid blob', 'gas spore'] | 
+[s5304 t3006 d3 0:3 xl6 hp61/66] END msg s5268 t2961 d3 hp53 close=['acid blob', 'gas spore', 'rothe'] | You stop searching.
+[s5304 t3006 d3 0:3 xl6 hp61/66] END msg s5270 t2966 d3 hp54 close=['acid blob', 'gas spore'] | 
+[s5304 t3006 d3 0:3 xl6 hp61/66] END msg s5272 t2971 d3 hp55 close=['acid blob', 'gas spore'] | 
+[s5304 t3006 d3 0:3 xl6 hp61/66] END msg s5277 t2974 d3 hp55 close=['acid blob', 'rothe', 'gas spore'] | You stop searching.
+[s5304 t3006 d3 0:3 xl6 hp61/66] END msg s5279 t2979 d3 hp56 close=['acid blob', 'gas spore'] | 
+[s5304 t3006 d3 0:3 xl6 hp61/66] END msg s5287 t2984 d3 hp57 close=['acid blob', 'gas spore'] | 
+[s5304 t3006 d3 0:3 xl6 hp61/66] END msg s5289 t2989 d3 hp58 close=['acid blob', 'gas spore'] | 
+[s5304 t3006 d3 0:3 xl6 hp61/66] END msg s5294 t2994 d3 hp59 close=['acid blob', 'rothe', 'gas spore'] | 
+[s5304 t3006 d3 0:3 xl6 hp61/66] END msg s5296 t2999 d3 hp59 close=['acid blob', 'gas spore'] | 
+[s5304 t3006 d3 0:3 xl6 hp61/66] END msg s5301 t3001 d3 hp60 close=['acid blob', 'rothe', 'gas spore'] | You stop searching.
+[s5304 t3006 d3 0:3 xl6 hp61/66] END msg s5303 t3006 d3 hp61 close=['acid blob', 'gas spore'] | 

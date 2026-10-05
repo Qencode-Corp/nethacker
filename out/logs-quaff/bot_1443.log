@@ -1,0 +1,53 @@
+[s0 t0 d0 0:0 xl0 hp0/0] TRAJ fp=ce8e17d65fe4 pid=19181 start=1791208681
+[s24 t7 d3 0:3 xl5 hp47/47] STATUS milestone=BE_ON_FIRST_LEVEL diving=False hunger=1 pos=(np.int64(5), np.int64(13)) acts=[SPACE:8 ESC:3 ATTRIBUTES:1 ENHANCE:1 NW:1] gotos=[]
+[s24 t7 d3 0:3 xl5 hp47/47] DIVE level (np.int64(0), np.int64(3)) depth 3
+[s40 t7 d3 0:3 xl5 hp47/47] DIVE task walk to a fountain (quaff)
+[s41 t8 d3 0:3 xl5 hp47/47] DIVE task drink from the fountain
+[s41 t8 d3 0:3 xl5 hp47/47] FOUNTAIN quaff n=1 dlvl=3
+[s59 t14 d3 0:3 xl5 hp47/47] FOUNTAIN quaff n=2 dlvl=3
+[s61 t15 d3 0:3 xl5 hp47/47] FOUNTAIN result n=2 msg='Drink from the fountain? [yn] (n) This tepid water is tasteless.'
+[s61 t15 d3 0:3 xl5 hp47/47] FOUNTAIN quaff n=3 dlvl=3
+[s73 t17 d3 0:3 xl5 hp25/47] ELBERETH rest start: ['water moccasin', 'water moccasin']
+[s82 t18 d3 0:3 xl5 hp9/47] RETREAT upstairs at hp 9/47
+[s82 t18 d3 0:3 xl5 hp9/47] PANIC AgentPanic: Monster on a next tile when moving: (5,13)
+Traceback (most recent call last):
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/strategy.py", line 144, in f
+    return agent.preempt(strategies, self, first_func=f2, continue_after_preemption=continue_after_preemption)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/agent.py", line 310, in preempt
+    next(iterator)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/strategy.py", line 68, in f
+    next(it)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/dive_logic.py", line 2468, in retreat_upstairs
+    agent.go_to(y, x, max_steps=1)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/agent.py", line 2383, in go_to
+    self.move(y, x)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/agent.py", line 2020, in move
+    raise AgentPanic(f'Monster on a next tile when moving: ({expected_y},{expected_x})')
+pf_base.exceptions.AgentPanic: Monster on a next tile when moving: (5,13)
+
+[s106 t19 d3 0:3 xl5 hp5/47] END reason=close restarts=0 ring=24
+[s106 t19 d3 0:3 xl5 hp5/47] END msg s24 t7 d3 hp47 close=[] | Autopickup: OFF.
+[s106 t19 d3 0:3 xl5 hp5/47] END msg s25 t7 d3 hp47 close=[] | 
+[s106 t19 d3 0:3 xl5 hp5/47] END msg s26 t7 d3 hp47 close=[] | 
+[s106 t19 d3 0:3 xl5 hp5/47] END msg s32 t7 d3 hp47 close=[] | 
+[s106 t19 d3 0:3 xl5 hp5/47] END msg s37 t7 d3 hp47 close=[] | 
+[s106 t19 d3 0:3 xl5 hp5/47] END msg s40 t7 d3 hp47 close=[] | 
+[s106 t19 d3 0:3 xl5 hp5/47] END msg s41 t8 d3 hp47 close=[] | 
+[s106 t19 d3 0:3 xl5 hp5/47] END msg s46 t9 d3 hp47 close=['water nymph'] | Drink from the fountain? [yn] (n) You attract a water nymph!
+[s106 t19 d3 0:3 xl5 hp5/47] END msg s50 t9 d3 hp47 close=['water nymph'] | Advance skills without practice? [yn] (n)   
+[s106 t19 d3 0:3 xl5 hp5/47] END msg s59 t14 d3 hp47 close=[] | You hit the water nymph! The water nymph charms you.  You gladly start removing your mail. The water nymph stole 2 uncursed food rations. The water nymph charms
+[s106 t19 d3 0:3 xl5 hp5/47] END msg s61 t15 d3 hp47 close=[] | Drink from the fountain? [yn] (n) This tepid water is tasteless.
+[s106 t19 d3 0:3 xl5 hp5/47] END msg s66 t16 d3 hp47 close=['water moccasin', 'water moccasin'] | Drink from the fountain? [yn] (n) An endless stream of snakes pours forth!
+[s106 t19 d3 0:3 xl5 hp5/47] END msg s70 t16 d3 hp47 close=['water moccasin', 'water moccasin'] | Advance skills without practice? [yn] (n)   
+[s106 t19 d3 0:3 xl5 hp5/47] END msg s73 t17 d3 hp25 close=['water moccasin', 'water moccasin'] | You begin bashing monsters with your bare hands. You hit the water moccasin.  The water moccasin bites! The water moccasin's bite was poisoned!  The water mocca
+[s106 t19 d3 0:3 xl5 hp5/47] END msg s76 t17 d3 hp25 close=['water moccasin', 'water moccasin'] | There is a fountain here.
+[s106 t19 d3 0:3 xl5 hp5/47] END msg s80 t17 d3 hp25 close=['water moccasin', 'water moccasin'] | Advance skills without practice? [yn] (n)   
+[s106 t19 d3 0:3 xl5 hp5/47] END msg s82 t18 d3 hp9 close=['water moccasin', 'water moccasin'] | You hit the water moccasin!  The water moccasin bites! The water moccasin bites!  The water moccasin bites!
+[s106 t19 d3 0:3 xl5 hp5/47] END msg s83 t18 d3 hp9 close=['water moccasin', 'water moccasin'] | 
+[s106 t19 d3 0:3 xl5 hp5/47] END msg s84 t18 d3 hp9 close=['water moccasin', 'water moccasin'] | 
+[s106 t19 d3 0:3 xl5 hp5/47] END msg s90 t18 d3 hp9 close=['water moccasin', 'water moccasin'] | 
+[s106 t19 d3 0:3 xl5 hp5/47] END msg s95 t18 d3 hp9 close=['water moccasin', 'water moccasin'] | 
+[s106 t19 d3 0:3 xl5 hp5/47] END msg s98 t18 d3 hp9 close=['water moccasin', 'water moccasin'] | 
+[s106 t19 d3 0:3 xl5 hp5/47] END msg s102 t18 d3 hp9 close=['water moccasin', 'water moccasin'] | Advance skills without practice? [yn] (n)   
+[s106 t19 d3 0:3 xl5 hp5/47] END msg s104 t19 d3 hp5 close=['water moccasin', 'water moccasin'] | You hit the water moccasin!  The water moccasin bites! The water moccasin bites!

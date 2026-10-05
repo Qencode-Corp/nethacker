@@ -1,0 +1,78 @@
+[s0 t0 d0 0:0 xl0 hp0/0] TRAJ fp=02f1fb1f0415 pid=17305 start=1791208013
+[s24 t7 d3 0:3 xl5 hp64/64] STATUS milestone=BE_ON_FIRST_LEVEL diving=False hunger=1 pos=(np.int64(15), np.int64(54)) acts=[SPACE:8 ESC:3 ATTRIBUTES:1 ENHANCE:1 NW:1] gotos=[]
+[s24 t7 d3 0:3 xl5 hp64/64] DIVE level (np.int64(0), np.int64(3)) depth 3
+[s317 t216 d3 0:3 xl5 hp64/64] PANIC AgentPanic: agent position do not match after "move": expected (10, 35), got (11, 34)
+Traceback (most recent call last):
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/strategy.py", line 144, in f
+    return agent.preempt(strategies, self, first_func=f2, continue_after_preemption=continue_after_preemption)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/agent.py", line 297, in preempt
+    val = f.run()
+          ^^^^^^^
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/strategy.py", line 48, in run
+    next(gen)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/exploration_logic.py", line 523, in open_visit_search
+    self.agent.go_to(target_y, target_x, fast=fast_go_to, debug_tiles_args=dict(
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/agent.py", line 2383, in go_to
+    self.move(y, x)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/agent.py", line 2052, in move
+    raise AgentPanic(f'agent position do not match after "move": '
+pf_base.exceptions.AgentPanic: agent position do not match after "move": expected (10, 35), got (11, 34)
+
+[s680 t500 d3 0:3 xl5 hp64/64] STATUS milestone=BE_ON_FIRST_LEVEL diving=False hunger=1 pos=(np.int64(10), np.int64(35)) acts=[W:145 E:132 SEARCH:65 SW:60 NE:40] gotos=[check_items(11, 32):38 open_visit_search(10, 39):32 check_items(4, 48):6]
+[s1071 t841 d3 0:3 xl5 hp64/64] PRAY hp=64/64 hunger=3 gap=None reason=None model[ok200=1.00 naughty=0.00 ugangr=0.00 luck>=0=1.00 record=10 p_answered=1.00]
+[s1076 t844 d3 0:3 xl5 hp64/64] PRAY result ok model[ok200=0.22 naughty=0.00 ugangr=0.00 luck>=0=1.00 record=10] prayers=1 failures=0
+[s1272 t1000 d3 0:3 xl5 hp64/64] STATUS milestone=BE_ON_FIRST_LEVEL diving=False hunger=1 pos=(np.int64(10), np.int64(33)) acts=[E:201 W:197 SW:60 NE:49 SPACE:17] gotos=[check_items(11, 32):50 open_visit_search(10, 39):49 check_items(10, 38):1]
+[s1877 t1500 d3 0:3 xl5 hp64/64] STATUS milestone=BE_ON_FIRST_LEVEL diving=False hunger=1 pos=(np.int64(11), np.int64(33)) acts=[E:204 W:197 SW:61 NE:47 SPACE:18] gotos=[check_items(11, 32):50 open_visit_search(10, 39):25 open_visit_search(7, 39):23]
+[s2525 t2000 d3 0:3 xl5 hp64/64] STATUS milestone=BE_ON_FIRST_LEVEL diving=False hunger=1 pos=(np.int64(10), np.int64(34)) acts=[E:182 W:179 SW:58 NE:54 SPACE:43] gotos=[check_items(11, 32):50 open_visit_search(7, 39):47 _fight2_perform_action(10, 38):1]
+[s3198 t2436 d3 0:3 xl5 hp63/64] RANGED hit: holds and Elbereth waits off for 8 turns
+[s3291 t2500 d3 0:3 xl5 hp64/64] STATUS milestone=BE_ON_FIRST_LEVEL diving=False hunger=1 pos=(np.int64(10), np.int64(34)) acts=[E:205 W:187 SPACE:106 SW:61 NE:47] gotos=[check_items(11, 32):48 open_visit_search(7, 39):43 eat_corpses_from_ground(10, 37):3]
+[s4043 t2987 d3 0:3 xl5 hp64/64] PANIC AgentPanic: no such food is lying here
+Traceback (most recent call last):
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/strategy.py", line 144, in f
+    return agent.preempt(strategies, self, first_func=f2, continue_after_preemption=continue_after_preemption)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/agent.py", line 310, in preempt
+    next(iterator)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/strategy.py", line 68, in f
+    next(it)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/utils.py", line 134, in f
+    next(it)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/agent.py", line 3111, in eat_corpses_from_ground
+    self.inventory.eat(item)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/item/inventory.py", line 857, in eat
+    raise AgentPanic('no such food is lying here')
+pf_base.exceptions.AgentPanic: no such food is lying here
+
+[s4072 t3000 d3 0:3 xl5 hp64/64] STATUS milestone=BE_ON_FIRST_LEVEL diving=False hunger=1 pos=(np.int64(10), np.int64(39)) acts=[E:194 W:183 SPACE:115 SW:63 NE:49] gotos=[check_items(11, 32):48 open_visit_search(7, 39):44 check_items(10, 37):3]
+[s4079 t3007 d3 0:3 xl5 hp64/64] END reason=close restarts=0 ring=30
+[s4079 t3007 d3 0:3 xl5 hp64/64] END msg s4027 t2982 d3 hp64 close=[] | You see here a battle-axe.
+[s4079 t3007 d3 0:3 xl5 hp64/64] END msg s4032 t2983 d3 hp64 close=['rock mole'] | 
+[s4079 t3007 d3 0:3 xl5 hp64/64] END msg s4033 t2984 d3 hp64 close=[] | You kill the rock mole!
+[s4079 t3007 d3 0:3 xl5 hp64/64] END msg s4039 t2985 d3 hp64 close=[] | 
+[s4079 t3007 d3 0:3 xl5 hp64/64] END msg s4041 t2986 d3 hp64 close=[] | Blecch!  Rotten food!  Everything suddenly goes dark.
+[s4079 t3007 d3 0:3 xl5 hp64/64] END msg s4042 t2987 d3 hp64 close=[] | 
+[s4079 t3007 d3 0:3 xl5 hp64/64] END msg s4044 t2987 d3 hp64 close=[] | Never mind.
+[s4079 t3007 d3 0:3 xl5 hp64/64] END msg s4045 t2987 d3 hp64 close=[] | 
+[s4079 t3007 d3 0:3 xl5 hp64/64] END msg s4051 t2987 d3 hp64 close=[] | 
+[s4079 t3007 d3 0:3 xl5 hp64/64] END msg s4057 t2988 d3 hp64 close=[] | 
+[s4079 t3007 d3 0:3 xl5 hp64/64] END msg s4060 t2988 d3 hp64 close=[] | 
+[s4079 t3007 d3 0:3 xl5 hp64/64] END msg s4061 t2989 d3 hp64 close=[] | 
+[s4079 t3007 d3 0:3 xl5 hp64/64] END msg s4062 t2990 d3 hp64 close=[] | 
+[s4079 t3007 d3 0:3 xl5 hp64/64] END msg s4063 t2991 d3 hp64 close=[] | 
+[s4079 t3007 d3 0:3 xl5 hp64/64] END msg s4064 t2992 d3 hp64 close=[] | 
+[s4079 t3007 d3 0:3 xl5 hp64/64] END msg s4065 t2993 d3 hp64 close=[] | 
+[s4079 t3007 d3 0:3 xl5 hp64/64] END msg s4066 t2994 d3 hp64 close=[] | 
+[s4079 t3007 d3 0:3 xl5 hp64/64] END msg s4067 t2995 d3 hp64 close=[] | 
+[s4079 t3007 d3 0:3 xl5 hp64/64] END msg s4068 t2996 d3 hp64 close=[] | 
+[s4079 t3007 d3 0:3 xl5 hp64/64] END msg s4069 t2997 d3 hp64 close=[] | 
+[s4079 t3007 d3 0:3 xl5 hp64/64] END msg s4070 t2998 d3 hp64 close=[] | 
+[s4079 t3007 d3 0:3 xl5 hp64/64] END msg s4071 t2999 d3 hp64 close=[] | 
+[s4079 t3007 d3 0:3 xl5 hp64/64] END msg s4072 t3000 d3 hp64 close=[] | 
+[s4079 t3007 d3 0:3 xl5 hp64/64] END msg s4073 t3001 d3 hp64 close=[] | 
+[s4079 t3007 d3 0:3 xl5 hp64/64] END msg s4074 t3002 d3 hp64 close=[] | 
+[s4079 t3007 d3 0:3 xl5 hp64/64] END msg s4075 t3003 d3 hp64 close=[] | 
+[s4079 t3007 d3 0:3 xl5 hp64/64] END msg s4076 t3004 d3 hp64 close=[] | You can see again.
+[s4079 t3007 d3 0:3 xl5 hp64/64] END msg s4077 t3005 d3 hp64 close=[] | 
+[s4079 t3007 d3 0:3 xl5 hp64/64] END msg s4078 t3006 d3 hp64 close=[] | You see here a battle-axe.
+[s4079 t3007 d3 0:3 xl5 hp64/64] END msg s4079 t3007 d3 hp64 close=[] | 

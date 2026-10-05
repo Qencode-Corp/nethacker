@@ -1,0 +1,258 @@
+[s0 t0 d0 0:0 xl0 hp0/0] TRAJ fp=e4978bb06ce0 pid=18051 start=1791208321
+[s24 t7 d3 0:3 xl5 hp61/61] STATUS milestone=BE_ON_FIRST_LEVEL diving=False hunger=1 pos=(np.int64(4), np.int64(49)) acts=[SPACE:8 ESC:3 ATTRIBUTES:1 ENHANCE:1 NW:1] gotos=[]
+[s24 t7 d3 0:3 xl5 hp61/61] DIVE level (np.int64(0), np.int64(3)) depth 3
+[s40 t7 d3 0:3 xl5 hp61/61] DIVE task walk to a fountain (quaff)
+[s51 t18 d3 0:3 xl5 hp61/61] DIVE task drink from the fountain
+[s51 t18 d3 0:3 xl5 hp61/61] FOUNTAIN quaff n=1 dlvl=3
+[s53 t19 d3 0:3 xl5 hp61/61] FOUNTAIN result n=1 msg='Drink from the fountain? [yn] (n) This tepid water is tasteless.'
+[s53 t19 d3 0:3 xl5 hp61/61] FOUNTAIN quaff n=2 dlvl=3
+[s55 t20 d3 0:3 xl5 hp61/61] FOUNTAIN result n=2 msg='Drink from the fountain? [yn] (n) The cool draught refreshes you.'
+[s55 t20 d3 0:3 xl5 hp61/61] FOUNTAIN quaff n=3 dlvl=3
+[s57 t21 d3 0:3 xl5 hp61/61] FOUNTAIN result n=3 msg='Drink from the fountain? [yn] (n) This tepid water is tasteless.'
+[s57 t21 d3 0:3 xl5 hp61/61] FOUNTAIN quaff n=4 dlvl=3
+[s61 t22 d3 0:3 xl5 hp61/61] FOUNTAIN result n=4 msg='Drink from the fountain? [yn] (n) The cool draught refreshes you. Dry up fountain? [yn] (n) The fountain dries up!'
+[s61 t22 d3 0:3 xl5 hp61/61] FOUNTAIN event=dry
+[s85 t34 d3 0:3 xl5 hp61/61] PANIC AgentPanic: no such food is lying here
+Traceback (most recent call last):
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/strategy.py", line 144, in f
+    return agent.preempt(strategies, self, first_func=f2, continue_after_preemption=continue_after_preemption)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/agent.py", line 310, in preempt
+    next(iterator)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/strategy.py", line 68, in f
+    next(it)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/utils.py", line 134, in f
+    next(it)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/agent.py", line 3111, in eat_corpses_from_ground
+    self.inventory.eat(item)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/item/inventory.py", line 857, in eat
+    raise AgentPanic('no such food is lying here')
+pf_base.exceptions.AgentPanic: no such food is lying here
+
+[s161 t57 d3 0:3 xl5 hp53/61] PANIC AgentPanic: items below me changed
+Traceback (most recent call last):
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/item/inventory.py", line 602, in get_items_below_me
+    with self.agent.atom_operation():
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.12/3.12.14/Frameworks/Python.framework/Versions/3.12/lib/python3.12/contextlib.py", line 144, in __exit__
+    next(self.gen)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/agent.py", line 189, in atom_operation
+    self.update_state()
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/agent.py", line 699, in update_state
+    self.call_update_functions()
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/agent.py", line 725, in call_update_functions
+    func()
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/item/inventory.py", line 159, in f
+    raise AgentPanic('items below me changed')
+pf_base.exceptions.AgentPanic: items below me changed
+
+[s276 t133 d3 0:3 xl5 hp61/61] DIGGER dwarf in rock/tunnel at (13, 36)
+[s280 t137 d3 0:3 xl5 hp61/61] DIGGER dwarf in rock/tunnel at (13, 37)
+[s282 t139 d3 0:3 xl5 hp61/61] DIGGER dwarf in rock/tunnel at (13, 38)
+[s283 t140 d3 0:3 xl5 hp61/61] DIGGER dwarf in rock/tunnel at (12, 38)
+[s284 t141 d3 0:3 xl5 hp61/61] DIGGER dwarf in rock/tunnel at (12, 39)
+[s614 t405 d3 0:3 xl5 hp61/61] PANIC AgentPanic: agent position do not match after "move": expected (8, 7), got (7, 8)
+Traceback (most recent call last):
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/strategy.py", line 144, in f
+    return agent.preempt(strategies, self, first_func=f2, continue_after_preemption=continue_after_preemption)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/agent.py", line 299, in preempt
+    val = f()
+          ^^^
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/strategy.py", line 139, in f2
+    next(gen)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/exploration_logic.py", line 523, in open_visit_search
+    self.agent.go_to(target_y, target_x, fast=fast_go_to, debug_tiles_args=dict(
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/agent.py", line 2383, in go_to
+    self.move(y, x)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/agent.py", line 2052, in move
+    raise AgentPanic(f'agent position do not match after "move": '
+pf_base.exceptions.AgentPanic: agent position do not match after "move": expected (8, 7), got (7, 8)
+
+[s719 t473 d3 0:3 xl5 hp61/61] PANIC AgentPanic: items below me changed
+Traceback (most recent call last):
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/item/inventory.py", line 602, in get_items_below_me
+    with self.agent.atom_operation():
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.12/3.12.14/Frameworks/Python.framework/Versions/3.12/lib/python3.12/contextlib.py", line 144, in __exit__
+    next(self.gen)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/agent.py", line 189, in atom_operation
+    self.update_state()
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/agent.py", line 699, in update_state
+    self.call_update_functions()
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/agent.py", line 725, in call_update_functions
+    func()
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/item/inventory.py", line 159, in f
+    raise AgentPanic('items below me changed')
+pf_base.exceptions.AgentPanic: items below me changed
+
+[s764 t500 d3 0:3 xl5 hp61/61] STATUS milestone=BE_ON_FIRST_LEVEL diving=False hunger=1 pos=(np.int64(15), np.int64(23)) acts=[SEARCH:159 SPACE:83 W:56 SW:46 NW:36] gotos=[check_items(5, 49):11 open_visit_search(15, 23):9 check_items(8, 24):6]
+[s814 t531 d3 0:3 xl5 hp61/61] DIGGER dwarf in rock/tunnel at (13, 35)
+[s838 t545 d3 0:3 xl5 hp61/61] DIGGER dwarf in rock/tunnel at (15, 30)
+[s875 t570 d3 0:3 xl5 hp61/61] FIGHT stall of 30 turns ended (contact): ['rock piercer']
+[s908 t592 d3 0:3 xl5 hp61/61] DIGGER dwarf in rock/tunnel at (14, 27)
+[s996 t662 d3 0:3 xl5 hp55/61] PANIC AgentPanic: no such food is lying here
+Traceback (most recent call last):
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/strategy.py", line 144, in f
+    return agent.preempt(strategies, self, first_func=f2, continue_after_preemption=continue_after_preemption)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/agent.py", line 310, in preempt
+    next(iterator)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/strategy.py", line 68, in f
+    next(it)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/utils.py", line 134, in f
+    next(it)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/agent.py", line 3111, in eat_corpses_from_ground
+    self.inventory.eat(item)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/item/inventory.py", line 857, in eat
+    raise AgentPanic('no such food is lying here')
+pf_base.exceptions.AgentPanic: no such food is lying here
+
+[s1275 t832 d3 0:3 xl5 hp61/61] FIGHT stall of 40 turns ended (gap): ['leprechaun']
+[s1370 t898 d3 0:3 xl5 hp61/61] FIGHT stall of 43 turns ended (gap): ['leprechaun']
+[s1509 t1000 d3 0:3 xl5 hp61/61] STATUS milestone=BE_ON_FIRST_LEVEL diving=False hunger=1 pos=(np.int64(10), np.int64(62)) acts=[SEARCH:122 SPACE:79 E:75 SW:67 NW:52] gotos=[check_items(16, 59):7 check_items(15, 59):6 open_visit_search(8, 38):4]
+[s1677 t1089 d3 0:3 xl5 hp50/61] FIGHT stall of 24 turns ended (contact): ['leprechaun', 'lichen']
+[s1681 t1090 d3 0:3 xl5 hp50/61] DIGGER dwarf in rock/tunnel at (14, 43)
+[s1825 t1218 d3 0:3 xl5 hp61/61] DIGGER dwarf in rock/tunnel at (10, 44)
+[s1843 t1223 d3 0:3 xl5 hp61/61] DIGGER dwarf in rock/tunnel at (11, 44)
+[s1884 t1257 d3 0:3 xl5 hp61/61] DIGGER dwarf in rock/tunnel at (9, 42)
+[s1964 t1318 d3 0:3 xl5 hp61/61] PANIC AgentPanic: agent position do not match after "move": expected (19, 38), got (18, 38)
+Traceback (most recent call last):
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/strategy.py", line 165, in f
+    next(gen)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/strategy.py", line 100, in f
+    next(v1)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/utils.py", line 134, in f
+    next(it)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/item/inventory.py", line 1682, in check_items
+    self.agent.go_to(target_y, target_x, debug_tiles_args=dict(color=(255, 0, 255), is_path=True))
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/agent.py", line 2383, in go_to
+    self.move(y, x)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/agent.py", line 2052, in move
+    raise AgentPanic(f'agent position do not match after "move": '
+pf_base.exceptions.AgentPanic: agent position do not match after "move": expected (19, 38), got (18, 38)
+
+[s2000 t1332 d3 0:3 xl5 hp61/61] DIGGER dwarf in rock/tunnel at (14, 42)
+[s2053 t1379 d3 0:3 xl5 hp61/61] DIGGER dwarf in rock/tunnel at (16, 35)
+[s2059 t1385 d3 0:3 xl5 hp61/61] DIGGER dwarf in rock/tunnel at (17, 35)
+[s2060 t1386 d3 0:3 xl5 hp61/61] DIGGER dwarf in rock/tunnel at (16, 36)
+[s2078 t1400 d2 0:2 xl5 hp61/61] DIVE level (np.int64(0), np.int64(2)) depth 2
+[s2188 t1501 d2 0:2 xl5 hp61/61] STATUS milestone=BE_ON_FIRST_LEVEL diving=False hunger=2 pos=(np.int64(12), np.int64(60)) acts=[SEARCH:133 SPACE:74 W:62 SW:49 NW:44] gotos=[open_visit_search(8, 38):7 open_visit_search(5, 27):4 open_visit_search(15, 30):4]
+[s2287 t1578 d2 0:2 xl5 hp61/61] DIVE task walk to a fountain (quaff)
+[s2290 t1581 d2 0:2 xl5 hp61/61] DIVE task drink from the fountain
+[s2290 t1581 d2 0:2 xl5 hp61/61] FOUNTAIN quaff n=1 dlvl=2
+[s2294 t1582 d2 0:2 xl5 hp61/61] FOUNTAIN result n=1 msg='Drink from the fountain? [yn] (n) This tepid water is tasteless. Dry up fountain? [yn] (n) The fountain dries up!'
+[s2294 t1582 d2 0:2 xl5 hp61/61] FOUNTAIN event=dry
+[s2304 t1590 d2 0:2 xl5 hp61/61] PRAY hp=61/61 hunger=3 gap=None reason=None model[ok200=1.00 naughty=0.00 ugangr=0.00 luck>=0=1.00 record=17 p_answered=1.00]
+[s2309 t1593 d2 0:2 xl5 hp61/61] PRAY result ok model[ok200=0.22 naughty=0.00 ugangr=0.00 luck>=0=1.00 record=17] prayers=1 failures=0
+[s2740 t1941 d2 0:2 xl5 hp61/61] PANIC AgentPanic: no such food is lying here
+Traceback (most recent call last):
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/strategy.py", line 144, in f
+    return agent.preempt(strategies, self, first_func=f2, continue_after_preemption=continue_after_preemption)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/agent.py", line 310, in preempt
+    next(iterator)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/strategy.py", line 68, in f
+    next(it)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/utils.py", line 134, in f
+    next(it)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/agent.py", line 3111, in eat_corpses_from_ground
+    self.inventory.eat(item)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/item/inventory.py", line 857, in eat
+    raise AgentPanic('no such food is lying here')
+pf_base.exceptions.AgentPanic: no such food is lying here
+
+[s2812 t2000 d2 0:2 xl5 hp61/61] STATUS milestone=BE_ON_FIRST_LEVEL diving=False hunger=1 pos=(np.int64(14), np.int64(42)) acts=[SEARCH:187 E:69 W:66 SW:43 SPACE:33] gotos=[open_visit_search(13, 14):6 check_items(17, 57):4 open_visit_search(3, 65):4]
+[s3150 t2255 d3 0:3 xl6 hp68/69] DIVE level (np.int64(0), np.int64(3)) depth 3
+[s3273 t2349 d3 0:3 xl6 hp69/69] PANIC AgentPanic: items below me changed
+Traceback (most recent call last):
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/item/inventory.py", line 602, in get_items_below_me
+    with self.agent.atom_operation():
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.12/3.12.14/Frameworks/Python.framework/Versions/3.12/lib/python3.12/contextlib.py", line 144, in __exit__
+    next(self.gen)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/agent.py", line 189, in atom_operation
+    self.update_state()
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/agent.py", line 699, in update_state
+    self.call_update_functions()
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/agent.py", line 725, in call_update_functions
+    func()
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/item/inventory.py", line 159, in f
+    raise AgentPanic('items below me changed')
+pf_base.exceptions.AgentPanic: items below me changed
+
+[s3304 t2368 d3 0:3 xl6 hp69/69] DIGGER dwarf in rock/tunnel at (8, 28)
+[s3354 t2402 d3 0:3 xl6 hp69/69] PANIC AgentPanic: end point is no longer accessible
+Traceback (most recent call last):
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/strategy.py", line 139, in f2
+    next(gen)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/strategy.py", line 144, in f
+    return agent.preempt(strategies, self, first_func=f2, continue_after_preemption=continue_after_preemption)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/agent.py", line 310, in preempt
+    next(iterator)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/dive_logic.py", line 4840, in hunt_strategy
+    self.hunt_dwarf()
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/dive_logic.py", line 5686, in hunt_dwarf
+    agent.go_to(y, x, stop_one_before=True, max_steps=2)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/agent.py", line 2355, in go_to
+    raise AgentPanic('end point is no longer accessible')
+pf_base.exceptions.AgentPanic: end point is no longer accessible
+
+[s3370 t2402 d3 0:3 xl6 hp69/69] DIVE attacking a peaceful dwarf at (13, 29) for its digging tool (digger=False, align~21)
+[s3372 t2403 d3 0:3 xl6 hp69/69] DIVE killed a dwarf (1); piles to check: [(np.int64(13), np.int64(29))]
+[s3372 t2403 d3 0:3 xl6 hp69/69] ALIGN estimate 8 (cap 22) after -13
+[s3372 t2403 d3 0:3 xl6 hp69/69] DWARF died near [(13, 29)]: piles to check
+[s3400 t2407 d3 0:3 xl6 hp69/69] DIVE checked the pile at (np.int64(13), np.int64(29)): tool a dwarvish mattock
+[s3496 t2507 d3 0:3 xl6 hp69/69] STATUS milestone=BE_ON_FIRST_LEVEL diving=False hunger=1 pos=(np.int64(13), np.int64(26)) acts=[E:86 SPACE:80 SEARCH:59 SW:56 W:53] gotos=[go_to_strategy(4, 70):6 open_visit_search(11, 71):5 open_visit_search(11, 26):5]
+[s3885 t2793 d3 0:3 xl6 hp64/69] PANIC AgentPanic: items below me changed
+Traceback (most recent call last):
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/item/inventory.py", line 602, in get_items_below_me
+    with self.agent.atom_operation():
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.12/3.12.14/Frameworks/Python.framework/Versions/3.12/lib/python3.12/contextlib.py", line 144, in __exit__
+    next(self.gen)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/agent.py", line 189, in atom_operation
+    self.update_state()
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/agent.py", line 699, in update_state
+    self.call_update_functions()
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/agent.py", line 725, in call_update_functions
+    func()
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/item/inventory.py", line 159, in f
+    raise AgentPanic('items below me changed')
+pf_base.exceptions.AgentPanic: items below me changed
+
+[s4021 t2829 d3 0:3 xl6 hp68/69] FIGHT stall of 24 turns ended (contact): ['floating eye', 'leprechaun', 'monkey', 'red mold']
+[s4166 t2971 d3 0:3 xl6 hp69/69] FIGHT stall of 23 turns ended (gap): ['leprechaun']
+[s4217 t3000 d3 0:3 xl6 hp69/69] STATUS milestone=BE_ON_FIRST_LEVEL diving=False hunger=1 pos=(np.int64(7), np.int64(13)) acts=[SPACE:126 SEARCH:95 WHATIS:54 MOVEFAR:54 NUM_5:52] gotos=[_fight2_perform_action(13, 55):5 _fight2_perform_action(7, 21):5 check_items(18, 28):4]
+[s4230 t3007 d3 0:3 xl6 hp69/69] END reason=close restarts=0 ring=30
+[s4230 t3007 d3 0:3 xl6 hp69/69] END msg s4177 t2978 d3 hp69 close=[] | Advance skills without practice? [yn] (n)   
+[s4230 t3007 d3 0:3 xl6 hp69/69] END msg s4178 t2979 d3 hp69 close=[] | 
+[s4230 t3007 d3 0:3 xl6 hp69/69] END msg s4179 t2980 d3 hp69 close=[] | 
+[s4230 t3007 d3 0:3 xl6 hp69/69] END msg s4180 t2981 d3 hp69 close=[] | 
+[s4230 t3007 d3 0:3 xl6 hp69/69] END msg s4181 t2982 d3 hp69 close=[] | You hear someone counting money.
+[s4230 t3007 d3 0:3 xl6 hp69/69] END msg s4182 t2983 d3 hp69 close=[] | 
+[s4230 t3007 d3 0:3 xl6 hp69/69] END msg s4186 t2984 d3 hp69 close=[] | 
+[s4230 t3007 d3 0:3 xl6 hp69/69] END msg s4187 t2985 d3 hp69 close=[] | 
+[s4230 t3007 d3 0:3 xl6 hp69/69] END msg s4191 t2986 d3 hp69 close=[] | 
+[s4230 t3007 d3 0:3 xl6 hp69/69] END msg s4192 t2987 d3 hp69 close=[] | 
+[s4230 t3007 d3 0:3 xl6 hp69/69] END msg s4193 t2988 d3 hp69 close=[] | 
+[s4230 t3007 d3 0:3 xl6 hp69/69] END msg s4194 t2989 d3 hp69 close=[] | 
+[s4230 t3007 d3 0:3 xl6 hp69/69] END msg s4195 t2990 d3 hp69 close=[] | 
+[s4230 t3007 d3 0:3 xl6 hp69/69] END msg s4196 t2991 d3 hp69 close=[] | 
+[s4230 t3007 d3 0:3 xl6 hp69/69] END msg s4197 t2992 d3 hp69 close=[] | 
+[s4230 t3007 d3 0:3 xl6 hp69/69] END msg s4198 t2993 d3 hp69 close=[] | 
+[s4230 t3007 d3 0:3 xl6 hp69/69] END msg s4202 t2994 d3 hp69 close=[] | 
+[s4230 t3007 d3 0:3 xl6 hp69/69] END msg s4203 t2995 d3 hp69 close=[] | 
+[s4230 t3007 d3 0:3 xl6 hp69/69] END msg s4207 t2996 d3 hp69 close=[] | 
+[s4230 t3007 d3 0:3 xl6 hp69/69] END msg s4208 t2997 d3 hp69 close=[] | 
+[s4230 t3007 d3 0:3 xl6 hp69/69] END msg s4215 t2998 d3 hp69 close=[] | 
+[s4230 t3007 d3 0:3 xl6 hp69/69] END msg s4216 t2999 d3 hp69 close=[] | 
+[s4230 t3007 d3 0:3 xl6 hp69/69] END msg s4217 t3000 d3 hp69 close=[] | 
+[s4230 t3007 d3 0:3 xl6 hp69/69] END msg s4221 t3001 d3 hp69 close=[] | 
+[s4230 t3007 d3 0:3 xl6 hp69/69] END msg s4222 t3002 d3 hp69 close=[] | 
+[s4230 t3007 d3 0:3 xl6 hp69/69] END msg s4223 t3003 d3 hp69 close=[] | 
+[s4230 t3007 d3 0:3 xl6 hp69/69] END msg s4227 t3004 d3 hp69 close=[] | 
+[s4230 t3007 d3 0:3 xl6 hp69/69] END msg s4228 t3005 d3 hp69 close=[] | 
+[s4230 t3007 d3 0:3 xl6 hp69/69] END msg s4229 t3006 d3 hp69 close=['floating eye'] | 
+[s4230 t3007 d3 0:3 xl6 hp69/69] END msg s4230 t3007 d3 hp69 close=['floating eye'] | 

@@ -1406,6 +1406,33 @@ SHOP_DIG_AFTER = 300
 # soldier ant, 63 -> 0 HP (replay: 0.206 -> 0.507); 5 of 270 games were killed while hallucinating. The first version
 # also blocked it while stunned (1 in 4 per letter, ~7% whole): 30 stunned blocks in da-all2's 270 games, no gain.
 ELBERETH_FUTILE = True
+#
+# FOUNTAIN_QUAFF (off, P37 2026-10-05; dive_logic.fountain_quaff): drink from the fountains we pass for the water demon's
+# wish. fountain.c drinkfountain: fate = rnd(30); fate < 10 refreshes, 10-18 'tepid', 19 enlightenment, 20 foul water
+# (vomit, -11..30 nutrition), 21 contaminated (-3..6 Str, d10 HP; no poison resistance on a Valkyrie), 22 2-6 water
+# moccasins, 23 a water demon (dowaterdemon: a wish when rnd(100) > 80 + level_difficulty(), i.e. (20 - Dlvl)%; else a
+# hostile & of level 8, AC -4, speed 12, three 1d3 attacks that summons more demons as it fights), 24 'This water's no
+# good!' (each carried item cursed 1 in 5, -11..30 nutrition), 25 see invisible, 26 monster detection, 27 a gem (or a
+# nymph once looted), 28 a water nymph (steals and teleports), 29 scares every monster, 30 a gush (pools). Then dryup()
+# after EVERY drink: the fountain goes 1 time in 3 (a magic fountain, blessedftn, hands out an attribute instead and
+# never dries while Luck >= 0). So a fountain gives 1 / (1 - 2/3 * 27/30) = 2.5 drinks before it dries or a demon,
+# snakes or nymph stop us; per drink at Dlvl d: wish (20 - d) / 3000, hostile demon (80 + d) / 3000, curse 1/30, nymph
+# 1/30, poison 1/30. Per fountain at Dlvl 3: 0.0142 wishes, 0.069 hostile demons, 0.083 curses, 0.083 nymphs. The
+# sizing read (out/sizing-p37-400.csv) sees 3.77 fountains a game; a wish converts to ~+0.35 progression through
+# TC_ROUTE's ring of teleport control (tele_route.route_wish). Policy: Dungeons levels at or above Dlvl
+# FOUNTAIN_QUAFF_MAX_DLVL, XL >= FOUNTAIN_QUAFF_MIN_XL, HP >= FOUNTAIN_QUAFF_HP of max, not Weak, no hostile in view,
+# no demon vigil running, not levitating, and only once the fountain's dip is not wanted (Excalibur held, no long sword,
+# XL below the dip rule's, NO_DIP_WITH_TOOL): walk to each known fountain within FOUNTAIN_QUAFF_DIST steps and drink
+# until it dries or a demon / nymph / moccasin event fires; a hostile demon is left to water_demon_vigil (demons respect
+# Elbereth; the same 'You unleash' message arms it) and fight2, a wish prompt to agent.update's wish machinery
+# (power.wish_text -> tele_route.route_wish gives the TC ring while TC is unknown). Logs 'FOUNTAIN quaff n=<k>
+# dlvl=<d>' before each drink, 'FOUNTAIN result n=<k> msg=<text>' and 'FOUNTAIN event=<demon|wish|nymph|moccasin|curse|
+# poison|foul|gem|dry|gush|...>' after it, 'FOUNTAIN stop reason=<...>' when a known fountain is passed by.
+FOUNTAIN_QUAFF = False
+FOUNTAIN_QUAFF_MIN_XL = 5
+FOUNTAIN_QUAFF_MAX_DLVL = 12
+FOUNTAIN_QUAFF_HP = 0.9
+FOUNTAIN_QUAFF_DIST = 30
 
 _raw = os.environ.get('JF_CFG')
 if _raw:

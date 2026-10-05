@@ -1,0 +1,213 @@
+[s0 t0 d0 0:0 xl0 hp0/0] TRAJ fp=d7fd22aaeec5 pid=20604 start=1791209470
+[s24 t7 d3 0:3 xl5 hp57/57] STATUS milestone=BE_ON_FIRST_LEVEL diving=False hunger=1 pos=(np.int64(6), np.int64(10)) acts=[SPACE:8 ESC:3 ATTRIBUTES:1 ENHANCE:1 NW:1] gotos=[]
+[s24 t7 d3 0:3 xl5 hp57/57] DIVE level (np.int64(0), np.int64(3)) depth 3
+[s40 t7 d3 0:3 xl5 hp57/57] FOUNTAIN stop reason=distance on_fountain=False
+[s71 t35 d3 0:3 xl5 hp55/57] PANIC AgentPanic: no such food is lying here
+Traceback (most recent call last):
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/strategy.py", line 144, in f
+    return agent.preempt(strategies, self, first_func=f2, continue_after_preemption=continue_after_preemption)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/agent.py", line 310, in preempt
+    next(iterator)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/strategy.py", line 68, in f
+    next(it)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/utils.py", line 134, in f
+    next(it)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/agent.py", line 3111, in eat_corpses_from_ground
+    self.inventory.eat(item)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/item/inventory.py", line 857, in eat
+    raise AgentPanic('no such food is lying here')
+pf_base.exceptions.AgentPanic: no such food is lying here
+
+[s87 t35 d3 0:3 xl5 hp55/57] DIVE task walk to a fountain (quaff)
+[s267 t126 d3 0:3 xl5 hp57/57] FIGHT stall of 56 turns ended (contact): ['leprechaun']
+[s272 t130 d3 0:3 xl5 hp55/57] DIVE task drink from the fountain
+[s272 t130 d3 0:3 xl5 hp55/57] FOUNTAIN quaff n=1 dlvl=3
+[s277 t131 d3 0:3 xl5 hp55/57] FOUNTAIN result n=1 msg='Drink from the fountain? [yn] (n) You unleash a water demon!'
+[s277 t131 d3 0:3 xl5 hp55/57] FOUNTAIN event=demon
+[s277 t131 d3 0:3 xl5 hp55/57] DEMON vigil: stepping off the fountain to (np.int64(17), np.int64(43)) to engrave
+[s279 t132 d3 0:3 xl5 hp52/57] DEMON vigil: Elbereth against the water demon
+[s307 t135 d3 0:3 xl5 hp53/57] DEMON vigil: stepping off the fountain to (np.int64(17), np.int64(43)) to engrave
+[s320 t138 d3 0:3 xl5 hp53/57] DEMON vigil: Elbereth against the water demon
+[s366 t147 d3 0:3 xl5 hp55/57] DEMON vigil: Elbereth against the water demon
+[s403 t155 d3 0:3 xl5 hp56/57] DEMON vigil: Elbereth against the water demon
+[s457 t168 d3 0:3 xl5 hp57/57] DEMON vigil: Elbereth against the water demon
+[s493 t175 d3 0:3 xl5 hp57/57] DEMON vigil: Elbereth against the water demon
+[s570 t197 d3 0:3 xl5 hp57/57] DEMON vigil: Elbereth against the water demon
+[s584 t198 d3 0:3 xl5 hp57/57] DEMON vigil: Elbereth against the water demon
+[s602 t199 d3 0:3 xl5 hp55/57] RANGED hit: holds and Elbereth waits off for 8 turns
+[s622 t208 d3 0:3 xl5 hp56/57] DEMON vigil: Elbereth against the water demon
+[s657 t215 d3 0:3 xl5 hp57/57] DEMON vigil: Elbereth against the water demon
+[s703 t227 d3 0:3 xl5 hp57/57] PANIC AgentPanic: agent position do not match after "move": expected (13, 35), got (12, 34)
+Traceback (most recent call last):
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/strategy.py", line 144, in f
+    return agent.preempt(strategies, self, first_func=f2, continue_after_preemption=continue_after_preemption)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/agent.py", line 310, in preempt
+    next(iterator)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/utils.py", line 134, in f
+    next(it)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/agent.py", line 2714, in fight2
+    wait_counter = self._fight2_perform_action(best_action, wait_counter)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/agent.py", line 2798, in _fight2_perform_action
+    self.move(target_y, target_x)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/agent.py", line 2052, in move
+    raise AgentPanic(f'agent position do not match after "move": '
+pf_base.exceptions.AgentPanic: agent position do not match after "move": expected (13, 35), got (12, 34)
+
+[s793 t258 d3 0:3 xl5 hp53/57] DEMON vigil: Elbereth against the water demon
+[s834 t265 d3 0:3 xl5 hp54/57] DEMON vigil: Elbereth against the water demon
+[s848 t266 d3 0:3 xl5 hp55/57] DEMON vigil: Elbereth against the water demon
+[s867 t267 d3 0:3 xl5 hp55/57] DEMON vigil: Elbereth against the water demon
+[s883 t268 d3 0:3 xl5 hp55/57] DEMON vigil: Elbereth against the water demon
+[s926 t276 d3 0:3 xl5 hp56/57] DEMON vigil: Elbereth against the water demon
+[s968 t280 d3 0:3 xl5 hp57/57] DEMON vigil: Elbereth against the water demon
+[s982 t281 d3 0:3 xl5 hp57/57] DEMON vigil: Elbereth against the water demon
+[s1059 t301 d3 0:3 xl5 hp52/57] FIGHT stall of 22 turns ended (contact): ['goblin', 'manes']
+[s1192 t403 d3 0:3 xl5 hp57/57] DEMON vigil: Elbereth against the water demon
+[s1208 t404 d3 0:3 xl5 hp54/57] RANGED hit: holds and Elbereth waits off for 8 turns
+[s1235 t413 d3 0:3 xl5 hp56/57] DEMON vigil: Elbereth against the water demon
+[s1252 t414 d3 0:3 xl5 hp56/57] DEMON vigil: Elbereth against the water demon
+[s1290 t421 d3 0:3 xl5 hp57/57] DEMON vigil: Elbereth against the water demon
+[s1340 t426 d3 0:3 xl5 hp57/57] DEMON vigil: Elbereth against the water demon
+[s1356 t427 d3 0:3 xl5 hp57/57] DEMON vigil: Elbereth against the water demon
+[s1402 t432 d3 0:3 xl5 hp57/57] DEMON vigil: Elbereth against the water demon
+[s1425 t435 d3 0:3 xl5 hp57/57] DEMON vigil: Elbereth against the water demon
+[s1465 t442 d3 0:3 xl5 hp57/57] DEMON vigil: Elbereth against the water demon
+[s1484 t443 d3 0:3 xl5 hp57/57] DEMON vigil: Elbereth against the water demon
+[s1500 t444 d3 0:3 xl5 hp57/57] DEMON vigil: Elbereth against the water demon
+[s1516 t445 d3 0:3 xl5 hp57/57] DEMON vigil: Elbereth against the water demon
+[s1536 t446 d3 0:3 xl5 hp57/57] DEMON vigil: Elbereth against the water demon
+[s1609 t453 d3 0:3 xl5 hp47/57] DEMON vigil: Elbereth against the water demon
+[s1626 t454 d3 0:3 xl5 hp35/57] ELBERETH rest start: ['water demon']
+[s1834 t503 d3 0:3 xl5 hp25/57] STATUS milestone=BE_ON_FIRST_LEVEL diving=False hunger=1 pos=(np.int64(9), np.int64(9)) acts=[SPACE:451 SEARCH:205 LOOK:196 E:93 W:83] gotos=[check_items(10, 24):16 fountain_quaff(17, 44):10 check_items(6, 13):9]
+[s1841 t504 d3 0:3 xl5 hp26/57] PANIC AgentPanic: no such food is lying here
+Traceback (most recent call last):
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/strategy.py", line 144, in f
+    return agent.preempt(strategies, self, first_func=f2, continue_after_preemption=continue_after_preemption)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/agent.py", line 310, in preempt
+    next(iterator)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/strategy.py", line 68, in f
+    next(it)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/utils.py", line 134, in f
+    next(it)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/agent.py", line 3111, in eat_corpses_from_ground
+    self.inventory.eat(item)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/item/inventory.py", line 857, in eat
+    raise AgentPanic('no such food is lying here')
+pf_base.exceptions.AgentPanic: no such food is lying here
+
+[s1985 t598 d3 0:3 xl5 hp38/57] PANIC AgentPanic: agent position do not match after "move": expected (6, 28), got (6, 29)
+Traceback (most recent call last):
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/agent.py", line 310, in preempt
+    next(iterator)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/utils.py", line 134, in f
+    next(it)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/agent.py", line 2714, in fight2
+    wait_counter = self._fight2_perform_action(best_action, wait_counter)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/agent.py", line 2877, in _fight2_perform_action
+    self.go_to(target_y, target_x, stop_one_before=True, max_steps=1,
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/agent.py", line 2383, in go_to
+    self.move(y, x)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/agent.py", line 2052, in move
+    raise AgentPanic(f'agent position do not match after "move": '
+pf_base.exceptions.AgentPanic: agent position do not match after "move": expected (6, 28), got (6, 29)
+
+[s2027 t608 d3 0:3 xl5 hp19/57] ELBERETH rest start: ['water demon']
+[s2107 t628 d3 0:3 xl5 hp19/57] ELBERETH rest start: ['water demon']
+[s2161 t639 d3 0:3 xl5 hp21/57] ELBERETH rest start: ['water demon']
+[s2202 t645 d3 0:3 xl5 hp22/57] PANIC AgentPanic: agent position do not match after "move": expected (6, 28), got (5, 29)
+Traceback (most recent call last):
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/strategy.py", line 165, in f
+    next(gen)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/strategy.py", line 100, in f
+    next(v1)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/utils.py", line 134, in f
+    next(it)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/item/inventory.py", line 1682, in check_items
+    self.agent.go_to(target_y, target_x, debug_tiles_args=dict(color=(255, 0, 255), is_path=True))
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/agent.py", line 2383, in go_to
+    self.move(y, x)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/agent.py", line 2052, in move
+    raise AgentPanic(f'agent position do not match after "move": '
+pf_base.exceptions.AgentPanic: agent position do not match after "move": expected (6, 28), got (5, 29)
+
+[s2346 t679 d3 0:3 xl5 hp21/57] ELBERETH rest start: ['water demon']
+[s2405 t687 d3 0:3 xl5 hp16/57] ELBERETH rest start: ['grid bug', 'little dog']
+[s2466 t700 d3 0:3 xl5 hp18/57] ELBERETH rest start: ['water demon']
+[s2490 t706 d3 0:3 xl5 hp16/57] RANGED hit: holds and Elbereth waits off for 8 turns
+[s2515 t715 d3 0:3 xl5 hp17/57] ELBERETH rest start: ['water demon']
+[s2568 t722 d3 0:3 xl5 hp18/57] ELBERETH rest start: ['water demon']
+[s2604 t730 d3 0:3 xl5 hp16/57] RANGED hit: holds and Elbereth waits off for 8 turns
+[s2612 t733 d3 0:3 xl5 hp5/57] PRAY hp=5/57 hunger=1 gap=None reason=hp model[ok200=1.00 naughty=0.00 ugangr=0.00 luck>=0=1.00 record=13 p_answered=1.00]
+[s2625 t736 d3 0:3 xl5 hp57/57] PRAY result ok model[ok200=0.22 naughty=0.00 ugangr=0.00 luck>=0=1.00 record=13] prayers=1 failures=0
+[s2645 t739 d3 0:3 xl5 hp25/57] ELBERETH rest start: ['floating eye', 'ice devil', 'water demon', 'little dog']
+[s2767 t764 d3 0:3 xl5 hp29/57] PANIC AgentPanic: agent position do not match after "move": expected (5, 30), got (5, 29)
+Traceback (most recent call last):
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/strategy.py", line 144, in f
+    return agent.preempt(strategies, self, first_func=f2, continue_after_preemption=continue_after_preemption)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/agent.py", line 310, in preempt
+    next(iterator)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/utils.py", line 134, in f
+    next(it)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/agent.py", line 2714, in fight2
+    wait_counter = self._fight2_perform_action(best_action, wait_counter)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/agent.py", line 2798, in _fight2_perform_action
+    self.move(target_y, target_x)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/agent.py", line 2052, in move
+    raise AgentPanic(f'agent position do not match after "move": '
+pf_base.exceptions.AgentPanic: agent position do not match after "move": expected (5, 30), got (5, 29)
+
+[s2826 t772 d3 0:3 xl5 hp27/57] RANGED hit: holds and Elbereth waits off for 8 turns
+[s2841 t777 d3 0:3 xl5 hp11/57] DOOM prayer: gap 41 p_hp=0.33 p_die3=1.00
+[s2841 t777 d3 0:3 xl5 hp11/57] PRAY hp=11/57 hunger=1 gap=41 reason=hp-doom p_hp=0.33 p_die3=1.00 model[ok200=0.33 naughty=0.00 ugangr=0.00 luck>=0=1.00 record=13 p_answered=0.33]
+[s2856 t780 d3 0:3 xl5 hp57/57] PRAY result ok model[ok200=0.22 naughty=0.00 ugangr=0.00 luck>=0=1.00 record=13] prayers=2 failures=0
+[s2869 t781 d3 0:3 xl5 hp37/57] ELBERETH rest start: ['floating eye', 'ice devil', 'water demon', 'water demon', 'water demon', 'little dog']
+[s3208 t834 d3 0:3 xl5 hp42/57] RANGED hit: holds and Elbereth waits off for 8 turns
+[s3236 t835 d3 0:3 xl5 hp42/57] UNSEEN PET may be at (6, 22): last seen [(6, 30)] 7 turns ago, no throw
+[s3236 t835 d3 0:3 xl5 hp42/57] UNSEEN PET may be at (6, 31): last seen [(6, 30)] 7 turns ago, no throw
+[s3241 t836 d3 0:3 xl5 hp38/57] UNSEEN PET may be at (6, 22): last seen [(6, 30)] 8 turns ago, no throw
+[s3241 t836 d3 0:3 xl5 hp38/57] UNSEEN PET may be at (6, 29): last seen [(6, 30)] 8 turns ago, no throw
+[s3241 t836 d3 0:3 xl5 hp38/57] UNSEEN PET may be at (9, 27): last seen [(6, 30)] 8 turns ago, no throw
+[s3243 t837 d3 0:3 xl5 hp38/57] UNSEEN PET may be at (6, 22): last seen [(6, 30)] 9 turns ago, no throw
+[s3243 t837 d3 0:3 xl5 hp38/57] UNSEEN PET may be at (6, 31): last seen [(6, 30)] 9 turns ago, no throw
+[s3249 t838 d3 0:3 xl5 hp37/57] UNSEEN PET may be at (6, 22): last seen [(6, 30)] 10 turns ago, no throw
+[s3249 t838 d3 0:3 xl5 hp37/57] UNSEEN PET may be at (6, 30): last seen [(6, 30)] 10 turns ago, no throw
+[s3253 t839 d3 0:3 xl5 hp27/57] UNSEEN PET may be at (6, 22): last seen [(6, 30)] 11 turns ago, no throw
+[s3253 t839 d3 0:3 xl5 hp27/57] UNSEEN PET may be at (6, 30): last seen [(6, 30)] 11 turns ago, no throw
+[s3273 t839 d3 0:3 xl5 hp27/57] END reason=close restarts=0 ring=30
+[s3273 t839 d3 0:3 xl5 hp27/57] END msg s3068 t813 d3 hp42 close=['hill orc', 'little dog', 'hill orc', 'floating eye'] | The hill orc throws an orcish dagger! The orcish dagger misses the water demon. The orcish dagger hits the little dog.
+[s3273 t839 d3 0:3 xl5 hp27/57] END msg s3076 t814 d3 hp42 close=['water demon', 'hill orc', 'hill orc', 'floating eye', 'giant rat'] | The hill orc turns to flee.  The little dog picks up a +0 dagger.
+[s3273 t839 d3 0:3 xl5 hp27/57] END msg s3090 t815 d3 hp42 close=['water demon', 'hill orc', 'hill orc', 'floating eye', 'giant rat'] | 
+[s3273 t839 d3 0:3 xl5 hp27/57] END msg s3096 t816 d3 hp42 close=['water demon', 'hill orc', 'giant rat', 'floating eye', 'hill orc'] | The water demon turns to flee. The hill orc picks up an orcish dagger.
+[s3273 t839 d3 0:3 xl5 hp27/57] END msg s3101 t817 d3 hp42 close=['water demon', 'hill orc', 'hill orc', 'giant rat', 'floating eye', 'hill orc'] | 
+[s3273 t839 d3 0:3 xl5 hp27/57] END msg s3106 t818 d3 hp42 close=['hill orc', 'hill orc', 'giant rat', 'floating eye', 'hill orc'] | The giant rat turns to flee.
+[s3273 t839 d3 0:3 xl5 hp27/57] END msg s3111 t819 d3 hp43 close=['hill orc', 'hill orc', 'giant rat', 'ice devil', 'hill orc', 'little dog'] | 
+[s3273 t839 d3 0:3 xl5 hp27/57] END msg s3116 t820 d3 hp43 close=['hill orc', 'hill orc', 'hill orc', 'ice devil', 'giant rat', 'hill orc'] | The hill orc turns to flee.  The ice devil turns to flee.
+[s3273 t839 d3 0:3 xl5 hp27/57] END msg s3121 t821 d3 hp43 close=['hill orc', 'little dog', 'ice devil', 'hill orc', 'hill orc', 'giant rat', 'hill orc'] | The hill orc turns to flee.  The little dog turns to flee.
+[s3273 t839 d3 0:3 xl5 hp27/57] END msg s3126 t822 d3 hp43 close=['hill orc', 'hill orc', 'hill orc', 'hill orc', 'giant rat'] | The hill orc turns to flee.
+[s3273 t839 d3 0:3 xl5 hp27/57] END msg s3131 t823 d3 hp43 close=['hill orc', 'hill orc', 'hill orc', 'ice devil', 'giant rat', 'hill orc'] | 
+[s3273 t839 d3 0:3 xl5 hp27/57] END msg s3137 t824 d3 hp43 close=['hill orc', 'hill orc', 'ice devil', 'water demon', 'hill orc', 'giant rat'] | The hill orc turns to flee.  The hill orc throws an orcish dagger! The orcish dagger hits the giant rat.
+[s3273 t839 d3 0:3 xl5 hp27/57] END msg s3145 t825 d3 hp43 close=['hill orc', 'hill orc', 'ice devil', 'giant rat', 'hill orc'] | The hill orc turns to flee.  The hill orc turns to flee.
+[s3273 t839 d3 0:3 xl5 hp27/57] END msg s3151 t826 d3 hp44 close=['hill orc', 'giant rat', 'ice devil', 'giant rat'] | The giant rat turns to flee.  The hill orc picks up an orcish dagger. The ice devil turns to flee.
+[s3273 t839 d3 0:3 xl5 hp27/57] END msg s3157 t827 d3 hp44 close=['hill orc', 'hill orc', 'giant rat', 'ice devil', 'hill orc', 'giant rat'] | The giant rat turns to flee.  The hill orc throws an orcish dagger! The orcish dagger hits the giant rat.
+[s3273 t839 d3 0:3 xl5 hp27/57] END msg s3163 t828 d3 hp44 close=['ice devil', 'giant rat', 'hill orc', 'hill orc', 'hill orc', 'giant rat', 'giant rat'] | The hill orc picks up an orcish dagger.  The hill orc turns to flee. You hear some noises.
+[s3273 t839 d3 0:3 xl5 hp27/57] END msg s3170 t829 d3 hp44 close=['hill orc', 'ice devil', 'hill orc', 'hill orc', 'giant rat', 'giant rat', 'giant rat', 'giant rat'] | The giant rat turns to flee.  The hill orc turns to flee. The hill orc wields an orcish dagger! You have a sad feeling for a moment, then it passes.
+[s3273 t839 d3 0:3 xl5 hp27/57] END msg s3179 t830 d3 hp44 close=['hill orc', 'water demon', 'hill orc', 'ice devil', 'hill orc', 'giant rat', 'giant rat', 'giant rat', 'giant rat', 'hill orc'] | The giant rat turns to flee.  The giant rat turns to flee. The hill orc turns to flee.
+[s3273 t839 d3 0:3 xl5 hp27/57] END msg s3184 t831 d3 hp44 close=['hill orc', 'water demon', 'hill orc', 'ice devil', 'giant rat', 'hill orc', 'giant rat'] | The hill orc turns to flee.
+[s3273 t839 d3 0:3 xl5 hp27/57] END msg s3189 t832 d3 hp44 close=['hill orc', 'ice devil', 'giant rat', 'hill orc'] | 
+[s3273 t839 d3 0:3 xl5 hp27/57] END msg s3197 t833 d3 hp45 close=['hill orc', 'water demon', 'ice devil', 'giant rat', 'giant rat', 'hill orc'] | The giant rat turns to flee.
+[s3273 t839 d3 0:3 xl5 hp27/57] END msg s3208 t834 d3 hp42 close=['hill orc', 'giant rat', 'water demon', 'ice devil', 'giant rat'] | The giant rat turns to flee.  The water demon turns to flee. The hill orc throws an orcish dagger! You are hit by an orcish dagger.  The ice devil turns to flee
+[s3273 t839 d3 0:3 xl5 hp27/57] END msg s3216 t834 d3 hp42 close=['hill orc', 'giant rat', 'water demon', 'ice devil', 'giant rat'] | Advance skills without practice? [yn] (n)   
+[s3273 t839 d3 0:3 xl5 hp27/57] END msg s3224 t834 d3 hp42 close=['hill orc', 'giant rat', 'water demon', 'ice devil', 'giant rat'] | 
+[s3273 t839 d3 0:3 xl5 hp27/57] END msg s3232 t835 d3 hp42 close=['giant rat', 'hill orc', 'ice devil', 'water demon', 'giant rat', 'giant rat'] | k - an orcish dagger.  i - an orcish dagger (at the ready). h - an orcish dagger.
+[s3273 t839 d3 0:3 xl5 hp27/57] END msg s3236 t835 d3 hp42 close=['giant rat', 'hill orc', 'ice devil', 'water demon', 'giant rat', 'giant rat'] | There is an open door here.  Something is written here in the dust. You read: "Elbereth".  You see here 2 arrows.
+[s3273 t839 d3 0:3 xl5 hp27/57] END msg s3241 t836 d3 hp38 close=['hill orc', 'water demon', 'giant rat', 'giant rat'] | The giant rat misses!  The hill orc hits!
+[s3273 t839 d3 0:3 xl5 hp27/57] END msg s3243 t837 d3 hp38 close=['giant rat', 'giant rat', 'hill orc', 'ice devil', 'giant rat', 'water demon', 'giant rat'] | There is an open door here.  Something is written here in the dust. You read: "E?|ercth".  You see here 2 arrows.
+[s3273 t839 d3 0:3 xl5 hp27/57] END msg s3249 t838 d3 hp37 close=['hill orc', 'giant rat', 'giant rat', 'giant rat', 'hill orc', 'hill orc', 'ice devil', 'water demon'] | You hit the hill orc!  The water demon throws a dagger! The dagger misses the ice devil.  You are hit by a dagger. The hill orc misses!
+[s3273 t839 d3 0:3 xl5 hp27/57] END msg s3253 t839 d3 hp27 close=['giant rat', 'giant rat', 'hill orc', 'water demon', 'ice devil', 'hill orc', 'water demon'] | You kill the hill orc!  The giant rat misses!  The giant rat bites! A water demon appears in a cloud of smoke! The water demon swings her aklys.  The water demo

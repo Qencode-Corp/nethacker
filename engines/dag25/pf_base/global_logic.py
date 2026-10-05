@@ -978,6 +978,11 @@ class GlobalLogic:
                 self.dive.ditch_pet_strategy(),
                 # a tour-mode pick trip looks for the Mines branch itself (dive_logic.FAST_BRANCH)
                 self.dive.trip_branch_strategy(),
+                # FOUNTAIN_QUAFF (dive_logic.fountain_quaff_strategy): the tour drinks at the fountains no dip wants; the
+                # dive has its own call in its step (beside prep_fountain_dip). Everything above (rest, fights, holds)
+                # interrupts it; the exploration-level hooks were missed for hundreds of turns (probe s1003)
+                self.dive.fountain_quaff_strategy().every(10).condition(
+                    lambda: jf_config.FOUNTAIN_QUAFF and not self.dive.diving),
             ])
             .preempt(self.agent, [
                 self.solve_sokoban_strategy()

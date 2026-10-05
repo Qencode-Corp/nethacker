@@ -1,0 +1,437 @@
+[s0 t0 d0 0:0 xl0 hp0/0] TRAJ fp=670f8c7335fd pid=20281 start=1791209283
+[s24 t7 d3 0:3 xl5 hp59/59] STATUS milestone=BE_ON_FIRST_LEVEL diving=False hunger=1 pos=(np.int64(4), np.int64(21)) acts=[SPACE:8 ESC:3 ATTRIBUTES:1 ENHANCE:1 NW:1] gotos=[]
+[s24 t7 d3 0:3 xl5 hp59/59] DIVE level (np.int64(0), np.int64(3)) depth 3
+[s40 t7 d3 0:3 xl5 hp59/59] FOUNTAIN stop reason=distance on_fountain=False
+[s306 t179 d3 0:3 xl5 hp52/59] FOUNTAIN stop reason=hp on_fountain=False
+[s326 t197 d3 0:3 xl5 hp55/59] DIVE task walk to a fountain (quaff)
+[s344 t201 d3 0:3 xl5 hp55/59] UNSEEN PET may be at (12, 29): last seen [(12, 29)] 1 turns ago, no throw
+[s347 t202 d3 0:3 xl5 hp55/59] UNSEEN PET may be at (8, 29): last seen [(12, 29)] 2 turns ago, no throw
+[s347 t202 d3 0:3 xl5 hp55/59] UNSEEN PET may be at (12, 29): last seen [(12, 29)] 2 turns ago, no throw
+[s396 t230 d3 0:3 xl5 hp59/59] PANIC AgentPanic: end point is no longer accessible
+Traceback (most recent call last):
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/agent.py", line 310, in preempt
+    next(iterator)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/strategy.py", line 68, in f
+    next(it)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/strategy.py", line 190, in f
+    next(it)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/dive_logic.py", line 3195, in fountain_quaff_strategy
+    if not self.fountain_quaff():
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/dive_logic.py", line 3140, in fountain_quaff
+    agent.go_to(y, x)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/agent.py", line 2355, in go_to
+    raise AgentPanic('end point is no longer accessible')
+pf_base.exceptions.AgentPanic: end point is no longer accessible
+
+[s418 t236 d3 0:3 xl5 hp59/59] DIVE task drink from the fountain
+[s418 t236 d3 0:3 xl5 hp59/59] FOUNTAIN quaff n=1 dlvl=3
+[s420 t237 d3 0:3 xl5 hp59/59] FOUNTAIN result n=1 msg='Drink from the fountain? [yn] (n) The cool draught refreshes you.'
+[s420 t237 d3 0:3 xl5 hp59/59] FOUNTAIN quaff n=2 dlvl=3
+[s424 t237 d3 0:3 xl5 hp59/59] FOUNTAIN result n=2 msg="Drink from the fountain? [yn] (n) You sense the presence of monsters.  (For instructions type a '?')"
+[s424 t237 d3 0:3 xl5 hp59/59] PANIC ValueError: 'All monsters currently shown on the map:' is not in list
+Traceback (most recent call last):
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/dive_logic.py", line 3160, in fountain_quaff
+    with agent.atom_operation():
+         ^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.12/3.12.14/Frameworks/Python.framework/Versions/3.12/lib/python3.12/contextlib.py", line 144, in __exit__
+    next(self.gen)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/agent.py", line 189, in atom_operation
+    self.update_state()
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/agent.py", line 679, in update_state
+    func()
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/monster_tracker/monster_tracker.py", line 79, in update
+    all_monsters = self.take_all_monsters()
+                   ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/monster_tracker/monster_tracker.py", line 36, in take_all_monsters
+    index = self.agent.popup.index('All monsters currently shown on the map:')
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: 'All monsters currently shown on the map:' is not in list
+
+[s444 t238 d3 0:3 xl5 hp59/59] FOUNTAIN quaff n=3 dlvl=3
+[s446 t239 d3 0:3 xl5 hp59/59] FOUNTAIN result n=3 msg='Drink from the fountain? [yn] (n) You spot a gem in the sparkling waters!'
+[s446 t239 d3 0:3 xl5 hp59/59] FOUNTAIN event=gem
+[s446 t239 d3 0:3 xl5 hp59/59] FOUNTAIN quaff n=4 dlvl=3
+[s448 t240 d3 0:3 xl5 hp59/59] FOUNTAIN result n=4 msg='Drink from the fountain? [yn] (n) This tepid water is tasteless.'
+[s448 t240 d3 0:3 xl5 hp59/59] FOUNTAIN quaff n=5 dlvl=3
+[s452 t241 d3 0:3 xl5 hp59/59] FOUNTAIN result n=5 msg='Drink from the fountain? [yn] (n) This tepid water is tasteless. Dry up fountain? [yn] (n) The fountain dries up!'
+[s452 t241 d3 0:3 xl5 hp59/59] FOUNTAIN event=dry
+[s622 t367 d3 0:3 xl5 hp59/59] PANIC AgentPanic: items below me changed
+Traceback (most recent call last):
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/item/inventory.py", line 602, in get_items_below_me
+    with self.agent.atom_operation():
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.12/3.12.14/Frameworks/Python.framework/Versions/3.12/lib/python3.12/contextlib.py", line 144, in __exit__
+    next(self.gen)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/agent.py", line 189, in atom_operation
+    self.update_state()
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/agent.py", line 699, in update_state
+    self.call_update_functions()
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/agent.py", line 725, in call_update_functions
+    func()
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/item/inventory.py", line 159, in f
+    raise AgentPanic('items below me changed')
+pf_base.exceptions.AgentPanic: items below me changed
+
+[s673 t391 d3 0:3 xl5 hp59/59] PANIC AgentPanic: agent position do not match after "move": expected (5, 45), got (6, 46)
+Traceback (most recent call last):
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/strategy.py", line 144, in f
+    return agent.preempt(strategies, self, first_func=f2, continue_after_preemption=continue_after_preemption)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/agent.py", line 299, in preempt
+    val = f()
+          ^^^
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/strategy.py", line 139, in f2
+    next(gen)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/exploration_logic.py", line 523, in open_visit_search
+    self.agent.go_to(target_y, target_x, fast=fast_go_to, debug_tiles_args=dict(
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/agent.py", line 2383, in go_to
+    self.move(y, x)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/agent.py", line 2052, in move
+    raise AgentPanic(f'agent position do not match after "move": '
+pf_base.exceptions.AgentPanic: agent position do not match after "move": expected (5, 45), got (6, 46)
+
+[s747 t425 d3 0:3 xl5 hp59/59] UNSEEN PET may be at (9, 49): last seen [(9, 52)] 3 turns ago, no throw
+[s750 t426 d3 0:3 xl5 hp59/59] UNSEEN PET may be at (9, 45): last seen [(9, 52)] 4 turns ago, no throw
+[s750 t426 d3 0:3 xl5 hp59/59] UNSEEN PET may be at (9, 49): last seen [(9, 52)] 4 turns ago, no throw
+[s751 t427 d3 0:3 xl5 hp59/59] UNSEEN PET may be at (9, 44): last seen [(9, 52)] 5 turns ago, no throw
+[s751 t427 d3 0:3 xl5 hp59/59] UNSEEN PET may be at (9, 48): last seen [(9, 52)] 5 turns ago, no throw
+[s752 t428 d3 0:3 xl5 hp59/59] UNSEEN PET may be at (9, 43): last seen [(9, 52)] 6 turns ago, no throw
+[s752 t428 d3 0:3 xl5 hp59/59] UNSEEN PET may be at (9, 47): last seen [(9, 52)] 6 turns ago, no throw
+[s840 t500 d3 0:3 xl5 hp59/59] STATUS milestone=BE_ON_FIRST_LEVEL diving=False hunger=1 pos=(np.int64(14), np.int64(63)) acts=[SEARCH:158 E:83 SPACE:78 W:67 SW:44] gotos=[go_to_item_to_pickup(9, 29):23 check_items(17, 7):11 open_visit_search(9, 42):8]
+[s1025 t650 d4 0:4 xl5 hp59/59] DIVE level (np.int64(0), np.int64(4)) depth 4
+[s1088 t702 d5 0:5 xl5 hp59/59] DIVE level (np.int64(0), np.int64(5)) depth 5
+[s1254 t809 d4 0:4 xl5 hp59/59] DIVE level (np.int64(0), np.int64(4)) depth 4
+[s1277 t828 d3 0:3 xl5 hp59/59] DIVE level (np.int64(0), np.int64(3)) depth 3
+[s1429 t1000 d3 0:3 xl5 hp58/59] STATUS milestone=BE_ON_FIRST_LEVEL diving=False hunger=1 pos=(np.int64(4), np.int64(54)) acts=[SEARCH:110 W:83 E:58 SPACE:45 SW:33] gotos=[open_visit_search(14, 57):6 open_visit_search(16, 30):4 open_visit_search(3, 48):3]
+[s1699 t1187 d3 0:3 xl5 hp59/59] PANIC AgentPanic: no such food is lying here
+Traceback (most recent call last):
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/strategy.py", line 144, in f
+    return agent.preempt(strategies, self, first_func=f2, continue_after_preemption=continue_after_preemption)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/agent.py", line 310, in preempt
+    next(iterator)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/strategy.py", line 68, in f
+    next(it)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/utils.py", line 134, in f
+    next(it)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/agent.py", line 3111, in eat_corpses_from_ground
+    self.inventory.eat(item)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/item/inventory.py", line 857, in eat
+    raise AgentPanic('no such food is lying here')
+pf_base.exceptions.AgentPanic: no such food is lying here
+
+[s1812 t1256 d3 0:3 xl5 hp59/59] PANIC AgentPanic: items below me changed
+Traceback (most recent call last):
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/item/inventory.py", line 602, in get_items_below_me
+    with self.agent.atom_operation():
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.12/3.12.14/Frameworks/Python.framework/Versions/3.12/lib/python3.12/contextlib.py", line 144, in __exit__
+    next(self.gen)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/agent.py", line 189, in atom_operation
+    self.update_state()
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/agent.py", line 699, in update_state
+    self.call_update_functions()
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/agent.py", line 725, in call_update_functions
+    func()
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/item/inventory.py", line 159, in f
+    raise AgentPanic('items below me changed')
+pf_base.exceptions.AgentPanic: items below me changed
+
+[s2086 t1500 d3 0:3 xl5 hp59/59] STATUS milestone=BE_ON_FIRST_LEVEL diving=False hunger=2 pos=(np.int64(5), np.int64(19)) acts=[W:92 SPACE:80 SEARCH:72 NUM_5:58 E:40] gotos=[check_items(9, 37):3 _fight2_perform_action(9, 38):2 _fight2_perform_action(9, 39):2]
+[s2115 t1537 d3 0:3 xl5 hp59/59] PRAY hp=59/59 hunger=3 gap=None reason=None model[ok200=1.00 naughty=0.00 ugangr=0.00 luck>=0=1.00 record=16 p_answered=1.00]
+[s2120 t1540 d3 0:3 xl5 hp59/59] PRAY result ok model[ok200=0.22 naughty=0.00 ugangr=0.00 luck>=0=1.00 record=16] prayers=1 failures=0
+[s2346 t1809 d3 0:3 xl5 hp40/59] ELBERETH rest start: ['rothe', 'bat', 'rothe']
+[s2420 t1824 d3 0:3 xl5 hp21/59] ELBERETH rest start: ['rothe', 'bat']
+[s2465 t1834 d3 0:3 xl5 hp19/59] PANIC AgentPanic: no such food is lying here
+Traceback (most recent call last):
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/strategy.py", line 144, in f
+    return agent.preempt(strategies, self, first_func=f2, continue_after_preemption=continue_after_preemption)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/agent.py", line 310, in preempt
+    next(iterator)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/strategy.py", line 68, in f
+    next(it)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/utils.py", line 134, in f
+    next(it)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/agent.py", line 3111, in eat_corpses_from_ground
+    self.inventory.eat(item)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/item/inventory.py", line 857, in eat
+    raise AgentPanic('no such food is lying here')
+pf_base.exceptions.AgentPanic: no such food is lying here
+
+[s2492 t1837 d3 0:3 xl5 hp11/59] LAST RESORT: zapping unknown 'a maple wand'
+[s2499 t1838 d3 0:3 xl5 hp11/59] LAST RESORT: quaffing unknown 'a ruby potion'
+[s2510 t1839 d3 0:3 xl5 hp8/59] LAST RESORT: reading unknown 'a scroll labeled VERR YED HORRE'
+[s2526 t1840 d3 0:3 xl5 hp8/59] LAST RESORT: reading unknown 'a scroll labeled VELOX NEB'
+[s2533 t1841 d3 0:3 xl5 hp9/59] LAST RESORT: reading unknown 'a scroll labeled LOREM IPSUM'
+[s2538 t1841 d3 0:3 xl5 hp9/59] PANIC IndexError: list index out of range
+Traceback (most recent call last):
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/agent.py", line 310, in preempt
+    next(iterator)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/utils.py", line 134, in f
+    next(it)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/agent.py", line 2588, in fight2
+    self.character.parse_enhance_view()
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/character.py", line 483, in parse_enhance_view
+    self._parse_enhance_view()
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/fountain_harness.py", line 245, in patched
+    return orig(self)
+           ^^^^^^^^^^
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/character.py", line 506, in _parse_enhance_view
+    if self.agent.popup[0] not in ('Current skills:', 'Pick a skill to advance:'):
+       ~~~~~~~~~~~~~~~~^^^
+IndexError: list index out of range
+
+[s2564 t1842 d3 0:3 xl5 hp1/59] DOOM prayer: gap 302 p_hp=0.66 p_die3=0.97
+[s2564 t1842 d3 0:3 xl5 hp1/59] PRAY hp=1/59 hunger=1 gap=302 reason=hp-doom p_hp=0.66 p_die3=0.97 model[ok200=0.66 naughty=0.00 ugangr=0.00 luck>=0=1.00 record=19 p_answered=0.66]
+[s2572 t1845 d3 0:3 xl5 hp59/59] PRAY result ok model[ok200=0.22 naughty=0.00 ugangr=0.00 luck>=0=1.00 record=19] prayers=2 failures=0
+[s2593 t1857 d3 0:3 xl5 hp57/59] PANIC AgentPanic: no such food is lying here
+Traceback (most recent call last):
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/strategy.py", line 144, in f
+    return agent.preempt(strategies, self, first_func=f2, continue_after_preemption=continue_after_preemption)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/agent.py", line 310, in preempt
+    next(iterator)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/strategy.py", line 68, in f
+    next(it)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/utils.py", line 134, in f
+    next(it)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/agent.py", line 3111, in eat_corpses_from_ground
+    self.inventory.eat(item)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/item/inventory.py", line 857, in eat
+    raise AgentPanic('no such food is lying here')
+pf_base.exceptions.AgentPanic: no such food is lying here
+
+[s2636 t1874 d3 0:3 xl5 hp59/59] DIVE attacking a peaceful dwarf at (16, 15) for its digging tool (digger=False, align~19)
+[s2639 t1875 d3 0:3 xl5 hp59/59] ALIGN estimate 18 (cap 19) after -1
+[s2639 t1875 d3 0:3 xl5 hp59/59] DIGGER dwarf wields a digging tool at (16, 15)
+[s2648 t1877 d3 0:3 xl6 hp67/67] DIVE killed a dwarf (1); piles to check: [(np.int64(16), np.int64(16))]
+[s2648 t1877 d3 0:3 xl6 hp67/67] ALIGN estimate 6 (cap 19) after -12
+[s2648 t1877 d3 0:3 xl6 hp67/67] DWARF died near [(16, 16)]: piles to check
+[s2668 t1879 d3 0:3 xl6 hp67/67] DIVE checked the pile at (np.int64(16), np.int64(16)): tool a pick-axe
+[s2680 t1886 d3 0:3 xl6 hp67/67] PANIC AgentPanic: agent position do not match after "move": expected (18, 20), got (17, 19)
+Traceback (most recent call last):
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/strategy.py", line 165, in f
+    next(gen)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/strategy.py", line 100, in f
+    next(v1)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/utils.py", line 134, in f
+    next(it)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/item/inventory.py", line 1682, in check_items
+    self.agent.go_to(target_y, target_x, debug_tiles_args=dict(color=(255, 0, 255), is_path=True))
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/agent.py", line 2383, in go_to
+    self.move(y, x)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/agent.py", line 2052, in move
+    raise AgentPanic(f'agent position do not match after "move": '
+pf_base.exceptions.AgentPanic: agent position do not match after "move": expected (18, 20), got (17, 19)
+
+[s2711 t1895 d3 0:3 xl6 hp67/67] PANIC AgentPanic: Monster on a next tile when moving: (11,16)
+Traceback (most recent call last):
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/strategy.py", line 144, in f
+    return agent.preempt(strategies, self, first_func=f2, continue_after_preemption=continue_after_preemption)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/agent.py", line 297, in preempt
+    val = f.run()
+          ^^^^^^^
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/strategy.py", line 48, in run
+    next(gen)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/exploration_logic.py", line 523, in open_visit_search
+    self.agent.go_to(target_y, target_x, fast=fast_go_to, debug_tiles_args=dict(
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/agent.py", line 2383, in go_to
+    self.move(y, x)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/agent.py", line 2020, in move
+    raise AgentPanic(f'Monster on a next tile when moving: ({expected_y},{expected_x})')
+pf_base.exceptions.AgentPanic: Monster on a next tile when moving: (11,16)
+
+[s2799 t1949 d3 0:3 xl6 hp67/67] PANIC AgentPanic: items below me changed
+Traceback (most recent call last):
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/item/inventory.py", line 602, in get_items_below_me
+    with self.agent.atom_operation():
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.12/3.12.14/Frameworks/Python.framework/Versions/3.12/lib/python3.12/contextlib.py", line 144, in __exit__
+    next(self.gen)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/agent.py", line 189, in atom_operation
+    self.update_state()
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/agent.py", line 699, in update_state
+    self.call_update_functions()
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/agent.py", line 725, in call_update_functions
+    func()
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/item/inventory.py", line 159, in f
+    raise AgentPanic('items below me changed')
+pf_base.exceptions.AgentPanic: items below me changed
+
+[s2820 t1949 d3 0:3 xl6 hp67/67] POWER scare monster is labeled 'LEP GEX VEN ZEA' (a scroll turned to dust on pickup)
+[s2859 t1963 d3 0:3 xl6 hp67/67] PANIC AgentPanic: items below me changed
+Traceback (most recent call last):
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/item/inventory.py", line 602, in get_items_below_me
+    with self.agent.atom_operation():
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.12/3.12.14/Frameworks/Python.framework/Versions/3.12/lib/python3.12/contextlib.py", line 144, in __exit__
+    next(self.gen)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/agent.py", line 189, in atom_operation
+    self.update_state()
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/agent.py", line 699, in update_state
+    self.call_update_functions()
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/agent.py", line 725, in call_update_functions
+    func()
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/item/inventory.py", line 159, in f
+    raise AgentPanic('items below me changed')
+pf_base.exceptions.AgentPanic: items below me changed
+
+[s2908 t1966 d3 0:3 xl6 hp67/67] PANIC AgentPanic: items below me changed
+Traceback (most recent call last):
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/item/inventory.py", line 602, in get_items_below_me
+    with self.agent.atom_operation():
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.12/3.12.14/Frameworks/Python.framework/Versions/3.12/lib/python3.12/contextlib.py", line 144, in __exit__
+    next(self.gen)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/agent.py", line 189, in atom_operation
+    self.update_state()
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/agent.py", line 699, in update_state
+    self.call_update_functions()
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/agent.py", line 725, in call_update_functions
+    func()
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/item/inventory.py", line 159, in f
+    raise AgentPanic('items below me changed')
+pf_base.exceptions.AgentPanic: items below me changed
+
+[s2991 t2000 d3 0:3 xl6 hp67/67] STATUS milestone=BE_ON_FIRST_LEVEL diving=False hunger=0 pos=(np.int64(16), np.int64(26)) acts=[SPACE:198 SEARCH:68 W:52 NW:51 NUM_5:47] gotos=[check_items(18, 20):7 open_visit_search(9, 12):5 open_visit_search(12, 15):4]
+[s3027 t2013 d3 0:3 xl6 hp67/67] PANIC AgentPanic: items below me changed
+Traceback (most recent call last):
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/item/inventory.py", line 602, in get_items_below_me
+    with self.agent.atom_operation():
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.12/3.12.14/Frameworks/Python.framework/Versions/3.12/lib/python3.12/contextlib.py", line 144, in __exit__
+    next(self.gen)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/agent.py", line 189, in atom_operation
+    self.update_state()
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/agent.py", line 699, in update_state
+    self.call_update_functions()
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/agent.py", line 725, in call_update_functions
+    func()
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/item/inventory.py", line 159, in f
+    raise AgentPanic('items below me changed')
+pf_base.exceptions.AgentPanic: items below me changed
+
+[s3060 t2019 d3 0:3 xl6 hp67/67] PANIC AgentPanic: end point is no longer accessible
+Traceback (most recent call last):
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/strategy.py", line 139, in f2
+    next(gen)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/strategy.py", line 144, in f
+    return agent.preempt(strategies, self, first_func=f2, continue_after_preemption=continue_after_preemption)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/agent.py", line 297, in preempt
+    val = f.run()
+          ^^^^^^^
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/strategy.py", line 48, in run
+    next(gen)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/exploration_logic.py", line 523, in open_visit_search
+    self.agent.go_to(target_y, target_x, fast=fast_go_to, debug_tiles_args=dict(
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/agent.py", line 2355, in go_to
+    raise AgentPanic('end point is no longer accessible')
+pf_base.exceptions.AgentPanic: end point is no longer accessible
+
+[s3142 t2055 d3 0:3 xl6 hp67/67] PANIC AgentPanic: Monster on a next tile when moving: (8,30)
+Traceback (most recent call last):
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/strategy.py", line 165, in f
+    next(gen)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/strategy.py", line 100, in f
+    next(v1)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/utils.py", line 134, in f
+    next(it)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/item/inventory.py", line 1682, in check_items
+    self.agent.go_to(target_y, target_x, debug_tiles_args=dict(color=(255, 0, 255), is_path=True))
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/agent.py", line 2383, in go_to
+    self.move(y, x)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/agent.py", line 2020, in move
+    raise AgentPanic(f'Monster on a next tile when moving: ({expected_y},{expected_x})')
+pf_base.exceptions.AgentPanic: Monster on a next tile when moving: (8,30)
+
+[s3719 t2500 d3 0:3 xl6 hp67/67] STATUS milestone=BE_ON_FIRST_LEVEL diving=False hunger=1 pos=(np.int64(17), np.int64(18)) acts=[SPACE:107 SEARCH:93 SW:48 NUM_5:45 W:44] gotos=[check_items(8, 31):8 open_visit_search(9, 12):5 open_visit_search(13, 8):4]
+[s3730 t2514 d3 0:3 xl6 hp67/67] PANIC AgentPanic: end point is no longer accessible
+Traceback (most recent call last):
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/strategy.py", line 48, in run
+    next(gen)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/strategy.py", line 144, in f
+    return agent.preempt(strategies, self, first_func=f2, continue_after_preemption=continue_after_preemption)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/agent.py", line 299, in preempt
+    val = f()
+          ^^^
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/strategy.py", line 139, in f2
+    next(gen)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/exploration_logic.py", line 523, in open_visit_search
+    self.agent.go_to(target_y, target_x, fast=fast_go_to, debug_tiles_args=dict(
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/agent.py", line 2355, in go_to
+    raise AgentPanic('end point is no longer accessible')
+pf_base.exceptions.AgentPanic: end point is no longer accessible
+
+[s3747 t2515 d3 0:3 xl6 hp67/67] PANIC AgentPanic: end point is no longer accessible
+Traceback (most recent call last):
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/strategy.py", line 139, in f2
+    next(gen)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/strategy.py", line 144, in f
+    return agent.preempt(strategies, self, first_func=f2, continue_after_preemption=continue_after_preemption)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/agent.py", line 299, in preempt
+    val = f()
+          ^^^
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/strategy.py", line 139, in f2
+    next(gen)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/exploration_logic.py", line 523, in open_visit_search
+    self.agent.go_to(target_y, target_x, fast=fast_go_to, debug_tiles_args=dict(
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/agent.py", line 2355, in go_to
+    raise AgentPanic('end point is no longer accessible')
+pf_base.exceptions.AgentPanic: end point is no longer accessible
+
+[s4278 t2938 d3 0:3 xl6 hp67/67] FIGHT stall of 45 turns ended (contact): ['rock mole']
+[s4381 t2984 d3 0:3 xl6 hp50/67] PANIC AgentPanic: no such food is lying here
+Traceback (most recent call last):
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/strategy.py", line 144, in f
+    return agent.preempt(strategies, self, first_func=f2, continue_after_preemption=continue_after_preemption)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/agent.py", line 310, in preempt
+    next(iterator)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/strategy.py", line 68, in f
+    next(it)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/utils.py", line 134, in f
+    next(it)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/agent.py", line 3111, in eat_corpses_from_ground
+    self.inventory.eat(item)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-fountain/engines/dag25/pf_base/item/inventory.py", line 857, in eat
+    raise AgentPanic('no such food is lying here')
+pf_base.exceptions.AgentPanic: no such food is lying here
+
+[s4417 t3003 d3 0:3 xl6 hp53/67] STATUS milestone=BE_ON_FIRST_LEVEL diving=False hunger=1 pos=(np.int64(18), np.int64(20)) acts=[SPACE:104 SEARCH:63 W:46 NUM_5:45 N:41] gotos=[open_visit_search(16, 25):3 open_visit_search(5, 17):2 check_items(4, 22):2]
+[s4421 t3007 d3 0:3 xl6 hp54/67] END reason=close restarts=0 ring=30
+[s4421 t3007 d3 0:3 xl6 hp54/67] END msg s4331 t2970 d3 hp62 close=['rothe'] | You see here a rothe corpse.
+[s4421 t3007 d3 0:3 xl6 hp54/67] END msg s4335 t2970 d3 hp62 close=['rothe'] | Advance skills without practice? [yn] (n)   
+[s4421 t3007 d3 0:3 xl6 hp54/67] END msg s4336 t2971 d3 hp62 close=[] | 
+[s4421 t3007 d3 0:3 xl6 hp54/67] END msg s4340 t2972 d3 hp62 close=['rothe'] | 
+[s4421 t3007 d3 0:3 xl6 hp54/67] END msg s4342 t2973 d3 hp62 close=['rothe'] | You miss the rothe.  The rothe misses!  The rothe misses! The rothe misses!
+[s4421 t3007 d3 0:3 xl6 hp54/67] END msg s4344 t2974 d3 hp59 close=['rothe', 'rothe'] | You miss the rothe.  The rothe misses!  The rothe misses! The rothe bites!
+[s4421 t3007 d3 0:3 xl6 hp54/67] END msg s4346 t2975 d3 hp59 close=['rothe', 'rothe'] | You hit the rothe!  The rothe misses!  The rothe just misses! The rothe misses!
+[s4421 t3007 d3 0:3 xl6 hp54/67] END msg s4347 t2976 d3 hp60 close=['rothe'] | You kill the rothe!
+[s4421 t3007 d3 0:3 xl6 hp54/67] END msg s4349 t2977 d3 hp52 close=['rothe'] | You hit the rothe!  The rothe hits!  The rothe misses! The rothe bites!
+[s4421 t3007 d3 0:3 xl6 hp54/67] END msg s4350 t2978 d3 hp52 close=[] | You kill the rothe!
+[s4421 t3007 d3 0:3 xl6 hp54/67] END msg s4359 t2979 d3 hp49 close=['rothe'] | The rothe hits!  The rothe bites!  The rothe misses!
+[s4421 t3007 d3 0:3 xl6 hp54/67] END msg s4363 t2979 d3 hp49 close=['rothe'] | Advance skills without practice? [yn] (n)   
+[s4421 t3007 d3 0:3 xl6 hp54/67] END msg s4364 t2980 d3 hp49 close=[] | You kill the rothe!
+[s4421 t3007 d3 0:3 xl6 hp54/67] END msg s4374 t2983 d3 hp50 close=[] | Blecch!  Rotten food!  You feel rather light headed. You finish eating the rothe corpse.
+[s4421 t3007 d3 0:3 xl6 hp54/67] END msg s4379 t2984 d3 hp50 close=[] | 
+[s4421 t3007 d3 0:3 xl6 hp54/67] END msg s4382 t2984 d3 hp50 close=[] | Never mind.
+[s4421 t3007 d3 0:3 xl6 hp54/67] END msg s4383 t2984 d3 hp50 close=[] | 
+[s4421 t3007 d3 0:3 xl6 hp54/67] END msg s4389 t2984 d3 hp50 close=[] | 
+[s4421 t3007 d3 0:3 xl6 hp54/67] END msg s4394 t2984 d3 hp50 close=[] | 
+[s4421 t3007 d3 0:3 xl6 hp54/67] END msg s4397 t2984 d3 hp50 close=[] | 
+[s4421 t3007 d3 0:3 xl6 hp54/67] END msg s4403 t2985 d3 hp50 close=[] | You feel less confused now.
+[s4421 t3007 d3 0:3 xl6 hp54/67] END msg s4408 t2995 d3 hp52 close=[] | This rothe corpse tastes okay.  You finish eating the rothe corpse.
+[s4421 t3007 d3 0:3 xl6 hp54/67] END msg s4409 t2996 d3 hp52 close=[] | 
+[s4421 t3007 d3 0:3 xl6 hp54/67] END msg s4413 t2997 d3 hp52 close=[] | Something is written here in the dust.  You read: "_  ?   r".
+[s4421 t3007 d3 0:3 xl6 hp54/67] END msg s4415 t2998 d3 hp52 close=[] | 
+[s4421 t3007 d3 0:3 xl6 hp54/67] END msg s4417 t3003 d3 hp53 close=[] | 
+[s4421 t3007 d3 0:3 xl6 hp54/67] END msg s4418 t3004 d3 hp53 close=[] | 
+[s4421 t3007 d3 0:3 xl6 hp54/67] END msg s4419 t3005 d3 hp53 close=[] | You see here 2 rothe corpses.
+[s4421 t3007 d3 0:3 xl6 hp54/67] END msg s4420 t3006 d3 hp54 close=[] | There is a doorway here.  You see here a dwarvish spear.
+[s4421 t3007 d3 0:3 xl6 hp54/67] END msg s4421 t3007 d3 hp54 close=[] | 
