@@ -68,6 +68,11 @@ BUGLE = O.from_name('bugle')
 # BUGLE_SCARE: the mercenaries a bugle wakes and turns hostile (music.c awaken_soldiers: is_mercenary)
 _MERCENARIES = frozenset(('soldier', 'sergeant', 'lieutenant', 'captain', 'watchman', 'watch captain'))
 HORNS = frozenset((TOOLED_HORN, FROST_HORN, FIRE_HORN, HORN_OF_PLENTY))
+# KEEP_INSTRUMENT / the castle passtune (music.c do_play_instrument: flutes, horns, harps and the bugle play notes;
+# drums, whistles and the horn of plenty don't)
+FLUTES = frozenset((O.from_name('wooden flute'), O.from_name('magic flute')))
+HARPS = frozenset((O.from_name('wooden harp'), O.from_name('magic harp')))
+TUNE_HORNS = frozenset((TOOLED_HORN, FROST_HORN, FIRE_HORN))
 DRUMS = frozenset((LEATHER_DRUM, EARTHQUAKE_DRUM))
 
 G_GENO = 0x0020
@@ -463,6 +468,29 @@ def bugle_ok(agent):
         return True
     except Exception:
         return False
+
+
+def passtune_rank(agent, item):
+    """KEEP_INSTRUMENT (ItemPriority): how good an item is as the castle's passtune instrument -- 0 a flute or a harp
+    (identified or by appearance), 1 a horn that may still play notes (tooled/frost/fire, or an unknown 'horn' whose
+    look hasn't proved a horn of plenty when blown), 2 a bugle; None for anything else (drums, whistles, unicorn horns,
+    a known horn of plenty). Lower is better; ties go by weight in the caller."""
+    if item.category != nh.TOOL_CLASS or not item.objs:
+        return None
+    objs = set(item.objs)
+    if objs <= FLUTES or objs <= HARPS:
+        return 0
+    if item.is_unambiguous():
+        if item.object in TUNE_HORNS:
+            return 1
+        if item.object == BUGLE:
+            return 2
+        return None
+    if objs <= HORNS:
+        if state(agent).horn_glyphs.get(item.glyphs[0] if item.glyphs else None) == 'plenty':
+            return None
+        return 1
+    return None
 
 
 def keep_kind(agent, item):
