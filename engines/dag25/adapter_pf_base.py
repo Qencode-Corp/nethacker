@@ -185,6 +185,7 @@ class AutoAscendDriver:
         self._agent.resumed_game = not fresh_game
         if not fresh_game and previous is not None:
             self._agent._jf_ring = getattr(previous, '_jf_ring', self._agent._jf_ring)
+            self._agent._jf_sz = getattr(previous, '_jf_sz', self._agent._jf_sz)
         if not fresh_game and previous is not None:
             self._agent.previous_character = previous.character
         # the prayer state survives a restart: a fresh agent took the game for prayer-free and could pray
@@ -279,6 +280,10 @@ class AutoAscendDriver:
             where = (f't{bl.time} d{bl.depth} {bl.dungeon_number}:{bl.level_number} xl{bl.experience_level} '
                      f'hp{bl.hitpoints}/{bl.max_hitpoints}') if bl is not None else 't0 d0 0:0 xl0 hp0/0'
             step = getattr(agent, 'step_count', 0)
+            try:
+                agent._jf_sizing_end()   # SIZING (P37): the LEVEL line for the level the game ended on
+            except Exception:  # noqa: BLE001
+                pass
             jf_log.log(f'[s{step} {where}] END reason={reason} restarts={self._restarts} ring={len(ring)}')
             for st, t, d, hp, mons, msg in ring:
                 jf_log.log(f'[s{step} {where}] END msg s{st} t{t} d{d} hp{hp} close={mons} | {msg}')
