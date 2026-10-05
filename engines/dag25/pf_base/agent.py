@@ -113,6 +113,9 @@ class Agent:
         self._allow_attack_all_turn = -float('inf')
         self._hb_actions = Counter()   # actions and go_to targets since the last STATUS heartbeat
         self._jf_ring = deque(maxlen=30)   # Jev instrument (logging only): the last 30 steps for the END block
+        # SIZING (Jev instrument, logging only, P37): per-level feature sets, the level's arrival turn, the last MSG
+        # logged, the KIT lines written; nothing here is read by any strategy
+        self._jf_sz = dict(key=None, arrive=0, feats={}, depths={}, last_msg='', kit=set())
         self._hb_gotos = Counter()
         self._fight_stall = None       # (turn a contactless fight began, XP then, last fight2 turn) FIGHT_STALL_TURNS
         self._fight_ignored = {}       # (level key, glyph) -> [y, x, until turn, anywhere]: monsters fight2 let go
@@ -714,6 +717,98 @@ class Agent:
             self._jf_ring.append((self.step_count, bl.time, bl.depth, bl.hitpoints, close, (self.message or '')[:160]))
         except Exception:  # noqa: BLE001
             pass
+        try:
+            self._jf_sizing()
+        except Exception:  # noqa: BLE001
+            pass
+
+    # SIZING (Jev instrument, logging only, P37): how many thrones / fountains / altars / sinks the hero sees per level,
+    # how much of each level it explores, the wish-relevant kit at Dlvl 20 and at the Castle, and a whitelist of game
+    # messages (throne, fountain, sink and drawbridge events). Reads blstats, glyphs, the level memory and the
+    # inventory; never steps, never bfs(), never writes agent state the strategies read.
+    _JF_SZ_FEATS = (('thrones', SS.S_throne), ('fountains', SS.S_fountain), ('altars', SS.S_altar), ('sinks', SS.S_sink))
+    _JF_SZ_MSGS = ('courtly conversation', 'sceptre pounded', 'Off with', 'bubbling water', 'water falling on coins',
+                   'You hear a gurgling noise', 'slow drip', 'tumbler', 'gear', 'drawbridge', 'You feel a wrenching',
+                   'You may wish', 'water demon', 'djinni', 'throne')
+    _JF_SZ_INSTRUMENTS = ('flute', 'horn', 'harp', 'bugle', 'drum')
+
+    def _jf_sizing(self):
+        sz = self._jf_sz
+        bl = self.blstats
+        key = (int(bl.dungeon_number), int(bl.level_number))
+        if key != sz['key']:
+            if sz['key'] is not None:
+                self._jf_sizing_level(sz['key'], int(bl.time) - sz['arrive'])
+            sz['key'] = key
+            sz['arrive'] = int(bl.time)
+            sz['depths'][key] = int(bl.depth)
+        feats = sz['feats'].setdefault(key, {name: set() for name, _ in self._JF_SZ_FEATS})
+        for name, g in self._JF_SZ_FEATS:
+            ys, xs = (self.glyphs == g).nonzero()
+            if len(ys):
+                feats[name].update(zip(ys.tolist(), xs.tolist()))
+        msg = self.message or ''
+        if msg and msg != sz['last_msg']:
+            sz['last_msg'] = msg
+            if any(w in msg for w in self._JF_SZ_MSGS):
+                self.log(f'MSG {msg[:240]}')
+        castle = getattr(getattr(getattr(self, 'global_logic', None), 'dive', None), 'castle', None)
+        if int(bl.depth) >= 20 and 'dlvl20' not in sz['kit']:
+            sz['kit'].add('dlvl20'); self._jf_sizing_kit('dlvl20')
+        if castle is not None and getattr(castle, 'castle_key', None) == key and 'castle' not in sz['kit']:
+            sz['kit'].add('castle'); self._jf_sizing_kit('castle')
+
+    def _jf_sizing_level(self, key, turns_here):
+        """The LEVEL line for `key` (on leaving it, and at the game's end for the last level). explored = the share of
+        the known walkable squares with no unseen neighbour (1.00 = no exploration frontier left: a dark room's unseen
+        floor and unvisited corridors count against it); seen = the known walkable squares, frontier = those beside an
+        unseen square."""
+        sz = self._jf_sz
+        feats = sz['feats'].get(key, {})
+        level = self.levels.get(key)
+        seen = frontier = 0; explored = 0.0
+        if level is not None:
+            known = level.walkable & level.seen
+            seen = int(known.sum())
+            if seen:
+                unseen = ~level.seen
+                edge = np.zeros_like(unseen); tmp = np.zeros_like(unseen)
+                for dy in (-1, 0, 1):
+                    for dx in (-1, 0, 1):
+                        if dy or dx:
+                            edge |= utils.translate(unseen, dy, dx, out=tmp)
+                frontier = int((known & edge).sum())
+                explored = 1.0 - frontier / seen
+        depth = sz['depths'].get(key, -1)
+        counts = ' '.join(f'seen_{n}={len(feats.get(n, ()))}' for n, _ in self._JF_SZ_FEATS)
+        self.log(f'LEVEL dlvl={depth} dnum={key[0]} lnum={key[1]} turn={int(self.blstats.time)} {counts} '
+                 f'explored={explored:.2f} seen={seen} frontier={frontier} turns_here={int(turns_here)}')
+
+    def _jf_sizing_end(self):
+        """Called by the adapter's END block: the LEVEL line for the level the game ended on."""
+        sz = self._jf_sz
+        if sz['key'] is not None:
+            self._jf_sizing_level(sz['key'], int(self.blstats.time) - sz['arrive'])
+            sz['key'] = None
+
+    def _jf_sizing_kit(self, why):
+        def names(items):
+            return ','.join(sorted(getattr(i.objs[0], 'name', '?').replace(' ', '_') for i in items)) or '-'
+        items = list(self.inventory.items)
+        instruments = [i for i in items if i.category == nh.TOOL_CLASS and (i.text or '') != '' and 'unicorn horn' not in i.text
+                       and any(w in i.text for w in self._JF_SZ_INSTRUMENTS)]
+        wands = [i for i in items if i.is_wand()]
+        scrolls = [i for i in items if i.category == nh.SCROLL_CLASS]
+        rings = [i for i in items if i.category == nh.RING_CLASS]
+        potions = [i for i in items if i.category == nh.POTION_CLASS]
+        known = lambda xs: [i for i in xs if i.is_unambiguous()]
+        unknown = lambda xs: sum(1 for i in xs if not i.is_unambiguous())
+        inst = ';'.join((i.text or '').replace(' ', '_') for i in instruments) or '-'
+        self.log(f'KIT why={why} dlvl={int(self.blstats.depth)} turn={int(self.blstats.time)} instruments={inst} '
+                 f'unknown_wands={unknown(wands)} known_wands={names(known(wands))} '
+                 f'scrolls={names(known(scrolls))} scrolls_unknown={unknown(scrolls)} '
+                 f'rings={names(known(rings))} rings_unknown={unknown(rings)} '
+                 f'potions={names(known(potions))} potions_unknown={unknown(potions)}')
 
     def call_update_functions(self, funcs=None):
         if funcs is None:
