@@ -237,6 +237,33 @@ BREACH_PROBE_STALE = 25
 # test's look ('There is a pit here.  You see no objects here.') refused every wand and marked it tried -- jf14-s0 gave
 # the castle up ('nothing that crosses water') holding an untested wand of cold (brx-smoke1)
 BREACH_WANDS = False
+# CASTLE_PASSTUNE (P37, castle_logic._passtune_step, passtune.py): with no way across left (the lift plan empty, no cold
+# source) and an instrument that plays notes in the pack (flute, horn, harp, bugle; not a drum, whistle, unicorn horn or
+# horn of plenty), stand on the shore square (04,08) west of the raised span and play 5-note tunes: music.c
+# do_play_instrument (3.6.6 ~700-830) answers a wrong tune within one square of the drawbridge or its portcullis wall
+# like Mastermind ('You hear N tumbler(s) click and M gear(s) turn.', gears = right note in place, tumblers = right
+# note out of place) unless Deaf, and the right tune lowers the bridge (dbridge.c open_drawbridge: 'You see a drawbridge
+# coming down!'). 7 notes x 5 = 16,807 tunes, solved in <= 7 plays (passtune_selftest.py: max 7, mean 5.17), so the
+# front opens in ~7 turns at the shore for any castle kit with an instrument, no wand needed; the FrontDoor plan
+# (castle_front.py) then takes over as if a wand of opening had lowered it (its active() accepts the tune's opening even
+# with FRONT_DOOR off). Same tier as BREACH_WANDS: right before 'nothing that crosses water'. Below CASTLE_PASSTUNE_HP
+# of max HP we step back to (03,08) and rest first (the drawbridge eels start at (05,07)/(05,09), next to the shore).
+CASTLE_PASSTUNE = False
+CASTLE_PASSTUNE_HP = 0.6
+# CASTLE_PASSTUNE_CRUSH (P37 v2, castle_front.FrontDoor._crush_step; inside CASTLE_PASSTUNE): once the tune is known,
+# the garrison is killed with the bridge instead of fought. music.c do_play_instrument plays the known tune on 'Play
+# the passtune?' and TOGGLES the bridge (DRAWBRIDGE_DOWN -> dbridge.c close_drawbridge, else open_drawbridge);
+# close_drawbridge's do_entity kills what stands on the span (05,08) or the portcullis square (06,08): a walker on the
+# span dies whether its jump succeeds (it stays over the moat: 'falls into the moat', drowns) or fails (relocated into
+# the portcullis chamber: 'disappears behind the drawbridge', 'killed by a closing drawbridge'); on the portcullis
+# square e_jumps has 2 chances in 10, else 'crushed by the falling portcullis!' -- only flyers, swimmers and
+# wall-passers survive (e_missed/automiss). Reopening crushes whatever is under the raised span ('crushed underneath
+# the drawbridge': the eels). So: hold the shore (04,08) on Elbereth (the eels at (05,07)/(05,09) respect it, the
+# soldiers don't), close when a hostile stands on (05,08)/(06,08), reopen when the span is clear, step back to (03,08)
+# below CASTLE_PASSTUNE_HP; stop after 60 quiet turns with the bridge down, 30 toggles or 600 turns, then the v1
+# walk-in (castle_front's route). Logging: 'PASSTUNE crush n=<killed> on=<monster>', 'PASSTUNE crusher done ...'.
+# v1 on the pool (f2.4.0-passtune, 1,660 castle arrivals): 18 openings, all 18 dead at the front within 10-130 turns.
+CASTLE_PASSTUNE_CRUSH = False
 # BREACH_RESUME: a passage given up for want of a way across ('nothing that crosses water', 'stranded') resumes when one
 # turns up later (a wand named by a zap at a monster, a lift from a last-resort quaff, a crossing polymorph form)
 BREACH_RESUME = True

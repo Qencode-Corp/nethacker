@@ -1,0 +1,99 @@
+[s0 t0 d0 0:0 xl0 hp0/0] TRAJ fp=6e0521ac0b83 pid=18422 start=1791208525
+[s24 t6 d27 0:27 xl8 hp89/89] STATUS milestone=BE_ON_FIRST_LEVEL diving=False hunger=1 pos=(np.int64(11), np.int64(8)) acts=[SPACE:8 ESC:3 ATTRIBUTES:1 ENHANCE:1 NW:1] gotos=[]
+[s24 t6 d27 0:27 xl8 hp89/89] DIVE level (np.int64(0), np.int64(27)) depth 27
+[s24 t6 d27 0:27 xl8 hp89/89] POWER kit at depth 27 XL 8 AC -4: P(passage)=0.00 certain=0 steps=0 scare_known=0 P(scare among candidates)=0.00 door_tools=0
+[s24 t6 d27 0:27 xl8 hp89/89] MINO kit d27 last_prayer=None: a - a +1 long sword (weapon in hand); b - a +0 dagger (alternate weapon; not wielded); c - an uncursed +3 small shield (being worn); d - an uncursed food ration; e - a pick-axe; f - a +0 dwarvish iron helm (being worn); g - a +0 dwarvish mithril-coat (being worn); h - a +0 pair of iron shoes (being worn); i - a +0 dwarvish cloak (being worn); j - a flute; k - a food ration
+[s24 t6 d27 0:27 xl8 hp89/89] SCENARIO start: {'castle_known': True} -> diving=True mines_done=True milestone=BE_ON_FIRST_LEVEL
+[s25 t6 d27 0:27 xl8 hp89/89] CASTLE level detected: (np.int64(0), np.int64(27)) (depth 27)
+[s40 t6 d27 0:27 xl8 hp89/89] DIVE task castle passage
+[s40 t6 d27 0:27 xl8 hp89/89] CASTLE arrival pos=(np.int64(0), np.int64(8)) plan=[] cold=False inv: a +1 long sword (weapon in hand); a +0 dagger (alternate weapon; not wielded); an uncursed +3 small shield (being worn); an uncursed food ration; a pick-axe; a +0 dwarvish iron helm (being worn); a +0 dwarvish mithril-coat (being worn); a +0 pair of iron shoes (being worn); a +0 dwarvish cloak (being worn); a flute; a food ration
+[s40 t6 d27 0:27 xl8 hp89/89] PASSTUNE start: instrument 'a flute', inv: a +1 long sword (weapon in hand); a +0 dagger (alternate weapon; not wielded); an uncursed +3 small shield (being worn); an uncursed food ration; a pick-axe; a +0 dwarvish iron helm (being worn); a +0 dwarvish mithril-coat (being worn); a +0 pair of iron shoes (being worn); a +0 dwarvish cloak (being worn); a flute; a food ration
+[s40 t6 d27 0:27 xl8 hp89/89] CASTLE to (3, 8) for the passtune (pos (np.int64(0), np.int64(8)), turn 6)
+[s40 t6 d27 0:27 xl8 hp89/89] CASTLE walking to (3, 8) (pos (np.int64(0), np.int64(8)), turn 6)
+[s43 t8 d27 0:27 xl8 hp89/89] CASTLE stepping to the shore (4, 8) for the passtune (pos (np.int64(3), np.int64(8)), turn 8)
+[s44 t8 d27 0:27 xl8 hp89/89] CASTLE playing the passtune with 'a flute' (pos (np.int64(4), np.int64(8)), turn 8)
+[s53 t9 d27 0:27 xl8 hp89/89] PASSTUNE play=1 tune=ABCAB gears=0 tumblers=1 candidates=16807
+[s63 t10 d27 0:27 xl8 hp89/89] PASSTUNE play=2 tune=CDDEE gears=0 tumblers=3 candidates=3012
+[s73 t11 d27 0:27 xl8 hp89/89] PASSTUNE play=3 tune=EEFCF gears=2 tumblers=0 candidates=220
+[s83 t12 d27 0:27 xl8 hp89/89] PASSTUNE play=4 tune=BEEDG gears=2 tumblers=1 candidates=21
+[s103 t12 d27 0:27 xl8 hp86/89] RANGED hit: holds and Elbereth waits off for 8 turns
+[s103 t12 d27 0:27 xl8 hp86/89] DIVE Elbereth to scare ['unknown'] before walking to a dig square
+[s142 t14 d27 0:27 xl8 hp69/89] DIVE held by an eel: Elbereth to make it let go
+[s164 t14 d27 0:27 xl8 hp69/89] DIVE walking to dig at (11, 11), hostiles at [('giant eel', -1)]
+[s169 t15 d27 0:27 xl8 hp70/89] PANIC AgentPanic: agent position do not match after "move": expected (11, 11), got (11, 12)
+Traceback (most recent call last):
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-passtune/engines/dag25/pf_base/strategy.py", line 144, in f
+    return agent.preempt(strategies, self, first_func=f2, continue_after_preemption=continue_after_preemption)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-passtune/engines/dag25/pf_base/agent.py", line 310, in preempt
+    next(iterator)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-passtune/engines/dag25/pf_base/dive_logic.py", line 3288, in dig_first
+    self._escape_act(action)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-passtune/engines/dag25/pf_base/dive_logic.py", line 3460, in _escape_act
+    agent.go_to(*arg, max_steps=1)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-passtune/engines/dag25/pf_base/agent.py", line 2383, in go_to
+    self.move(y, x)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-passtune/engines/dag25/pf_base/agent.py", line 2052, in move
+    raise AgentPanic(f'agent position do not match after "move": '
+pf_base.exceptions.AgentPanic: agent position do not match after "move": expected (11, 11), got (11, 12)
+
+[s235 t16 d27 0:27 xl8 hp59/89] PANIC AgentPanic: agent position do not match after "move": expected (11, 11), got (11, 12)
+Traceback (most recent call last):
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-passtune/engines/dag25/pf_base/strategy.py", line 144, in f
+    return agent.preempt(strategies, self, first_func=f2, continue_after_preemption=continue_after_preemption)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-passtune/engines/dag25/pf_base/agent.py", line 310, in preempt
+    next(iterator)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-passtune/engines/dag25/pf_base/utils.py", line 134, in f
+    next(it)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-passtune/engines/dag25/pf_base/agent.py", line 2714, in fight2
+    wait_counter = self._fight2_perform_action(best_action, wait_counter)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-passtune/engines/dag25/pf_base/agent.py", line 2798, in _fight2_perform_action
+    self.move(target_y, target_x)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-passtune/engines/dag25/pf_base/agent.py", line 2052, in move
+    raise AgentPanic(f'agent position do not match after "move": '
+pf_base.exceptions.AgentPanic: agent position do not match after "move": expected (11, 11), got (11, 12)
+
+[s266 t17 d27 0:27 xl8 hp59/89] PASSTUNE opened play=5 tune=DEBDF msg='What do you want to use or apply? [ej or ?*] Improvise? [ynq] (q) Play the passtune? [ynq] (q) You extract a strange sound from the flute!'
+[s266 t17 d27 0:27 xl8 hp59/89] CASTLE giving up: front opened by the passtune
+[s266 t17 d27 0:27 xl8 hp59/89] DIVE task descend
+[s275 t17 d27 0:27 xl8 hp48/89] FRONT M:start turn 17 hp 48/89 pos (np.int64(3), np.int64(8)) open=True dry=True inv: a +1 long sword (weapon in hand); a +0 dagger (alternate weapon; not wielded); an uncursed +3 small shield (being worn); an uncursed food ration; a pick-axe; a +0 dwarvish iron helm (being worn); a +0 dwarvish mithril-coat (being worn); a +0 pair of iron shoes (being worn); a +0 dwarvish cloak (being worn); a flute; a food ration; a dagger; a knife
+[s275 t17 d27 0:27 xl8 hp48/89] FRONT M:filled turn 17 hp 48/89 pos (np.int64(3), np.int64(8)) span 2391
+[s275 t17 d27 0:27 xl8 hp48/89] FRONT M:path turn 17 hp 48/89 pos (np.int64(3), np.int64(8)) span dry, portcullis open
+[s275 t17 d27 0:27 xl8 hp48/89] FRONT holding: Elbereth (pos (np.int64(3), np.int64(8)), turn 17)
+[s291 t18 d27 0:27 xl8 hp48/89] FRONT holding on Elbereth (pos (np.int64(3), np.int64(8)), turn 18)
+[s366 t28 d27 0:27 xl8 hp50/89] FRONT M:inside turn 28 hp 50/89 pos (np.int64(3), np.int64(8)) hold over: no soldier in view
+[s366 t28 d27 0:27 xl8 hp50/89] FRONT walking back to row 08 (np.int64(4), 8) (pos (np.int64(3), np.int64(8)), turn 28)
+[s375 t29 d27 0:27 xl8 hp50/89] FRONT fighting unknown at (np.int64(5), np.int64(8)) (pos (np.int64(4), np.int64(8)), turn 29)
+[s392 t31 d27 0:27 xl8 hp27/89] END reason=close restarts=0 ring=30
+[s392 t31 d27 0:27 xl8 hp27/89] END msg s204 t15 d27 hp70 close=['soldier', 'giant eel'] | 
+[s392 t31 d27 0:27 xl8 hp27/89] END msg s212 t15 d27 hp70 close=['soldier', 'giant eel'] | Advance skills without practice? [yn] (n)   
+[s392 t31 d27 0:27 xl8 hp27/89] END msg s220 t15 d27 hp70 close=['soldier', 'giant eel'] | 
+[s392 t31 d27 0:27 xl8 hp27/89] END msg s227 t16 d27 hp59 close=['soldier', 'giant eel'] | l - a dagger.  m - a knife.  The soldier zaps a wand of striking! The wand hits you!  You hear dice being thrown.
+[s392 t31 d27 0:27 xl8 hp27/89] END msg s231 t16 d27 hp59 close=['soldier', 'giant eel'] | Something is written here in the dust.  You read: "Elbereth". You see no objects here.
+[s392 t31 d27 0:27 xl8 hp27/89] END msg s235 t16 d27 hp59 close=[] | You cannot escape from the giant eel!  You get released! The giant eel turns to flee.
+[s392 t31 d27 0:27 xl8 hp27/89] END msg s238 t16 d27 hp59 close=[] | 
+[s392 t31 d27 0:27 xl8 hp27/89] END msg s241 t16 d27 hp59 close=[] | 
+[s392 t31 d27 0:27 xl8 hp27/89] END msg s249 t16 d27 hp59 close=[] | 
+[s392 t31 d27 0:27 xl8 hp27/89] END msg s255 t16 d27 hp59 close=[] | 
+[s392 t31 d27 0:27 xl8 hp27/89] END msg s260 t16 d27 hp59 close=[] | 
+[s392 t31 d27 0:27 xl8 hp27/89] END msg s266 t17 d27 hp59 close=[] | What do you want to use or apply? [ej or ?*] Improvise? [ynq] (q) Play the passtune? [ynq] (q) You extract a strange sound from the flute!
+[s392 t31 d27 0:27 xl8 hp27/89] END msg s275 t17 d27 hp48 close=[] | You hear a door open.  The soldier picks up a pole cleaver. The soldier zaps a wand of striking!  The wand hits the soldier! The wand hits you!  The soldier zap
+[s392 t31 d27 0:27 xl8 hp27/89] END msg s291 t18 d27 hp48 close=[] | Something is written here in the dust.  You read: "Elbereth". You see no objects here.
+[s392 t31 d27 0:27 xl8 hp27/89] END msg s298 t19 d27 hp48 close=[] | The troll opens a door.  The soldier zaps a wand of striking! The wand misses you.  You hear a sceptre pounded in judgment.
+[s392 t31 d27 0:27 xl8 hp27/89] END msg s304 t20 d27 hp49 close=[] | 
+[s392 t31 d27 0:27 xl8 hp27/89] END msg s311 t21 d27 hp49 close=[] | The soldier zaps a wand of striking!  The wand misses the soldier. The wand misses you.
+[s392 t31 d27 0:27 xl8 hp27/89] END msg s319 t22 d27 hp49 close=[] | The soldier zaps a wand of striking!  The wand misses you. The soldier picks up a studded leather armor. The soldier removes a leather armor and puts on a studd
+[s392 t31 d27 0:27 xl8 hp27/89] END msg s325 t22 d27 hp49 close=[] | 
+[s392 t31 d27 0:27 xl8 hp27/89] END msg s328 t23 d27 hp49 close=[] | 
+[s392 t31 d27 0:27 xl8 hp27/89] END msg s334 t24 d27 hp49 close=[] | 
+[s392 t31 d27 0:27 xl8 hp27/89] END msg s340 t24 d27 hp49 close=[] | 
+[s392 t31 d27 0:27 xl8 hp27/89] END msg s343 t25 d27 hp50 close=[] | 
+[s392 t31 d27 0:27 xl8 hp27/89] END msg s351 t25 d27 hp50 close=['unknown'] | Kaablamm!  You hear an explosion in the distance! The soldier zaps a wand of striking!  The wand hits the soldier! The wand hits it!
+[s392 t31 d27 0:27 xl8 hp27/89] END msg s354 t26 d27 hp50 close=['unknown'] | 
+[s392 t31 d27 0:27 xl8 hp27/89] END msg s360 t27 d27 hp50 close=['unknown'] | 
+[s392 t31 d27 0:27 xl8 hp27/89] END msg s366 t28 d27 hp50 close=['unknown'] | 
+[s392 t31 d27 0:27 xl8 hp27/89] END msg s375 t29 d27 hp50 close=['unknown', 'troll', 'giant eel'] | Something is written here in the dust.  You read: "Elbe?eth". It misses!  A giant eel was hidden under the water! The giant eel swings itself around you!  The s
+[s392 t31 d27 0:27 xl8 hp27/89] END msg s382 t30 d27 hp44 close=['unknown', 'unknown', 'soldier', 'giant eel'] | You cannot escape from the giant eel!  It misses! The giant eel bites!  The giant eel misses! The soldier picks up a knife.
+[s392 t31 d27 0:27 xl8 hp27/89] END msg s388 t31 d27 hp27 close=['shark', 'unknown', 'soldier', 'giant eel'] | You cannot escape from the giant eel!  The shark bites! The soldier wields a knife!

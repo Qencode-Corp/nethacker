@@ -1,0 +1,111 @@
+[s0 t0 d0 0:0 xl0 hp0/0] TRAJ fp=2f07d161657e pid=18420 start=1791208572
+[s24 t6 d28 0:28 xl8 hp96/96] STATUS milestone=BE_ON_FIRST_LEVEL diving=False hunger=1 pos=(np.int64(11), np.int64(8)) acts=[SPACE:8 ESC:3 ATTRIBUTES:1 ENHANCE:1 NW:1] gotos=[]
+[s24 t6 d28 0:28 xl8 hp96/96] DIVE level (np.int64(0), np.int64(28)) depth 28
+[s24 t6 d28 0:28 xl8 hp96/96] POWER kit at depth 28 XL 8 AC -4: P(passage)=0.05 certain=0 steps=1 scare_known=0 P(scare among candidates)=0.00 door_tools=0
+[s24 t6 d28 0:28 xl8 hp96/96] MINO kit d28 last_prayer=None: a - a +1 long sword (weapon in hand); b - a +0 dagger (alternate weapon; not wielded); c - a blessed +3 small shield (being worn); d - an uncursed food ration; e - an uncursed oil lamp; f - a pick-axe; g - a +0 dwarvish iron helm (being worn); h - a +0 dwarvish mithril-coat (being worn); i - a +0 pair of iron shoes (being worn); j - a +0 dwarvish cloak (being worn); k - a flute; l - a food ration; m - a brown potion
+[s24 t6 d28 0:28 xl8 hp96/96] SCENARIO start: {'castle_known': True} -> diving=True mines_done=True milestone=BE_ON_FIRST_LEVEL
+[s25 t6 d28 0:28 xl8 hp96/96] CASTLE level detected: (np.int64(0), np.int64(28)) (depth 28)
+[s40 t6 d28 0:28 xl8 hp96/96] CASTLE cl: Elbereth before an early potion test (pos (np.int64(0), np.int64(8)), turn 6)
+[s56 t7 d28 0:28 xl8 hp96/96] CFP early potion: quaffing 'a brown potion' at (np.int64(0), np.int64(8)) hp 96/96 turn 7
+[s56 t7 d28 0:28 xl8 hp96/96] CASTLE trying potion 'a brown potion' (pos (np.int64(0), np.int64(8)), turn 7)
+[s61 t8 d28 0:28 xl8 hp88/96] CASTLE quaffed 'a brown potion': 'Yecch!  This stuff tastes like poison.  You feel very sick. You hear a door open.  You hear a door open.  You hear a door open.'
+[s61 t8 d28 0:28 xl8 hp88/96] DIVE task castle passage
+[s61 t8 d28 0:28 xl8 hp88/96] CASTLE arrival pos=(np.int64(0), np.int64(8)) plan=[] cold=False inv: a +1 long sword (weapon in hand); a +0 dagger (alternate weapon; not wielded); a blessed +3 small shield (being worn); an uncursed food ration; an uncursed oil lamp; a pick-axe; a +0 dwarvish iron helm (being worn); a +0 dwarvish mithril-coat (being worn); a +0 pair of iron shoes (being worn); a +0 dwarvish cloak (being worn); a flute; a food ration
+[s61 t8 d28 0:28 xl8 hp88/96] CASTLE giving up: nothing that crosses water
+[s61 t8 d28 0:28 xl8 hp88/96] DIVE task descend
+[s61 t8 d28 0:28 xl8 hp88/96] DIVE digging down with 'a pick-axe' (try 1)
+[s67 t11 d28 0:28 xl8 hp89/96] DIVE digging down with 'a pick-axe (weapon in hand)' (try 2)
+[s70 t12 d28 0:28 xl8 hp89/96] DIVE floor here cannot be dug through ('You start digging downward.  The floor here is too hard to dig in.')
+[s70 t12 d28 0:28 xl8 hp89/96] DIVE bottom reached at depth 28; inventory: a - a +1 long sword; b - a +0 dagger (alternate weapon; not wielded); c - a blessed +3 small shield (being worn); d - an uncursed food ration; e - an uncursed oil lamp; f - a pick-axe (weapon in hand); g - a +0 dwarvish iron helm (being worn); h - a +0 dwarvish mithril-coat (being worn); i - a +0 pair of iron shoes (being worn); j - a +0 dwarvish cloak (being worn); k - a flute; l - a food ration
+[s70 t12 d28 0:28 xl8 hp89/96] POWER passage plan at depth 28 AC -4: nothing
+[s72 t13 d28 0:28 xl8 hp89/96] PANIC AgentPanic: agent position do not match after "move": expected (12, 8), got (11, 8)
+Traceback (most recent call last):
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-passtune/engines/dag25/pf_base/strategy.py", line 144, in f
+    return agent.preempt(strategies, self, first_func=f2, continue_after_preemption=continue_after_preemption)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-passtune/engines/dag25/pf_base/agent.py", line 299, in preempt
+    val = f()
+          ^^^
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-passtune/engines/dag25/pf_base/strategy.py", line 139, in f2
+    next(gen)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-passtune/engines/dag25/pf_base/exploration_logic.py", line 523, in open_visit_search
+    self.agent.go_to(target_y, target_x, fast=fast_go_to, debug_tiles_args=dict(
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-passtune/engines/dag25/pf_base/agent.py", line 2383, in go_to
+    self.move(y, x)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-passtune/engines/dag25/pf_base/agent.py", line 2052, in move
+    raise AgentPanic(f'agent position do not match after "move": '
+pf_base.exceptions.AgentPanic: agent position do not match after "move": expected (12, 8), got (11, 8)
+
+[s89 t13 d28 0:28 xl8 hp89/96] PANIC AgentPanic: agent position do not match after "move": expected (12, 8), got (11, 8)
+Traceback (most recent call last):
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-passtune/engines/dag25/pf_base/strategy.py", line 144, in f
+    return agent.preempt(strategies, self, first_func=f2, continue_after_preemption=continue_after_preemption)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-passtune/engines/dag25/pf_base/agent.py", line 299, in preempt
+    val = f()
+          ^^^
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-passtune/engines/dag25/pf_base/strategy.py", line 139, in f2
+    next(gen)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-passtune/engines/dag25/pf_base/exploration_logic.py", line 523, in open_visit_search
+    self.agent.go_to(target_y, target_x, fast=fast_go_to, debug_tiles_args=dict(
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-passtune/engines/dag25/pf_base/agent.py", line 2383, in go_to
+    self.move(y, x)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-passtune/engines/dag25/pf_base/agent.py", line 2052, in move
+    raise AgentPanic(f'agent position do not match after "move": '
+pf_base.exceptions.AgentPanic: agent position do not match after "move": expected (12, 8), got (11, 8)
+
+[s106 t14 d28 0:28 xl8 hp89/96] PANIC AgentPanic: agent position do not match after "move": expected (12, 8), got (11, 8)
+Traceback (most recent call last):
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-passtune/engines/dag25/pf_base/strategy.py", line 144, in f
+    return agent.preempt(strategies, self, first_func=f2, continue_after_preemption=continue_after_preemption)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-passtune/engines/dag25/pf_base/agent.py", line 299, in preempt
+    val = f()
+          ^^^
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-passtune/engines/dag25/pf_base/strategy.py", line 139, in f2
+    next(gen)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-passtune/engines/dag25/pf_base/exploration_logic.py", line 523, in open_visit_search
+    self.agent.go_to(target_y, target_x, fast=fast_go_to, debug_tiles_args=dict(
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-passtune/engines/dag25/pf_base/agent.py", line 2383, in go_to
+    self.move(y, x)
+  File "/Users/murad-gold-macbook-air-13/jev-nethack-frontier/wt/p37-passtune/engines/dag25/pf_base/agent.py", line 2052, in move
+    raise AgentPanic(f'agent position do not match after "move": '
+pf_base.exceptions.AgentPanic: agent position do not match after "move": expected (12, 8), got (11, 8)
+
+[s135 t17 d28 0:28 xl8 hp52/96] ELBERETH rest start: ['shark']
+[s154 t19 d28 0:28 xl8 hp52/96] DIVE task rest
+[s235 t70 d28 0:28 xl8 hp26/96] ELBERETH rest start: ['shark']
+[s436 t267 d28 0:28 xl8 hp65/96] DIVE task descend
+[s443 t270 d28 0:28 xl8 hp66/96] MINO seen: 1 at distance 1, hp 66/96
+[s449 t271 d28 0:28 xl8 hp37/96] MINO seen: 1 at distance 1, hp 37/96
+[s452 t271 d28 0:28 xl8 hp37/96] END reason=close restarts=0 ring=30
+[s452 t271 d28 0:28 xl8 hp37/96] END msg s215 t67 d28 hp62 close=['xorn'] | You stop searching.
+[s452 t271 d28 0:28 xl8 hp37/96] END msg s227 t67 d28 hp49 close=['shark'] | 
+[s452 t271 d28 0:28 xl8 hp37/96] END msg s231 t67 d28 hp49 close=['shark'] | Advance skills without practice? [yn] (n)   
+[s452 t271 d28 0:28 xl8 hp37/96] END msg s232 t68 d28 hp49 close=['shark'] | You miss the shark.
+[s452 t271 d28 0:28 xl8 hp37/96] END msg s233 t68 d28 hp39 close=['shark'] | You miss the shark.  The shark bites!  You hear a door open.
+[s452 t271 d28 0:28 xl8 hp37/96] END msg s234 t69 d28 hp39 close=['shark'] | You hit the shark!
+[s452 t271 d28 0:28 xl8 hp37/96] END msg s235 t70 d28 hp26 close=['shark', 'xorn'] | You hit the shark!  The shark bites!
+[s452 t271 d28 0:28 xl8 hp37/96] END msg s253 t71 d28 hp26 close=[] | Something is written here in the dust.  You read: "Elbereth". You see no objects here.
+[s452 t271 d28 0:28 xl8 hp37/96] END msg s264 t86 d28 hp29 close=[] | 
+[s452 t271 d28 0:28 xl8 hp37/96] END msg s275 t101 d28 hp32 close=['xorn'] | 
+[s452 t271 d28 0:28 xl8 hp37/96] END msg s286 t113 d28 hp34 close=[] | 
+[s452 t271 d28 0:28 xl8 hp37/96] END msg s297 t127 d28 hp37 close=['xorn'] | 
+[s452 t271 d28 0:28 xl8 hp37/96] END msg s308 t142 d28 hp40 close=['xorn'] | 
+[s452 t271 d28 0:28 xl8 hp37/96] END msg s322 t157 d28 hp43 close=['shark', 'xorn'] | 
+[s452 t271 d28 0:28 xl8 hp37/96] END msg s332 t157 d28 hp43 close=['shark', 'xorn'] | Advance skills without practice? [yn] (n)   
+[s452 t271 d28 0:28 xl8 hp37/96] END msg s335 t158 d28 hp43 close=['xorn'] | 
+[s452 t271 d28 0:28 xl8 hp37/96] END msg s349 t176 d28 hp47 close=['shark'] | 
+[s452 t271 d28 0:28 xl8 hp37/96] END msg s355 t176 d28 hp47 close=['shark'] | Advance skills without practice? [yn] (n)   
+[s452 t271 d28 0:28 xl8 hp37/96] END msg s358 t177 d28 hp47 close=['xorn'] | 
+[s452 t271 d28 0:28 xl8 hp37/96] END msg s372 t191 d28 hp50 close=[] | 
+[s452 t271 d28 0:28 xl8 hp37/96] END msg s386 t206 d28 hp53 close=[] | 
+[s452 t271 d28 0:28 xl8 hp37/96] END msg s397 t223 d28 hp56 close=[] | 
+[s452 t271 d28 0:28 xl8 hp37/96] END msg s411 t239 d28 hp59 close=[] | 
+[s452 t271 d28 0:28 xl8 hp37/96] END msg s422 t253 d28 hp62 close=[] | 
+[s452 t271 d28 0:28 xl8 hp37/96] END msg s436 t267 d28 hp65 close=[] | 
+[s452 t271 d28 0:28 xl8 hp37/96] END msg s438 t268 d28 hp65 close=[] | 
+[s452 t271 d28 0:28 xl8 hp37/96] END msg s439 t269 d28 hp65 close=[] | 
+[s452 t271 d28 0:28 xl8 hp37/96] END msg s443 t270 d28 hp66 close=['minotaur'] | Click!  You trigger a rolling boulder trap!  A boulder misses you.
+[s452 t271 d28 0:28 xl8 hp37/96] END msg s447 t270 d28 hp66 close=['minotaur'] | Advance skills without practice? [yn] (n)   
+[s452 t271 d28 0:28 xl8 hp37/96] END msg s449 t271 d28 hp37 close=['minotaur'] | You hit the minotaur!  The minotaur hits!  The minotaur hits! The minotaur butts!

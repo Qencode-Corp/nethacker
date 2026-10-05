@@ -830,6 +830,196 @@ class CastlePassage:
             self._log(f'engrave test of {w.text!r} refused here ({agent.message[:60]!r})')
         return True
 
+    # ------------------------------------------------------------------ CASTLE_PASSTUNE
+
+    TUNE_SHORE = (4, 8)                        # west neighbour of the span (05,08): the drawbridge is among its 8 squares
+    TUNE_SHORES = ((4, 8), (4, 7), (4, 9))     # the courtyard squares within one of the span
+    TUNE_STAGE = (3, 8)                        # one square back: no water beside it, the BFS reaches it
+    TUNE_PLAYS = 8                             # plays at most (the solver needs <= 7)
+    TUNE_OPENED = ('drawbridge coming down', 'chains rattling and gears turning')
+
+    def _tune_log(self, msg):
+        self.agent.log(f'PASSTUNE {msg}')
+
+    def _tune_instrument(self):
+        """The best instrument that plays notes: a known flute/harp/tooled horn first, an unknown 'horn' (a horn of plenty
+        known from a blow is skipped), a bugle last (music.c awaken_soldiers: it wakes the antechamber). None: nothing."""
+        bad = self._tries.get('pt_bad', set())
+        try:
+            from . import opp_items
+            horns = opp_items.state(self.agent).horn_glyphs
+        except Exception:
+            horns = {}
+        from . import passtune
+        best = None
+        for item in self._items():
+            if item.category != nh.TOOL_CLASS or not passtune.is_instrument(item.text):
+                continue
+            g = item.glyphs[0] if item.glyphs else None
+            if g in bad or horns.get(g) == 'plenty':
+                continue
+            names = self._names(item)
+            if names and names <= {'horn of plenty', 'unicorn horn'}:
+                continue
+            text = item.text.lower()
+            rank = 2 if 'bugle' in text else 1 if 'horn' in text and not item.is_unambiguous() else 0
+            if best is None or rank < best[0]:
+                best = (rank, item)
+        return best[1] if best else None
+
+    def _play_tune(self, item, guess):
+        """Apply the instrument: 'Improvise?' -> n, 'What tune are you playing? [5 notes, A-G]' -> the guess + Enter
+        ('Play the passtune?' -> y once the game knows it). The whole dialogue is one atom operation; agent.message
+        then holds every line of it."""
+        agent = self.agent
+        letter = agent.inventory.items.get_letter(item)
+        seen = dict(improvise=False, tune=False, known=False)
+
+        def gen():
+            if 'What do you want to use or apply?' not in agent.single_message:
+                return
+            yield letter
+            for _ in range(16):
+                msg = agent.single_message or ''
+                misc = agent._observation['misc']
+                if 'Improvise?' in msg and not seen['improvise']:
+                    seen['improvise'] = True
+                    yield 'n'
+                    continue
+                if 'Play the passtune?' in msg and not seen['known']:
+                    seen['known'] = True
+                    yield 'y'
+                    continue
+                if 'What tune are you playing?' in msg and not seen['tune']:
+                    seen['tune'] = True
+                    for ch in guess:
+                        yield ch
+                    yield '\r'
+                    continue
+                if misc[2] and not misc[1]:
+                    yield ' '
+                    continue
+                return
+
+        with agent.atom_operation():
+            agent.step(A.Command.APPLY, gen())
+            # read the dialogue's lines here, inside the atom operation: its exit runs update_state(), and an
+            # inventory update re-applies every known container (inventory_items.update ->
+            # check_container_content), whose 'The bag is empty.' then replaced the game's answer -- v1 (f2.4.0-passtune)
+            # read agent.message after a forced update and 4 of 52 games played ABCAB 8 times 'unread' with an empty bag
+            # in the pack
+            msg = agent.message or ''
+        seen['letter'] = letter
+        return seen, msg
+
+    def _passtune_step(self):
+        """CASTLE_PASSTUNE: play the drawbridge's passtune by Mastermind from the shore square west of the span (see
+        jf_config.CASTLE_PASSTUNE and passtune.py). True: acted this step. False: nothing to do here (no instrument, done,
+        given up) -- the caller then gives the passage up as before."""
+        agent = self.agent
+        t = self._tries
+        if t.get('pt_done'):
+            return False
+        item = self._tune_instrument()
+        if item is None or agent.character.prop.polymorph:
+            return False
+        from . import passtune
+        solver = t.get('pt_solver')
+        if solver is None:
+            solver = t['pt_solver'] = passtune.PasstuneSolver()
+            inv = '; '.join(i.text for i in self._items())
+            self._tune_log(f'start: instrument {item.text!r}, inv: {inv}')
+        plays = t.get('pt_plays', 0)
+        if plays >= self.TUNE_PLAYS or solver.exhausted():
+            t['pt_done'] = 1
+            self._tune_log(f'giving up: plays {plays}, candidates {solver.candidates}')
+            return False
+        prop = agent.character.prop
+        if prop.confusion or prop.stun or prop.hallu or self._hostiles_near(1):
+            # no 'Improvise?' prompt while confused/stunned/hallucinating (music.c: the tune is improvised); a hostile
+            # on land next to us is fight2's (don't give the castle up meanwhile)
+            t['pt_wait'] = t.get('pt_wait', 0) + 1
+            if t['pt_wait'] > 80:
+                t['pt_done'] = 1
+                self._tune_log('giving up: waited 80 steps on a condition or a hostile')
+                return False
+            agent.search()
+            return True
+        pos = self._pos()
+        bl = agent.blstats
+        if bl.hitpoints < jf_config.CASTLE_PASSTUNE_HP * bl.max_hitpoints:
+            if pos in self.TUNE_SHORES:
+                self._set_state(f'back to {self.TUNE_STAGE} from the shore to rest')
+                self._step_to(*self.TUNE_STAGE)
+                return True
+            t['pt_rest'] = t.get('pt_rest', 0) + 1
+            if t['pt_rest'] > 400:
+                t['pt_done'] = 1
+                self._tune_log('giving up: 400 rest steps without the HP back')
+                return False
+            if pos != self.TUNE_STAGE:
+                return self._approach(self.TUNE_STAGE)
+            self._set_state('resting before the passtune')
+            agent.search(5)
+            return True
+        if pos not in self.TUNE_SHORES:
+            t['pt_approach'] = t.get('pt_approach', 0) + 1
+            if t['pt_approach'] > 200:
+                t['pt_done'] = 1
+                self._tune_log('giving up: the shore square not reached in 200 steps')
+                return False
+            shore = next((p for p in self.TUNE_SHORES if not self._boulder_at(*p)), self.TUNE_SHORE)
+            if max(abs(pos[0] - shore[0]), abs(pos[1] - shore[1])) == 1:
+                self._set_state(f'stepping to the shore {shore} for the passtune')
+                self._step_to(*shore)
+                return True
+            self._set_state(f'to {self.TUNE_STAGE} for the passtune')
+            return self._approach(self.TUNE_STAGE)
+        guess = solver.next_guess()
+        self._set_state(f'playing the passtune with {item.text!r}')
+        try:
+            seen, msg = self._play_tune(item, guess)
+        except (AgentChangeStrategy, AgentFinished, AgentPanic):
+            raise
+        except Exception as e:   # an unexpected prompt in the dialogue must not end the passage
+            self._tune_log(f'play of {item.text!r} failed: {e!r}')
+            t.setdefault('pt_bad', set()).add(item.glyphs[0] if item.glyphs else None)
+            return True
+        t['pt_plays'] = plays + 1
+        front = getattr(self.dive, 'front', None)
+        opened = any(w in msg for w in self.TUNE_OPENED) or \
+            (front is not None and not front.opened and front._open())
+        if opened:
+            self._tune_log(f'opened play={plays + 1} tune={guess} msg={msg[:160]!r}')
+            if front is not None:
+                front.opened = True
+                front.opened_by_tune = True
+                front.tune_item_glyph = item.glyphs[0] if item.glyphs else None   # the crusher plays it again
+                front.span_filled = True   # the lowered span is dry even with a monster standing on it
+            t['pt_done'] = 1
+            self._give_up('front opened by the passtune')   # FrontDoor.active() takes it from here
+            return True
+        fb = passtune.parse_feedback(msg)
+        if fb is None:
+            if 'emitting vibrations' in msg:
+                t['pt_done'] = 1
+                self._tune_log(f'giving up: deaf ({msg[:120]!r})')
+                return True
+            if not seen['tune'] and not seen['known']:
+                # no Improvise/tune prompt after the letter: the applied item is not an instrument that plays notes (a
+                # horn of plenty, a stale letter), or we cannot blow it -- marked bad, the letter is resolved again
+                t.setdefault('pt_bad', set()).add(item.glyphs[0] if item.glyphs else None)
+                self._tune_log(f'{item.text!r} (letter {seen.get("letter")!r}) gave no tune prompt: {msg[:160]!r}')
+                return True
+            if 'strange sound' not in msg:
+                self._tune_log(f'play={plays + 1} tune={guess} unread: {msg[:160]!r}')
+                return True
+            fb = (0, 0)   # heard, next to the drawbridge, and nothing clicked or turned
+        gears, tumblers = fb
+        self._tune_log(f'play={plays + 1} tune={guess} gears={gears} tumblers={tumblers} candidates={solver.candidates}')
+        solver.feedback(gears, tumblers)
+        return True
+
     def _probe_refresh(self):
         """BREACH_PROBE: a probe that ended more than BREACH_PROBE_STALE turns ago (potion tests that blinded or
         confused us, rests) is done again, shorter, before the next thing that may lift us."""
@@ -1198,6 +1388,8 @@ class CastlePassage:
         if jf_config.BREACH_WANDS and self._wand_test_step():
             return True
         if not plan and cold is None:
+            if jf_config.CASTLE_PASSTUNE and self._passtune_step():
+                return True
             self._give_up('nothing that crosses water')
             return False
         pos = self._pos()

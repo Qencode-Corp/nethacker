@@ -28,6 +28,7 @@ from nle.nethack import actions as A
 
 from . import jf_config
 from .castle_logic import to_bot, to_map, map_char
+from .exceptions import AgentChangeStrategy, AgentFinished, AgentPanic
 from .glyph import G, SS
 from .level import Level
 from .strategy import Strategy
@@ -48,6 +49,10 @@ WEST_BOX = (-8, 4, 0, 16)     # map x0, x1, y0, y1 of the boulder search: the we
 SOLDIER_NAMES = ('soldier', 'sergeant', 'lieutenant', 'captain')
 DRY_SYMS = frozenset({SS.S_room, SS.S_darkroom, SS.S_ice, SS.S_vodbridge, SS.S_hodbridge, SS.S_ndoor})
 HOLD_QUIET = 15        # turns with no soldier in view before we go in
+# CASTLE_PASSTUNE_CRUSH (the crusher, _crush_step): hold the shore (04,08) and toggle the bridge on the garrison
+CRUSH_QUIET = 60       # turns without a hostile on the castle side (bridge down) before the walk-in
+CRUSH_TOGGLES = 30     # plays at most
+CRUSH_TURNS = 600      # turns at most
 REST_HP = 0.5          # rest on Elbereth inside when below this share of HP (court monsters respect it)
 
 # ---- FRONT_V3 (front-strong lane)
@@ -107,6 +112,10 @@ class FrontDoor:
         self.phase = None            # 'wand' once in the throne room
         self.tower_i = 0             # index into TOWER_ORDER
         self.chest_fail = 0
+        self.opened_by_tune = False  # CASTLE_PASSTUNE: castle_logic lowered the bridge with the passtune
+        self.tune_item_glyph = None  # ... with this instrument
+        self.crush = None            # CASTLE_PASSTUNE_CRUSH: the crusher's state (see _crush_step)
+        self.crush_done = False
 
     # ------------------------------------------------------------------ helpers
 
@@ -189,8 +198,12 @@ class FrontDoor:
         return self._sym(PORTCULLIS) == SS.S_ndoor or self._sym(SPAN) in (SS.S_vodbridge, SS.S_hodbridge)
 
     def _span_dry(self):
-        if jf_config.FRONT_V3 and getattr(self, 'span_filled', False):
-            return True   # 'Now you can cross it!' from a push onto the span (a monster standing on it hides the floor)
+        if getattr(self, 'span_filled', False) and (jf_config.FRONT_V3 or (jf_config.CASTLE_PASSTUNE and self.opened_by_tune)):
+            # 'Now you can cross it!' from a push onto the span, or the bridge lowered by the passtune (a monster
+            # standing on the span hides the floor: f2.4.0-passtune's 18 openings all read 'span dry' once, then a
+            # soldier on the span made it 'wet' again and v1 stopped 'no way to fill the span' within 1-3 turns, the
+            # hero left on the eel-adjacent (04,08) with the module dead)
+            return True
         return self._sym(SPAN) in DRY_SYMS or self._glyph(SPAN) in DRY_SYMS
 
     def _hostiles_adjacent(self):
@@ -215,7 +228,8 @@ class FrontDoor:
 
     def active(self):
         """Cheap test: on the castle's west side with the lift plan given up (or none), a way to open the front."""
-        if not jf_config.FRONT_DOOR or self.done or not self.on_castle():
+        lane = jf_config.FRONT_DOOR or (jf_config.CASTLE_PASSTUNE and self.opened_by_tune)
+        if not lane or self.done or not self.on_castle():
             return False
         if self.dive.castle.active():
             return False   # the passage plan (a lift, cold, a wish) goes first
@@ -247,6 +261,9 @@ class FrontDoor:
     # ------------------------------------------------------------------ the plan
 
     def _step(self):
+        if jf_config.CASTLE_PASSTUNE and jf_config.CASTLE_PASSTUNE_CRUSH and self.opened_by_tune and \
+                not self.crush_done and self._crush_step():
+            return True
         if jf_config.FRONT_V3:
             return self._step_v3()
         agent = self.agent
@@ -274,9 +291,197 @@ class FrontDoor:
                 return False
         return self._open_step()
 
+
+    # ------------------------------------------------------------------ CASTLE_PASSTUNE_CRUSH (the crusher)
+
+    def _bridge_down(self):
+        """The span shows the lowered bridge (S_vodbridge) when down, the portcullis square the raised one
+        (S_vcdbridge) when up; a monster standing there hides the terrain, then the tracked state is used."""
+        g = self._glyph(SPAN)
+        if g in (SS.S_vodbridge, SS.S_hodbridge):
+            return True
+        if self._glyph(PORTCULLIS) in (SS.S_vcdbridge, SS.S_hcdbridge):
+            return False
+        return bool(self.crush['down']) if self.crush else True
+
+    def _hostile_at(self, p):
+        """A hostile (not our pet, not a known peaceful) standing on map square p, with its name."""
+        y, x = to_bot(*p)
+        glyph = int(self.agent.glyphs[y, x])
+        if not (nh.glyph_is_monster(glyph) or glyph == nh.GLYPH_INVISIBLE):
+            return None
+        if nh.glyph_is_pet(glyph) or self.agent.monster_tracker.peaceful_monster_mask[y, x]:
+            return None
+        for m in self.agent.get_visible_monsters():
+            if (m[1], m[2]) == (y, x):
+                return getattr(m[3], 'mname', '?')
+        return 'it'
+
+    def _pet_at(self, p):
+        y, x = to_bot(*p)
+        return nh.glyph_is_pet(int(self.agent.glyphs[y, x]))
+
+    def _crush_log(self, msg):
+        self.agent.log(f'PASSTUNE {msg}')
+
+    def _crush_finish(self, why):
+        c = self.crush
+        self.crush_done = True
+        self._crush_log(f'crusher done toggles={c["toggles"]} killed={c["killed"]} turns={self.agent.blstats.time - c["start"]} '
+                        f'({why})')
+
+    def _crush_play(self, item, why):
+        """Play the known tune (music.c 'Play the passtune?' -> y): the bridge toggles. True: it did."""
+        c = self.crush
+        castle = self.dive.castle
+        c['toggles'] += 1
+        self._set_state(f'crusher: playing the passtune to {why}')
+        try:
+            seen, msg = castle._play_tune(item, '')
+        except (AgentChangeStrategy, AgentFinished, AgentPanic):
+            raise
+        except Exception as e:
+            c['failed'] += 1
+            self._crush_log(f'crusher play failed: {e!r}')
+            return False
+        closed = any(w in msg for w in ('drawbridge coming up', 'drawbridge going up', 'chains rattling and gears turning'))
+        opened = any(w in msg for w in ('drawbridge coming down', 'drawbridge going down', 'gears turning and chains rattling'))
+        if closed:
+            c['down'] = False
+        elif opened:
+            c['down'] = True
+        else:
+            c['failed'] += 1
+            self._crush_log(f'crusher play={c["toggles"]} did not toggle the bridge: {msg[:200]!r}')
+            return False
+        # dbridge.c do_entity / e_died -> xkilled XKILL_GIVEMSG in view ('You kill the soldier!'), 'You hear a crushing
+        # sound.' / 'You hear a splash.' out of view
+        kills = msg.count('You kill ') + msg.count('You destroy ') + msg.count('crushing sound') + msg.count('You hear a splash')
+        c['killed'] += kills
+        self._crush_log(f'crusher play={c["toggles"]} {"closed" if closed else "opened"} kills={kills} msg={msg[:240]!r}')
+        return True
+
+    def _crush_attack(self, m):
+        """A land hostile next to us: fought; an Elbereth-respecter from our Elbereth square costs alignment
+        (mon.c setmangry 'You feel like a hypocrite'), so the engraving is written over first."""
+        mon = m[3]
+        if self._engraved() and not self.dive._melee_ignores_elbereth(mon) and self._can_write():
+            self._set_state(f'crusher: wiping our Elbereth before fighting {getattr(mon, "mname", "?")}')
+            self.agent.engrave('x')
+            return True
+        return self._attack(m)
+
+    def _crush_step(self):
+        """CASTLE_PASSTUNE_CRUSH: the garrison killed with the bridge (jf_config.CASTLE_PASSTUNE_CRUSH). Hold the shore
+        (04,08) on Elbereth; a hostile on the span or the portcullis square -> play the known tune (the bridge rises and
+        kills it); the span clear with the bridge up -> play again (it comes down, crushing what swims under it); below
+        CASTLE_PASSTUNE_HP step back to (03,08) (no water beside it) and rest. Over after CRUSH_QUIET turns without a
+        hostile on the castle side with the bridge down, CRUSH_TOGGLES toggles or CRUSH_TURNS turns (the bridge is left
+        down): the v1 walk-in takes over. True: acted this step."""
+        agent = self.agent
+        castle = self.dive.castle
+        bl = agent.blstats
+        now = bl.time
+        c = self.crush
+        if c is None:
+            c = self.crush = dict(toggles=0, killed=0, start=now, last_hostile=now, down=True, failed=0, elbereth=0)
+            self._crush_log(f'crusher start turn {now} hp {bl.hitpoints}/{bl.max_hitpoints} pos {self._pos()}')
+            self._mile('crusher')
+        if agent.character.prop.polymorph:
+            self._crush_finish('polymorphed')
+            return False
+        item = castle._tune_instrument()
+        if item is None:
+            self._crush_finish('no instrument left')
+            return False
+        msg = agent.message or ''
+        if 'drawbridge collapses' in msg or 'drawbridge disintegrates' in msg:
+            # the garrison's own wands of striking (zap.c bhit -> destroy_drawbridge) end the game of toggles: harness
+            # seeds 1005/1009/1015 ('The soldier zaps a curved wand! The drawbridge collapses into the moat!')
+            self._crush_finish('the drawbridge was destroyed')
+            return False
+        down = self._bridge_down()
+        c['down'] = down
+        pos = self._pos()
+        on_span = self._hostile_at(SPAN)
+        on_port = self._hostile_at(PORTCULLIS)
+        castle_side = on_span or on_port or any(
+            to_map(m[1], m[2])[0] >= SPAN[0] for m in self._land_hostiles())
+        near = castle._hostiles_near(1)   # on dry land next to us: never the span (moat under it) or the eels
+        if castle_side or near:
+            c['last_hostile'] = now
+        over = None
+        if c['failed'] >= 3:
+            over = '3 plays did not toggle the bridge'
+        elif c['toggles'] >= CRUSH_TOGGLES:
+            over = f'{CRUSH_TOGGLES} toggles'
+        elif now - c['start'] > CRUSH_TURNS:
+            over = f'{CRUSH_TURNS} turns'
+        elif down and now - c['last_hostile'] >= CRUSH_QUIET:
+            over = f'{CRUSH_QUIET} quiet turns'
+        if over is not None and (down or c['failed'] >= 3):
+            self._crush_finish(over)
+            return False
+        prop = agent.character.prop
+        if prop.confusion or prop.stun or prop.hallu:
+            # music.c: no 'Improvise?' prompt while confused/stunned/hallucinating -- the play would be an improvisation
+            # ('You generate a raucous noise.', the harness's smoke seed 1004: 3 such plays ended the crusher)
+            c['waits'] = c.get('waits', 0) + 1
+            if c['waits'] > 60:
+                self._crush_finish('60 steps confused/stunned/hallucinating')
+                return False
+            if near:
+                return self._crush_attack(self._pick_target(near))
+            self._set_state('crusher: waiting out a condition')
+            agent.search()
+            return True
+        hp = bl.hitpoints / max(1, bl.max_hitpoints)
+        if hp < jf_config.CASTLE_PASSTUNE_HP and not (down and (on_span or on_port) and pos == castle.TUNE_SHORE):
+            # hurt: back to (03,08) and rest; a hostile that made it onto our bank is fought
+            if near:
+                return self._crush_attack(self._pick_target(near))
+            if pos != HOLD:
+                return self._go(HOLD, 'crusher: back from the shore to rest')
+            self._set_state('crusher: resting at (3, 8)')
+            agent.search(3)
+            return True
+        if pos != castle.TUNE_SHORE:
+            if near:
+                return self._crush_attack(self._pick_target(near))
+            if self._boulder(castle.TUNE_SHORE):
+                self._crush_finish('a boulder on the shore square')
+                return False
+            if max(abs(pos[0] - castle.TUNE_SHORE[0]), abs(pos[1] - castle.TUNE_SHORE[1])) == 1:
+                self._set_state('crusher: stepping to the shore (4, 8)')
+                castle._step_to(*castle.TUNE_SHORE)
+                return True
+            return self._go(HOLD, 'crusher: to the shore')
+        # on the shore square
+        if down and (on_span or on_port) and not (self._pet_at(SPAN) or self._pet_at(PORTCULLIS)):
+            target = on_span or on_port
+            if self._crush_play(item, f'close on the {target}'):
+                self._crush_log(f'crush n={c["killed"]} on={target}')
+            return True
+        if not down:
+            if over is not None or not self._pet_at(SPAN):
+                self._crush_play(item, 'reopen')
+                return True
+        if near:
+            return self._crush_attack(self._pick_target(near))
+        if not self._engraved() and self._can_write() and c['elbereth'] < 20:
+            c['elbereth'] += 1
+            self._set_state('crusher: Elbereth on the shore square')
+            agent.engrave('Elbereth')
+            return True
+        self._set_state('crusher: holding the shore' + (' on Elbereth' if self._engraved() else ''))
+        agent.search()
+        return True
+
     # ---- fill the span (before opening: the soldiers stay asleep until the path is ready)
 
     def _fill_step(self):
+        if jf_config.CASTLE_PASSTUNE and self.opened_by_tune and self._open():
+            return False   # the passtune lowered the bridge: a dry span, nothing to fill
         opener = self._opener()
         if not self._open() and opener is not None and opener.object.name == 'opening':
             return False   # a lowered bridge needs no fill
