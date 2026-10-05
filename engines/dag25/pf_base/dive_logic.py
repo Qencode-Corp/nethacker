@@ -908,6 +908,8 @@ class DiveLogic:
         self._valley_west = None           # westmost column reached in the Valley (progress log)
         self._repoly_zaps = 0              # VALLEY_XORN: xorn_repoly's self-zaps
         self._valley_resting = False       # resting in the Valley until VALLEY_REST_UNTIL
+        self._valley_rest_start = None     # VALLEY_WALK_CAP: turn the current Valley rest began
+        self._valley_rest_blocked_until = -1   # VALLEY_WALK_CAP: no Valley rest before this turn (a capped rest)
         self._scare_spot = None            # (level key, (y, x)) where we dropped a scroll of scare monster
         self._scare_drop_turn = None       # turn of that drop (CASTLE_SCARE hold cap)
         self._not_scare_keys = set()       # scroll appearances a fake pile proved not to be scare monster
@@ -5769,7 +5771,12 @@ class DiveLogic:
             return True
         if tool is not None:
             rest_below = GEHENNOM_DIG_REST_BELOW if self.in_gehennom() else DIG_REST_BELOW
-            if agent.blstats.hitpoints < rest_below * agent.blstats.max_hitpoints and \
+            quiet = True
+            if jf_config.GEHENNOM_DIG_REST and self.in_gehennom() and not self.in_valley():
+                # GEHENNOM_DIG_REST: below the Valley rest under GEHENNOM_DIG_REST_FRAC, and only with nothing in view
+                rest_below = jf_config.GEHENNOM_DIG_REST_FRAC
+                quiet = not agent.get_visible_monsters()
+            if quiet and agent.blstats.hitpoints < rest_below * agent.blstats.max_hitpoints and \
                     not (DIVE_REST and self._in_own_pit()) and not self.xorn_buffer() and not self._mino_alert():
                 self._task('rest before digging')
                 if DIVE_REST and self._rest_elbereth():
@@ -6236,6 +6243,22 @@ class DiveLogic:
         threshold = VALLEY_REST_UNTIL if self._valley_resting else \
             (VALLEY_SPRINT_REST_BELOW if jf_config.VALLEY_SPRINT else REST_BELOW)
         self._valley_resting = bl.hitpoints < threshold * bl.max_hitpoints and bl.hunger_state < Hunger.WEAK
+        if jf_config.VALLEY_WALK_CAP:
+            # VALLEY_WALK_CAP: a rest lasts at most WALK_CAP_REST turns (1304 / 3967 rested 1,100 / 450 turns until a xorn
+            # came); then walk on, and no new rest for as many turns
+            if self._valley_resting and bl.time < self._valley_rest_blocked_until:
+                self._valley_resting = False
+            if self._valley_resting:
+                if self._valley_rest_start is None:
+                    self._valley_rest_start = bl.time
+                elif bl.time - self._valley_rest_start > jf_config.VALLEY_WALK_CAP_REST:
+                    agent.log(f'VALLEY rest capped after {bl.time - self._valley_rest_start} turns at hp '
+                              f'{bl.hitpoints}/{bl.max_hitpoints}: walking on')
+                    self._valley_resting = False
+                    self._valley_rest_start = None
+                    self._valley_rest_blocked_until = bl.time + jf_config.VALLEY_WALK_CAP_REST
+            else:
+                self._valley_rest_start = None
         if self._valley_resting:
             up = valley.UP_STAIRS
             if pos != up and 0 <= dis[up] <= VALLEY_REST_REACH:
@@ -6293,6 +6316,27 @@ class DiveLogic:
         # the next door (or the '>') isn't reachable: a known trap (the fixed spiked pits) may be what walls us
         # off, else walls of the level's variant we haven't seen yet
         if self._walk_through_traps() and self._valley_route_open():
+            return
+        if jf_config.VALLEY_WALK_CAP:
+            if prop.hallu:
+                # VALLEY_WALK_CAP: exploring while hallucinating never ended (3748: 892 turns, 1,485 task lines); hold
+                self._task('valley: wait out hallucination')
+                agent.search(3)
+                return
+            self._task('valley: explore')
+            t0 = bl.time
+            logged = []
+
+            def route_open_or_capped():
+                if self._valley_route_open():
+                    return True
+                if agent.blstats.time - t0 > jf_config.VALLEY_WALK_CAP_EXPLORE:
+                    if not logged:
+                        logged.append(1)
+                        agent.log(f'VALLEY explore capped after {agent.blstats.time - t0} turns')
+                    return True
+                return False
+            self.exploration(None).until(agent, route_open_or_capped).run()
             return
         self._task('valley: explore')
         self.exploration(None).until(agent, self._valley_route_open).run()
@@ -6596,12 +6640,20 @@ class DiveLogic:
         dis = agent.bfs()
         if pos != up and not 0 <= dis[up] <= VALLEY_RETREAT_REACH:
             yield False
+        strike = None
+        if jf_config.VALLEY_RETREAT_STRIKE and pos != up:
+            strike = self._valley_retreat_blocker(up, dis)
+            if strike == 'yield':
+                yield False   # a peaceful or a never-melee monster on the way: fight2 / the plan sort it out
         yield True
         if pos != up:
             self._task('valley: retreat to the up stairs')
             start = (pos, agent.current_level().key())
             try:
-                agent.go_to(*up, max_steps=1)
+                if strike is not None:
+                    self._valley_retreat_step(up, strike)
+                else:
+                    agent.go_to(*up, max_steps=1)
             finally:
                 if ((agent.blstats.y, agent.blstats.x), agent.current_level().key()) == start:
                     self._retreat_blocked_until = agent.blstats.time + 5   # blocked: fight a few turns
@@ -6611,6 +6663,55 @@ class DiveLogic:
         agent.log(f'VALLEY retreat {self.valley_retreats} up to the castle at hp {bl.hitpoints}/{bl.max_hitpoints}, '
                   f'turn {bl.time}, near {[m[3].mname for m in near]}')
         agent.move('<')
+
+    def _valley_retreat_blocker(self, up, dis):
+        """VALLEY_RETREAT_STRIKE: what stands on the next square of the way to the '<': None (free), (y, x) of a monster
+        to strike, or 'yield' (a peaceful -- the priest of Moloch -- or a VALLEY_NO_MELEE monster: fight2's call)."""
+        agent = self.agent
+        bl = agent.blstats
+        path = agent.path(bl.y, bl.x, *up, dis=dis)
+        if len(path) < 2:
+            return None
+        ny, nx = path[1]
+        if not agent.monster_tracker.monster_mask[ny, nx]:
+            return None
+        if agent.monster_tracker.peaceful_monster_mask[ny, nx]:
+            return 'yield'
+        mon = next((m for m in agent.get_visible_monsters() if (int(m[1]), int(m[2])) == (ny, nx)), None)
+        if mon is not None and getattr(mon[3], 'mname', '') in self.VALLEY_NO_MELEE:
+            return 'yield'
+        return (int(ny), int(nx))
+
+    def _valley_retreat_step(self, up, strike):
+        """VALLEY_RETREAT_STRIKE: one step towards the '<', or a blow at the monster on that square (go_to raised
+        AgentPanic 'Monster on a next tile' there: 14 of the 17 passage games that ended in the retreat). A monster
+        that steps in between the plan and the move is struck too (the _raven_step_toward pattern)."""
+        agent = self.agent
+        bl = agent.blstats
+        if strike is not None:
+            y, x = strike
+            mon = next((m for m in agent.get_visible_monsters() if (int(m[1]), int(m[2])) == (y, x)), None)
+            agent.log(f'VALLEY retreat: striking the {getattr(mon[3], "mname", "?") if mon else "unseen monster"} in the '
+                      f'way at {(y, x)}, hp {bl.hitpoints}/{bl.max_hitpoints}')
+            if agent.wield_best_melee_weapon():
+                return
+            with agent.atom_operation():
+                agent.step(A.Command.FIGHT)
+                agent.direction(agent.calc_direction(bl.y, bl.x, y, x))
+            return
+        start = (bl.y, bl.x)
+        try:
+            agent.go_to(*up, max_steps=1)
+            return
+        except AgentPanic as e:
+            m = re.search(r'Monster on a next tile when moving: \((\d+), ?(\d+)\)', str(e))
+            if m is None or (agent.blstats.y, agent.blstats.x) != start:
+                raise
+            y, x = int(m.group(1)), int(m.group(2))
+        agent.log(f'VALLEY retreat: hitting the monster that stepped in the way at {(y, x)}')
+        with agent.atom_operation():
+            agent.step(A.Command.FIGHT)
+            agent.direction(agent.calc_direction(bl.y, bl.x, y, x))
 
     # --------------------------------------------------------- valley fort (jf_config.VALLEY_FORT)
 

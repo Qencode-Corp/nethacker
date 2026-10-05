@@ -798,6 +798,49 @@ VALLEY_LOTTERY_MAX_XL = 11      # stronger characters keep their walk (a roll go
 # confused is a ticket instead of being identified and spent)
 VALLEY_LOTTERY_CONFUSE_FIRST = False
 
+# --- valley-landing (P37, 2026-10-04; wt/p37-valley/valley_report.md, valley_landing_read.csv: the head's 39 castle-passage
+# Valleys in the 4,000 cloud games, 0 of 39 reach Dlvl 40; 21 die within 25 turns of landing, xorns 11 of them; the 78
+# wish-and-teleport games skip the Valley and 39 of 78 bank Dlvl 44-50). Five switches, all off; read on valley_harness.py ---
+# VALLEY_NO_LANDING_LOTTERY (off, testing; valley_walk.lottery_active / _lottery_plan / _lottery_ok_now): no unknown-scroll
+# reads in the Valley at all -- 14 of the 21 landing deaths read unknown scrolls on the landing square as the crowd closed
+# (VALLEY_LOTTERY_DESPERATE = 1.0 reads with hostiles adjacent) -- and no read within NO_LANDING_LOTTERY_TURNS turns of the
+# landing or with an awake hostile next to us; the lottery only once the xorn route has failed (no wall-walking form and no
+# known wand of polymorph with control shown: dive_logic.xorn_repoly) and only with a known ticket: a known cursed scroll of
+# teleportation, or a known one read while already confused. (4 of 39 rolled themselves UP to Dlvl 3-18 and died re-digging.)
+VALLEY_NO_LANDING_LOTTERY = False
+VALLEY_NO_LANDING_LOTTERY_TURNS = 25
+# VALLEY_RETREAT_STRIKE (off, testing; dive_logic.valley_retreat): the retreat's go_to(*up, max_steps=1) raised AgentPanic
+# 'Monster on a next tile' in 14 of the 17 games that ended in 'valley: retreat to the up stairs' (agent.move: a monster on
+# the next square), a restart of the strategy and a turn lost each time while the crowd hit. Strike the monster on the next
+# square of the way to the '<' instead (as valley_sneak strikes its blocker and _raven_step_toward does); a peaceful (the
+# priest of Moloch) or a never-melee monster (VALLEY_NO_MELEE) on it yields to fight2.
+VALLEY_RETREAT_STRIKE = False
+# VALLEY_DOOR_HP (off, testing; castle_logic._door_step / _rest_stop): the castle's back-door trap door was taken at any HP
+# -- the 39 passage games landed at a median 69% HP, 14 under 60%, 5 under 33% (610: 1/16 HP), on a square every Valley
+# resident knows (monmove.c set_apparxy) -- while the castle side has Elbereth and prayer and the Valley neither. Below
+# DOOR_HP_FRAC (REST_BELOW) at the door square or in the doorway: step back and heal on the east courtyard first (Elbereth;
+# CASTLE_EDGE_REST moves the rest off the moat edge to SAFE_EAST), at most DOOR_HP_MAX_REST actions so no game stalls there.
+# Not reproduced by the harness (it lands at full HP): the switch is read on the bench only.
+VALLEY_DOOR_HP = False
+VALLEY_DOOR_HP_FRAC = 0.66
+VALLEY_DOOR_HP_MAX_REST = 600
+# VALLEY_WALK_CAP (off, testing; dive_logic.valley_step): 'valley: explore' (exploration().until(_valley_route_open)) never
+# ended while hallucinating -- 3748: 1,485 task lines over 892 turns -- and 'valley: rest' looped 1,100 / 450 turns (1304,
+# 3967) until a xorn came. Cap the explore at WALK_CAP_EXPLORE turns and hold (search) instead of exploring while
+# hallucinating; cap a rest at WALK_CAP_REST turns and walk on (another rest only after as many turns). The Valley floor
+# is hardfloor (gehennom.des FLAGS: hardfloor; valley.py, dive_logic.py:3258 'a pick-axe only digs a pit in the Valley'), so
+# there is no dig exit: the exits stay the xorn form (VALLEY_XORN, valley_xorn / xorn_repoly preempt by themselves whenever a
+# form or a known polymorph wand is at hand) and the stairs walk.
+VALLEY_WALK_CAP = False
+VALLEY_WALK_CAP_EXPLORE = 300
+VALLEY_WALK_CAP_REST = 200
+# GEHENNOM_DIG_REST (off, testing; dive_logic.dig_down's rest rule): below the Valley the dig-dive rested only under
+# GEHENNOM_DIG_REST_BELOW = 0.3 and with monsters in view -- 3624 dug ten levels at 35-41/99 HP and died to an owlbear right
+# after a 'GEHENNOM escape' zap. With the switch: rest below GEHENNOM_DIG_REST_FRAC of max HP, and only with nothing in view
+# (with a monster in view the hole is the escape, ~5 turns).
+GEHENNOM_DIG_REST = False
+GEHENNOM_DIG_REST_FRAC = 0.5
+
 # --- castle-first-pass (castle_cross.py): get off the castle's west landing onto the moat before the landing kills us ---
 # CFP_RUSH: on the castle's west side a LASTING lift (known lev ring/boots, then unknown rings, then unknown magic
 # boots) goes on at once, above fight2/elbereth_rest/the scare hold, and a floating hero digs straight from the maze

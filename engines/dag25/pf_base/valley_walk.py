@@ -455,6 +455,12 @@ class ValleyWalker:
         # a polymorph form: VALLEY_XORN walks a wall-walker out; other forms may have no hands to read with
         if agent.character.prop.polymorph:
             return False
+        if jf_config.VALLEY_NO_LANDING_LOTTERY and jf_config.VALLEY_XORN:
+            # VALLEY_NO_LANDING_LOTTERY: the xorn route first -- a known wand of polymorph with control shown this game
+            # (dive_logic.xorn_repoly zaps it in Gehennom) still has a wall-walking form to offer; the roll only after it
+            from . import castle_power
+            if castle_power._poly_wand(agent) is not None and getattr(agent, '_poly_control_turn', None) is not None:
+                return False
         from . import power_route
         # teleport control known: TC_ROUTE's own jump (a controlled level teleport answers 60: Gehennom's bottom-1)
         return not (jf_config.TC_ROUTE and power_route.tc_known(agent))
@@ -481,6 +487,8 @@ class ValleyWalker:
         cursed = power_route.cursed_tele_scrolls(agent)
         if cursed:
             return ('read', cursed[0], 'cursed: a level teleport (the Valley lottery)')
+        if jf_config.VALLEY_NO_LANDING_LOTTERY:
+            return None   # known tickets only: no unknown scroll read, no potion quaffed, no confusion sought
         if prop.confusion:
             # confused, every unknown scroll that is teleportation is a ticket too. The one confused read that kills
             # is genocide (read.c do_genocide: confused = our own role, ~3.5% of random scrolls); punishment, fire,
@@ -529,6 +537,13 @@ class ValleyWalker:
         pos = (int(bl.y), int(bl.x))
         adj = [m for m in agent.get_visible_monsters() if utils.adjacent((int(m[1]), int(m[2])), pos) and
                not self._sleeper(m)]
+        if jf_config.VALLEY_NO_LANDING_LOTTERY:
+            # VALLEY_NO_LANDING_LOTTERY: never in the landing fight (the first NO_LANDING_LOTTERY_TURNS turns) and never
+            # with an awake hostile next to us, whatever the HP (14 of 21 landing deaths read as the crowd closed)
+            arrival = self.dive._valley_arrival
+            if arrival is None or bl.time - arrival < jf_config.VALLEY_NO_LANDING_LOTTERY_TURNS:
+                return False
+            return not adj
         return not adj or bl.hitpoints < jf_config.VALLEY_LOTTERY_DESPERATE * bl.max_hitpoints
 
     def _lottery_act(self, action):

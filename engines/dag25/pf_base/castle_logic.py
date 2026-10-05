@@ -1322,6 +1322,13 @@ class CastlePassage:
                 self._resting = False
                 return False
         want = 0.9 if (self._resting or self._after_valley_retreat()) else 0.45
+        if jf_config.VALLEY_DOOR_HP and pos[0] >= GOAL[0] and \
+                self._tries.get('door_hp_rest', 0) < jf_config.VALLEY_DOOR_HP_MAX_REST:
+            # VALLEY_DOOR_HP: on the east side the trap door is next: rest to the door's HP bar here (SAFE_EAST under
+            # CASTLE_EDGE_REST), so the hold at the door itself has little left to do
+            want = max(want, jf_config.VALLEY_DOOR_HP_FRAC)
+            if bl.hitpoints < want * bl.max_hitpoints:
+                self._tries['door_hp_rest'] = self._tries.get('door_hp_rest', 0) + 1
         if jf_config.BREACH_RUSH and not self._resting and map_char(*pos) == '.' and pos[1] in (0, 16):
             # BREACH_RUSH: the strip is where a lasting lift rests (no land monster reaches it, Elbereth holds the sea
             # monsters in row 1): stop there below 80% instead of in the west courtyard
@@ -1666,8 +1673,49 @@ class CastlePassage:
         # a monster or an object in the doorway hides it: go by what we remember
         return self.agent.current_level().objects[y, x] not in G.DOOR_CLOSED
 
+    def _door_hp_hold(self, pos):
+        """VALLEY_DOOR_HP: at the back door (GOAL) or in its doorway (DOOR) below DOOR_HP_FRAC of max HP, heal on the
+        castle side before the trap door drops us into the Valley, where neither Elbereth nor prayer works (the 39
+        passage games landed at a median 69% HP, 14 under 60%). In the doorway step back out; at the door hold on
+        Elbereth (the east eels at (57,7)/(57,9) respect it; _rest_stop with CASTLE_EDGE_REST moves a rest off the moat
+        edge to SAFE_EAST first). At most DOOR_HP_MAX_REST actions, then the door is taken whatever the HP."""
+        agent = self.agent
+        bl = agent.blstats
+        tries = self._tries
+        if bl.hitpoints >= jf_config.VALLEY_DOOR_HP_FRAC * bl.max_hitpoints or \
+                tries.get('door_hp_rest', 0) >= jf_config.VALLEY_DOOR_HP_MAX_REST:
+            if tries.get('door_hp_hold'):
+                tries['door_hp_hold'] = 0
+                self._log(f'door HP hold over at {pos}: hp {bl.hitpoints}/{bl.max_hitpoints} after '
+                          f'{tries.get("door_hp_rest", 0)} actions')
+            return False
+        if self.levitating() and self._timed_levitation():
+            return False   # a potion's lift can't wait (see _rest_stop)
+        tries['door_hp_rest'] = tries.get('door_hp_rest', 0) + 1
+        if not tries.get('door_hp_hold'):
+            tries['door_hp_hold'] = 1
+            self._log(f'door HP hold at {pos}: hp {bl.hitpoints}/{bl.max_hitpoints} < '
+                      f'{jf_config.VALLEY_DOOR_HP_FRAC:.2f} of max: healing on the castle side first')
+        if pos == DOOR:
+            self._set_state('door HP hold: back out of the doorway')
+            self._step_to(*GOAL)
+            return True
+        near = [m for m in self._hostiles_near(1) if self.dive._ignores_elbereth(m[3])]
+        if near:
+            return self._fight_adjacent() or bool(agent.search())
+        engraving = (agent.inventory.engraving_below_me or '').lower()
+        if engraving != 'elbereth' and agent.can_engrave() and not agent.character.prop.blind:
+            self._set_state('door HP hold: Elbereth at the back door')
+            agent.engrave('Elbereth')
+            return True
+        self._set_state('door HP hold: healing at the back door')
+        agent.search(3)
+        return True
+
     def _door_step(self, pos):
         if self._power_hook('door_step', False, pos): return
+        if jf_config.VALLEY_DOOR_HP and pos in (GOAL, DOOR) and self._door_hp_hold(pos):
+            return
         agent = self.agent
         tries = self._tries
         if jf_config.CL_EAST_WAIT and self.levitating() and self._timed_levitation() and \
