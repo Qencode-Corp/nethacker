@@ -381,6 +381,11 @@ class ItemManager:
             if mon_name.startswith('an '):
                 mon_name = mon_name[3:]
             monster_id = nh.glyph_to_mon(MON.from_name(mon_name))
+            if jf_config.HEAVY_LIFT_GUARD and mon_name in ('wererat', 'werejackal', 'werewolf'):
+                # mon.c mondead restores a lycanthrope's human form before make_corpse, so its corpse is always
+                # PM_HUMAN_WERE* (cwt 1450), while the name finds the animal form first (wererat 40, werejackal 300):
+                # nhbot's Wizards picked one up, went Stressed/Overloaded and died within ~170 turns
+                monster_id = max(i for i in range(nh.NUMMONS) if nh.permonst(i).mname == mon_name)
             name = 'corpse'
         elif name.startswith('statue of ') or name.startswith('statues of ') or \
                 name.startswith('historic statue of ') or name.startswith('historic statues of '):

@@ -249,6 +249,13 @@ class KnownItemsGuard:
             return
         direction = agent.calc_direction(bl.y, bl.x, int(target[1]), int(target[2]))
         ray_ok = critical or self._free_run_behind(target, dy, dx) >= jf_config.KNOWN_ITEMS_RAY_RUN
+        if critical and jf_config.RAY_CRIT_RUN:
+            # RAY_CRIT_RUN: at critically low HP a sleep/lightning/magic-missile ray needs a short free run behind the
+            # target too. A ray's range is rn1(7,7) squares, -2 per monster it passes (zap.c buzz), so with a wall
+            # 1-2 squares behind an adjacent target it comes back through us: a 6d6 bolt or sleep next to the
+            # attacker is death at 1/7 HP (nhbot tr0 val-hum-neu-fem s210: 'You kill the leprechaun! The bolt of
+            # lightning hits you!'). The beam of striking (no bounce) and the other plans stay open.
+            ray_ok = self._free_run_behind(target, dy, dx) >= jf_config.RAY_CRIT_RUN
         name = getattr(target[3], 'mname', '?')
         wand, wname = mino._wand(('sleep',))
         if wand is None and critical:
@@ -258,11 +265,17 @@ class KnownItemsGuard:
         wand, _ = mino._wand(('striking',))
         if wand is not None:
             yield ('zap', (wand, direction, target), f'known striking at the {name}')
+        # RAY_BOUNCE_FIX: cold and fire are rays too -- with a wall close behind the target the bolt bounces back
+        # through us (6d6): 7 of nhbot's dev deaths were its own bounce (a5 arc-dwa s319: cold at an earth elemental).
+        # A Valkyrie resists cold; otherwise these need the same free run as the other rays, even when critical.
+        safe_run = not jf_config.RAY_BOUNCE_FIX or \
+            self._free_run_behind(target, dy, dx) >= jf_config.KNOWN_ITEMS_RAY_RUN
         wand, _ = mino._wand(('cold',))
-        if wand is not None and not dive.cold_reserved(wand):
+        if wand is not None and not dive.cold_reserved(wand) and \
+                (safe_run or getattr(agent.character, 'role', None) == getattr(agent.character, 'VALKYRIE', -1)):
             yield ('zap', (wand, direction, target), f'known cold at the {name}')
         wand, _ = mino._wand(('fire',))
-        if wand is not None:
+        if wand is not None and safe_run:
             yield ('zap', (wand, direction, target), f'known fire at the {name}')
         if ray_ok:
             wand, wname = mino._wand(('lightning', 'magic missile'))

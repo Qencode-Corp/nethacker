@@ -448,7 +448,19 @@ class PrayerModel:
             self._clear_bad_luck()
             if self.record is not None and self.record < 0:
                 self.record = 0
-            if self.record is not None and self.record < 2 and 'You feel much better' not in messages:
+            try:
+                from .. import jf_config
+                record_fix = jf_config.RECORD_MODEL_FIX
+            except Exception:
+                record_fix = False
+            if record_fix:
+                # RECORD_MODEL_FIX: pray.c:941 pleased(): 'else if (u.ualign.record < 2 && trouble <= 0) adjalign(1)'
+                # -- only a prayer made without major trouble (limit < 200) earns the point. The old test (+1 unless
+                # 'You feel much better') also counted Weak/Fainting prayers, so a record-0 hero (Cav/Pri/Tou/Val/Wiz
+                # start at 0) read as record 1-2 while each of its prayers still had pleased()'s action-0 coin flip
+                if self.record is not None and self.record < 2 and limit < 200:
+                    self.record += 1
+            elif self.record is not None and self.record < 2 and 'You feel much better' not in messages:
                 self.record += 1  # pray.c:936-937 (no trouble fixed)
             self.timeout_kind, self.timeout_turn = 'pleased', turn
         else:

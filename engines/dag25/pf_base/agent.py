@@ -56,6 +56,7 @@ class Agent:
 
         self._last_pet_seen = 0
         self._last_pet_where = None    # (level key, turn, [(y, x), ...]) where the pet was last on screen
+        self._pet_starving_until = -1  # PET_HUNGER_FIX: turn until which corpses on the floor are left to the pet
         self._corpse_debug_pos = None
         self._faint_msg_turn = None    # FAINT_MEASURE_FIX: turn of the screen that first showed a faint
         self._paralysis_end_turn = -10 ** 9   # STARVE_UNMEASURED_GAP: turn of the last 'You can move again'
@@ -470,6 +471,8 @@ class Agent:
         # TC_ROUTE (power_route.py): TC prompts, the tengu intrinsic and read effects are learned before the prompt
         # handling below answers them
         power_route.note_message(self)
+        if jf_config.PET_HUNGER_FIX:
+            self._note_pet_hunger()
         if jf_config.GENOCIDE_POLICY or jf_config.HORN_SCARE:
             # opp-items: genocide outcomes ('Wiped out' proves a stack not cursed), what an unknown horn turned out to be
             from . import opp_items
@@ -1631,7 +1634,24 @@ class Agent:
             dive.dive_hunger_prayers += 1   # CAMP_HUNGER_GAP: the dive's hunger cycles so far
         turn_before = self.blstats.time
         history_len = len(self._message_history)
-        self.step(A.Command.PRAY)
+        if jf_config.PRAYER_RECORD_FIX:
+            try:
+                self.step(A.Command.PRAY)
+            except BaseException:
+                # PRAYER_RECORD_FIX: a strategy that preempts during the prayer's step (its update callbacks raise
+                # AgentChangeStrategy) skipped everything below, so the prayer was never recorded: nhbot saw 13 of 17
+                # such losses as lycanthropy-cure prayers ('You return to human form!' fires a preemption), and the
+                # next prayer then came 4-998 turns later at a believed gap of 1200-4900
+                if 'You begin praying' in ' '.join(self._message_history[history_len:] + [self.message]):
+                    self._after_prayer(turn_before, history_len, limit)
+                raise
+        else:
+            self.step(A.Command.PRAY)
+        self._after_prayer(turn_before, history_len, limit)
+        # TODO: return value
+        return True
+
+    def _after_prayer(self, turn_before, history_len, limit):
         self.last_prayer_turn = self.blstats.time
         messages = ' '.join(self._message_history[history_len:] + [self.message])
         failed = answered = False
@@ -1647,8 +1667,6 @@ class Agent:
                          f'prayers={self.prayer_model.prayers} failures={self.prayer_model.failures}')
             except Exception:
                 self._prayer_model_error()
-        # TODO: return value
-        return True
 
 
     ######## PRAYER MODEL (nhmodel/prayer.py: pray.c's odds; 3 errors -> the old rules for the rest of the game)
@@ -1725,6 +1743,35 @@ class Agent:
             except Exception:
                 self._prayer_model_error()
         return self.is_safe_to_pray(500) and low_hp_old
+
+    def _deep_pray_first(self):
+        """DEEP_PRAY_FIRST (jf_config): diving at depth >= DEEP_PRAY_FIRST_DEPTH outside Gehennom, HP at pray.c's
+        critically_low_hp (TROUBLE_HIT) and the prayer as safe as the old 500-turn rule (PrayerModel 'hp', never the doom
+        gamble): pray before casting healing or quaffing a healing potion."""
+        dive = self.global_logic.dive
+        if not dive.diving or self.prayer_failed or self.blstats.depth < jf_config.DEEP_PRAY_FIRST_DEPTH or \
+                self.current_level().dungeon_number == 1:
+            return False
+        if self.character.prop.polymorph or not self._critically_low_hp():
+            return False   # (a were form's low HP is only a buffer: LYCAN_FIXES)
+        if not self._prayer_model_active():
+            return self.is_safe_to_pray(500)
+        try:
+            if not self._prayer_holds_ok():
+                return False
+            return self.prayer_model.hp_decision(self.SAFE_PRAYER_P, jf_config.DOOM_MARGIN, jf_config.DOOM_MIN_P) == 'hp'
+        except Exception:
+            self._prayer_model_error()
+            return False
+
+    def _deep_pray_after_heal(self):
+        """DEEP_PRAY_FIRST: the heal's turn left us critically low with a safe prayer due -- pray now. Returning first let
+        one action of a lower strategy run before this hook fired again (agent.preempt re-runs the lower stack without
+        re-checking the hooks): nhbot mcb0 mon-hum-cha-mal__202 cast healing at 14/58 HP among Medusa-3's ravens, fell
+        to 2, and dig_first wrote a blind Elbereth instead of the prayer (gap 1124); dead the same turn."""
+        if jf_config.DEEP_PRAY_FIRST and self._deep_pray_first():
+            self._pray_reason = 'hp (DEEP_PRAY_FIRST, after a heal)'
+            self.pray()
 
     def _doom_prayer_beats_exits(self, model):
         """Exits that beat a long-shot prayer: the down stairs underfoot (the last resort takes them: they
@@ -2775,6 +2822,25 @@ class Agent:
         self.inventory.arrange_items().run()
         self.inventory.unreachable_items_until[self.inventory._here()] = self.blstats.time + 5000
 
+    def _keep_digging_tool_wielded(self):
+        """DIG_TOOL_MELEE: diving with the digging tool in hand, a fight swapped to the 'best' melee weapon first (a whole
+        move: the attacker's free round) and the next dig swapped back. get_best_melee_weapon never rates a pick-axe
+        (a weapon-tool), so nhbot's Archeologist took up its +2 bullwhip (d2+2) over the pick (d6) in 42% of its dive
+        deaths' last turns. Keep the tool unless the best weapon is clearly better."""
+        if not jf_config.DIG_TOOL_MELEE or not self.global_logic.dive.diving:
+            return False
+        main = self.inventory.items.main_hand
+        if main is None or not (main.is_unambiguous() and main.object.name in ('pick-axe', 'dwarvish mattock')):
+            return False
+        try:
+            best, best_dps = self.inventory.get_best_melee_weapon(return_dps=True)
+            if best is None or best is main:
+                return True
+            tool_dps = utils.calc_dps(*self.character.get_melee_bonus(main, large_monster=False))
+            return best_dps < jf_config.DIG_TOOL_MELEE_MARGIN * tool_dps
+        except Exception:
+            return False
+
     def _touch_petrifies(self, action):
         # hitting a cockatrice bare-handed (Monk martial arts) or kicking it
         # barefoot turns you to stone on the spot
@@ -2801,7 +2867,7 @@ class Agent:
             _, dy, dx = best_action
             target_y = self.blstats.y + dy
             target_x = self.blstats.x + dx
-            if self.wield_best_melee_weapon():
+            if not self._keep_digging_tool_wielded() and self.wield_best_melee_weapon():
                 return wait_counter
             with self.env.debug_tiles([[self.blstats.y, self.blstats.x],
                                        [target_y, target_x]], color=(255, 0, 255), is_path=True):
@@ -3042,10 +3108,29 @@ class Agent:
             return False
         return weight + 2 * MON.permonst(monster_id + nh.GLYPH_MON_OFF).cwt <= self.character.carrying_capacity
 
+    _PET_EATS = re.compile(r"\b(?:kitten|housecat|large cat|little dog|dog|large dog|pony|horse|warhorse) eats ")
+
+    def _note_pet_hunger(self):
+        """PET_HUNGER_FIX: dogmove.c dog_hunger prints '<pet> is confused from hunger.' (only for a tame monster) once
+        it is 500 turns past its hungrytime; the pet eating something (dog_eat) ends it."""
+        bl = getattr(self, 'blstats', None)
+        if bl is None:
+            return
+        msg = self.message or ''
+        if 'is confused from hunger' in msg:
+            if self._pet_starving_until < bl.time:
+                self.log('PET starving (confused from hunger): leaving the corpses to it')
+            self._pet_starving_until = bl.time + jf_config.PET_HUNGER_TURNS
+        elif self._pet_starving_until >= bl.time and self._PET_EATS.search(msg):
+            self._pet_starving_until = -1
+
     @utils.debug_log('eat_corpses_from_ground')
     @Strategy.wrap
     def eat_corpses_from_ground(self, only_below_me=True, max_dist=None, max_age=None):
         # max_dist / max_age (CLAIM_CORPSES): only fresh corpses a few steps away
+        if jf_config.PET_HUNGER_FIX and self.blstats.time <= self._pet_starving_until and \
+                self.blstats.hunger_state < Hunger.WEAK:
+            yield False   # our starving pet bites us until it eats (see jf_config.PET_HUNGER_FIX)
         yielded = False
         level = self.current_level()
         to_eat = []  # (y, x, monster_id)
@@ -3167,15 +3252,24 @@ class Agent:
                 return
 
 
+        # DEEP_PRAY_FIRST: deep in the dive a safe HP prayer at critically low HP goes before the heals below
+        if jf_config.DEEP_PRAY_FIRST and self._deep_pray_first():
+            yield True
+            self._pray_reason = 'hp (DEEP_PRAY_FIRST)'
+            self.pray()
+            return
+
         # a Healer starts with healing and extra healing: cast them before potions and prayer
         if self.should_cast_extra_heal():
             yield True
             self.cast('extra healing', direction=(0, 0))
+            self._deep_pray_after_heal()
             return
 
         if self.should_cast_heal():
             yield True
             self.cast('healing', direction=(0, 0))
+            self._deep_pray_after_heal()
             return
 
         # hypothesis (astra guard.py stop list): stoning, sliming, strangling and food poisoning /
@@ -3216,6 +3310,7 @@ class Agent:
         ):
             yield True
             self.inventory.quaff(items[0])
+            self._deep_pray_after_heal()
             return
 
         items = [item for item in flatten_items(self.inventory.items) if item.is_unambiguous() and
@@ -3666,6 +3761,11 @@ class Agent:
             return
         self._panic_repeats = 0
         m = re.search(r'expected \((\d+), (\d+)\)', str(exc))
+        if m is None and jf_config.PANIC_TILE_FIX:
+            # PANIC_TILE_FIX: 'Monster on a next tile when moving: (13,30)' has no 'expected' and no space after the
+            # comma, so the loop breaker only ever random-walked and replanned the same blocked step (92% of these
+            # panics come from inventory.check_items; one nhbot grind sat 38k turns behind a floating eye)
+            m = re.search(r'moving: \((\d+),\s*(\d+)\)', str(exc))
         if m is not None:
             y, x = int(m.group(1)), int(m.group(2))
             try:
