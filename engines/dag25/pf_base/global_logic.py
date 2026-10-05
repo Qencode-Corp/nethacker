@@ -49,6 +49,19 @@ class ItemPriority(ItemPriorityBase):
         except Exception:
             return False
 
+    def _log_instrument(self, instrument, ranked):
+        """KEEP_INSTRUMENT: one botlog line per change of the kept instrument (the split runs every few steps)."""
+        text = instrument.text if instrument is not None else None
+        if text == getattr(self, '_instrument_text', None):
+            return
+        self._instrument_text = text
+        try:
+            seen = ', '.join(f'{r}:{i.text}' for r, i in ranked[:4])
+            where = 'carried' if instrument is not None and self._carried(instrument) else 'floor'
+            self.agent.log(f'KEEP_INSTRUMENT keep {text!r} ({where}) of [{seen}]')
+        except Exception:
+            pass
+
     def _split(self, items, forced_items, weight_capacity):
         remaining_weight = weight_capacity
         ret_inv = {}
@@ -193,6 +206,28 @@ class ItemPriority(ItemPriorityBase):
                     kinds.add(kind)
                     add_item(item, count=1)
 
+        # KEEP_INSTRUMENT (P37, the castle passtune): one instrument that plays notes, from the first sighting on --
+        # flute/harp over horn over bugle, the lighter first within a rank (a wooden flute 5, a bugle 10, a horn 18, a
+        # harp 30), the carried one over a floor twin (no swapping on the floor); a better one seen later replaces it
+        # (the bugle is dropped, the flute taken). Kept here, after the food and ahead of the unknown potions/scrolls/
+        # wands; the generic tool passes below skip every other instrument, so never a second one
+        instrument = None
+        if jf_config.KEEP_INSTRUMENT:
+            ranked = [(rank, item) for item in items
+                      for rank in [opp_items.passtune_rank(self.agent, item)] if rank is not None]
+            ranked.sort(key=lambda ri: (ri[0], ri[1].unit_weight(with_content=False),
+                                        ri[1] not in forced_items and not self._carried(ri[1])))
+            if any(ret_inv.get(item, 0) for _, item in ranked):
+                instrument = next(item for _, item in ranked if ret_inv.get(item, 0))   # HORN_KEEP got there first
+            elif ranked:
+                instrument = ranked[0][1]
+                add_item(instrument, count=1)
+            self._log_instrument(instrument, ranked)
+
+        def _skip_instrument(item):
+            return jf_config.KEEP_INSTRUMENT and item is not instrument and \
+                opp_items.passtune_rank(self.agent, item) is not None
+
         if jf_config.LICHEN_RESERVE:
             # a never-rotting food reserve (lichen, lizard corpses) for the Weak spells before a safe prayer
             # (agent.reserve_corpse): eaten by eat_from_inventory, like found rations
@@ -225,6 +260,8 @@ class ItemPriority(ItemPriorityBase):
 
         for item in sorted(items, key=lambda i: i.unit_weight(with_content=False)):
             if item.category in [nh.POTION_CLASS, nh.RING_CLASS, nh.AMULET_CLASS, nh.WAND_CLASS, nh.SCROLL_CLASS, nh.TOOL_CLASS]:
+                if _skip_instrument(item):
+                    continue
                 if (not isinstance(item.objs[0], O.Container) or not item.is_chest()) and \
                         not item.is_possible_container():
                     to_bag = O.from_name('cancellation', nh.WAND_CLASS) not in item.objs and \
@@ -237,6 +274,8 @@ class ItemPriority(ItemPriorityBase):
                       nh.RING_CLASS, nh.POTION_CLASS, nh.SCROLL_CLASS, nh.SPBOOK_CLASS, nh.WAND_CLASS]
         for item in sorted(items, key=lambda i: i.unit_weight(with_content=False)):
             if item.category in categories and not isinstance(item.objs[0], O.Container) and not item.is_corpse():
+                if _skip_instrument(item):
+                    continue
                 if item.status == Item.UNKNOWN:
                     to_bag = O.from_name('cancellation', nh.WAND_CLASS) not in item.objs and \
                              not item.is_offensive_usable_wand()

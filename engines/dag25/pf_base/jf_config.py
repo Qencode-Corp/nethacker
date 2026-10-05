@@ -1155,6 +1155,14 @@ BUGLE_SCARE = True
 # drop messages in 180 cmp-main games) and a keep reorders a shed: on90a jf47 s0 (Mines, diving) kept one of two
 # horns, dropped a second looking glass instead, and the whole game reshuffled (0.602 -> 0.117, chaos not cause).
 HORN_KEEP = False
+# KEEP_INSTRUMENT (off; P37, for the drawbridge passtune -- passtune.is_instrument): pick up and keep ONE musical
+# instrument from the first sighting on, the whole game (not only once diving): a flute or a harp (wooden/magic, 5 and
+# 30) over a horn (tooled/frost/fire, 18; an unknown 'horn' unless blowing it has shown a horn of plenty) over a bugle
+# (10), the lighter first within a rank, the carried one over a floor twin -- so a bugle in the pack gives way to a
+# flute seen later. Never a second one (the generic tool passes skip the rest), never dropped by arrange_items while it
+# fits (kept right after the food, ahead of the unknown potions/scrolls/wands), never applied by this switch (the
+# passtune, HORN_SCARE and the passage plan have their own uses). Today 52 of 1,660 Castle arrivals carried one (3.1%).
+KEEP_INSTRUMENT = False
 HORN_REFRESH = 15          # turns a flee (or a blow in range) holds before the horn is blown again, unless it attacks
 # TENGU_EAT (parked, R159: EV <= 0): in the dive, hit a HOSTILE tengu next to us (HP >= 60%, nothing else close) and
 # eat a fresh tengu corpse within 6 steps when not Satiated: eat.c cpostfx picks one of poison res / teleportitis /
