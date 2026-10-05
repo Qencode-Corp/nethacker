@@ -60,6 +60,12 @@ REST_BELOW = 0.66
 # Dwarves and gnomes find nearly every Mines inhabitant peaceful: bank Mines' End depth
 # (Dlvl 10-13, up to 0.26) safely before the main-dungeon dive.
 MINES_ROUTE = True
+# P37 MINES_TOOL_TRIP (nhbot, off here): a planned dive with no digging tool takes the Mines route whatever our race
+# (MINES_ROUTE was for dwarves and gnomes only, whose Mines are peaceful): in the Mines the camp (MINES_CAMP) hunts
+# levels 1-4 for a dwarf's pick-axe/mattock; with a tool the dive climbs back and digs the main dungeon, without one it
+# goes on down to Mines' End. Rescue dives keep the main stairs (see use_mines / should_dive).
+# nhbot: ON, A/B mt0/mt1 (23 human/elf/orc identity types x 12 held-out seeds): +0.0178 +- 0.0065 per game, 30 wins / 16 losses.
+MINES_TOOL_TRIP = False
 MINES_BRANCH_MAX_DEPTH = 4     # the Mines branch staircase is on Dlvl 2-4
 MINES_MIN_LEVELS = 8           # dungeon.def: the Mines have 8-9 levels, Mines' End is the last
 # XP gate inside the Mines: before going to Mines level k, explore the current level fully while
@@ -194,6 +200,8 @@ MEDUSA_WET_SQUARES = 30
 # Medusa-2. (jf41 s5/s13 with WAND_RESERVE: undetected on arrival by stairs, a boulder the titan threw into the dig
 # pit, killed by the room's gremlin with the wand still reserved.)
 MEDUSA_TITAN_DETECT = True
+# jf_config.MEDUSA_TITAN_MSG (P37): the titan named in a message (a word: 'titanothere' is no titan)
+_TITAN_MSG = re.compile(r'\btitan\b')
 # DIG_BOULDER_FIX: a boulder that lands in our dig pit ('The boulder falls into the pit with you': a titan's throw,
 # a rolling boulder trap; trap.c flooreffects leaves it on our square) blocks the dig for good (dig.c dig_check:
 # "There isn't enough room to dig here"), but that message comes a step after the apply's 'You continue digging
@@ -329,6 +337,14 @@ MEDUSA_REROLLS = 3
 # MEDUSA_SKIP_FLOODS times or the best square has MEDUSA_REROLL_WET moat neighbours; each hole dug from the level
 # above skips Medusa's level 1 time in 4 (see _medusa_reroll_stairs)
 MEDUSA_SKIP = False
+# P37 MEDUSA_HOP (nhbot, off there too pending A/B; daglar's OVERRIDES turn it on for arc/cav/mon/pri/wiz, not val): on
+# Medusa's level (variant known, MEDUSA_MAP) with no dry diggable square on our own land, step into a one-square moat
+# channel toward land that has one. trap.c drown(): an unprotected hero in water crawls out at once to a random free
+# land square next to it, so the channel is crossed with odds (far-side squares) / (all land squares around it), and
+# a miss lands us back where we were. Costs a soaking (potions dilute, scrolls blank, iron rusts). Medusa-4: 33% of
+# arrivals land on the islet next to the north-east hut and cross with 3/4 odds per try; Medusa-3 has no such channel.
+MEDUSA_HOP = False
+MEDUSA_HOP_MAX = 6             # soakings per Medusa level
 MEDUSA_SKIP_FLOODS = 1
 MEDUSA_SKIP_REROLLS = 8
 MEDUSA_SKIP_FIRST = False      # on Medusa-3 (ravens) reroll at once, before any dig, while the '<' is close
@@ -533,6 +549,7 @@ DITCH_PET_BUDGET = 300
 # mon_catchup_elapsed_time makes it wild, and a pony or little dog is harmless to an XL 8 fighter.
 DITCH_PET_ROLES = frozenset((Character.KNIGHT, Character.SAMURAI))
 DITCH_PET_TRIES = 3            # attempts when the pet didn't follow us down (keepdogs needs it adjacent)
+DITCH_RETRY_WAIT = 400         # jf_config.DITCH_RETRY (P37): turns before another try after one ran out of time
 # dogmove.c:361-395: confused at hungrytime + 500, starves at + 750; don't herd a pet that is in that
 # window to the stairs (it bites an adjacent hero at random)
 PET_HUNGER_WINDOW = 750 - 500
@@ -991,6 +1008,7 @@ class DiveLogic:
         self._max_wet_cache = None         # (turn, level key, max_wet) for _dig_max_wet
         self._hurt_on_elbereth = -1        # last turn HP fell while we stood on an intact Elbereth
         self._medusa_rerolls = 0           # climbs off a wet Medusa islet to fall in again elsewhere
+        self._medusa_stranded = None       # MEDUSA_STRANDED_REROLL: (level key, (y, x)) last seen stranded there
         self._dig_walk_blocked_until = -1  # turn until which DIG_ESCAPE doesn't walk to a dig square
         self._medusa_reroll_blocked_until = -1
         self._raven_levels = set()         # Medusa's level key once ravens were seen there (Medusa-3)
@@ -1000,6 +1018,7 @@ class DiveLogic:
         self._raven_contact_turn = -100    # last turn a hostile was next to us / hurt us on the raven island
         self._last_level_key = None
         self._medusa_floods = 0            # holes that flooded on Medusa's level (MEDUSA_SKIP)
+        self._medusa_hops = 0              # moat steps toward dry land on Medusa's level (MEDUSA_HOP)
         self._eel_hold_turn = -10          # last turn an eel/kraken grabbed us (or we failed to break free)
         self._eel_engraved = -10           # last turn we engraved Elbereth against such a hold
         self._fed_wait_start = None     # DIVE_FED: turn the grind first reached its end XL
@@ -1038,9 +1057,16 @@ class DiveLogic:
                 agent.blstats.depth >= MEDUSA_MIN_DEPTH and key not in self.undiggable:
             if DiveLogic.TITAN is None:
                 DiveLogic.TITAN = MON.from_name('titan')
-            if utils.isin(agent.glyphs, [DiveLogic.TITAN]).any():
+            # (MEDUSA_TITAN_MSG: not where the castle's soldiers were heard -- its throne room may hold a titan)
+            if utils.isin(agent.glyphs, [DiveLogic.TITAN]).any() and \
+                    not (jf_config.MEDUSA_TITAN_MSG and key in self._door_heard):
                 self.medusa_level = key   # Medusa-2's dark landing room (see MEDUSA_TITAN_DETECT)
                 agent.log(f'DIVE Medusa level detected: {key} depth {agent.blstats.depth} (Medusa-2: titan)')
+        if MEDUSA_TITAN_DETECT and jf_config.MEDUSA_TITAN_MSG and self._titan_named() and \
+                self.medusa_level is None and level.dungeon_number == Level.DUNGEONS_OF_DOOM and \
+                agent.blstats.depth >= MEDUSA_MIN_DEPTH and key not in self.undiggable and key not in self._door_heard:
+            self.medusa_level = key   # (see jf_config.MEDUSA_TITAN_MSG)
+            agent.log(f'DIVE Medusa level detected: {key} depth {agent.blstats.depth} (Medusa-2: titan named)')
         if key != self._last_level_key:
             self._last_level_key = key
             self._raven_arrival_turn = turn   # RAVEN_CYCLE: floods count per visit
@@ -1165,6 +1191,15 @@ class DiveLogic:
                 if old_level is not None:
                     old_level.objects[prev[1]] = SS.S_trap_door
                     agent.log(f'DIVE fell through a trap door at {prev[1]} on {prev[0]}; remembered')
+        if jf_config.MEDUSA_STRANDED_REROLL and prev is not None and prev[0] != key and \
+                self._medusa_stranded is not None and prev[0] == self._medusa_stranded[0] and \
+                tuple(int(v) for v in prev[1]) == self._medusa_stranded[1] and \
+                int(key[0]) == int(prev[0][0]) and int(key[1]) == int(prev[0][1]) - 1:
+            # (see MEDUSA_STRANDED_REROLL) climbed off a stranded square of Medusa's level (a retreat, KNOWN_ITEMS):
+            # the '>' up here leads straight back onto it -- keep it closed, the dive digs down instead
+            self._medusa_stranded = None
+            self._avoid_stairs_until[(key, pos)] = 10 ** 9
+            agent.log(f'DIVE climbed off a stranded Medusa square {prev[1]}: the > at {pos} stays closed, digging down')
         self._last_pos = (key, pos)
         self.castle.note_level()
         self._note_digging_tools(key, pos)
@@ -1869,10 +1904,30 @@ class DiveLogic:
         # to fight2. Gated to Barbarian (README: shared behaviour per role) -- the melee role that can win it.
         if cls == MON.S_ANGEL and self.agent.character.role == Character.BARBARIAN:
             return True
+        if jf_config.LMINION_ELBERETH and self._lawful_minion(mon):
+            return True   # (P37) every role, by the monster flag
         return cls == MON.S_HUMAN or name == 'minotaur'
+
+    @staticmethod
+    def _lawful_minion(mon):
+        """LMINION_ELBERETH: an M2_MINION monster -- the A class, all generated lawful -- is is_lminion() for
+        monmove.c onscary, which ignores Elbereth (and a scroll of scare monster) for it."""
+        return bool(getattr(mon, 'mflags2', 0) & MON.M2_MINION)
 
     def on_medusa_level(self):
         return self.medusa_level is not None and self.agent.current_level().key() == self.medusa_level
+
+    def _titan_named(self):
+        """MEDUSA_TITAN_MSG: a message since the last call names a titan ('The titan casts a spell!', 'The invisible
+        titan hits!', 'The titan turns to flee.'). Called on every update, so the history pointer never lags behind a
+        level change."""
+        agent = self.agent
+        hist = agent._message_history
+        start = self.__dict__.get('_titan_msg_seen', 0)
+        if start > len(hist):
+            start = 0
+        self._titan_msg_seen = len(hist)
+        return any(_TITAN_MSG.search(m or '') for m in hist[start:] + [agent.message])
 
     def below_medusa(self):
         """Deeper than Medusa's level in the Dungeons of Doom (None: Medusa's level not seen yet -- a fall can
@@ -1964,7 +2019,8 @@ class DiveLogic:
                 getattr(near[0][3], 'mname', '') not in _only_ranged_monsters():
             self._elbereth_resting = False
             yield False
-        if not near or any(self._ignores_elbereth(m[3]) for m in near) or \
+        if not near or any(self._ignores_elbereth(m[3]) or
+                           (jf_config.LMINION_ELBERETH and self._lawful_minion(m[3])) for m in near) or \
                 agent.character.prop.blind or agent.character.prop.polymorph:
             self._elbereth_resting = False
             yield False
@@ -2468,8 +2524,9 @@ class DiveLogic:
 
     def use_mines(self):
         # with a pick-axe, digging the main dungeon beats banking Mines' End
-        return MINES_ROUTE and not self.mines_done and \
-            self.agent.character.race in (Character.DWARF, Character.GNOME) and \
+        race_ok = self.agent.character.race in (Character.DWARF, Character.GNOME) or \
+            (MINES_TOOL_TRIP and self.diving and not self.rescue)
+        return MINES_ROUTE and not self.mines_done and race_ok and \
             (not self.diving or self.digging_tool() is None)
 
     def _stairs_down(self, level):
@@ -3603,6 +3660,7 @@ class DiveLogic:
         return ('step', target)
 
     _EEL_GRAB = re.compile(r'(eel|kraken) swings itself around you|You cannot escape from the [a-z ]*(eel|kraken)')
+    _PYTHON_GRAB = re.compile(r'python swings itself around you|You cannot escape from the [a-z ]*python')   # PYTHON_HOLD
 
     def _raven_gap_wait(self):
         """RAVEN_GAP (jf_config): on Medusa-3, before a fresh dig on the chosen square, stay on our intact Elbereth while
@@ -3630,7 +3688,7 @@ class DiveLogic:
         rewritten: the drowning comes with the eel's next hit)."""
         agent = self.agent
         turn = agent.blstats.time
-        if self._EEL_GRAB.search(agent.message):
+        if self._EEL_GRAB.search(agent.message) or (jf_config.PYTHON_HOLD and self._PYTHON_GRAB.search(agent.message)):
             self._eel_hold_turn = turn
         if 'You get released' in agent.message:
             self._eel_hold_turn = -10
@@ -4271,6 +4329,104 @@ class DiveLogic:
         hist = [hp for t, hp in self._hp_history if t >= turn]
         return bool(hist) and max(hist) > self.agent.blstats.hitpoints
 
+    def _medusa_terrain(self):
+        """MEDUSA_HOP: (land, water) bool arrays of Medusa's level from the variant's fixed map, overridden by what the
+        bot has seen (a flooded dig square is water now). land: floor and doorways (walkable), water: moat/pool."""
+        from . import medusa_maps
+        agent = self.agent
+        level = agent.current_level()
+        name = self._medusa_variant_name()
+        h, w = level.objects.shape
+        land = np.zeros((h, w), dtype=bool)
+        water = np.zeros((h, w), dtype=bool)
+        for y in range(h):
+            for x in range(w):
+                seen = level.objects[y, x]
+                if seen in WET or agent.glyphs[y, x] in WET:
+                    water[y, x] = True
+                elif seen != -1:
+                    land[y, x] = bool(level.walkable[y, x]) and seen != SS.S_tree
+                else:
+                    c = medusa_maps.char_at(name, y, x)
+                    water[y, x] = c == '}'
+                    land[y, x] = c in '.+'
+        land[agent.blstats.y, agent.blstats.x] = True
+        water[agent.blstats.y, agent.blstats.x] = False
+        return land, water
+
+    def _medusa_hop_plan(self):
+        """MEDUSA_HOP: ('walk', square next to the channel) / ('hop', channel square) / None. See MEDUSA_HOP."""
+        agent = self.agent
+        if not (self.diving and self.on_medusa_level()) or self.levitating() or \
+                self._medusa_hops >= MEDUSA_HOP_MAX or agent.blstats.carrying_capacity > 1 or \
+                self._medusa_variant_name() is None:
+            return None
+        level = agent.current_level()
+        land, water = self._medusa_terrain()
+        labels, _ = ndimage.label(land, structure=np.ones((3, 3), dtype=bool))
+        here = labels[agent.blstats.y, agent.blstats.x]
+        floor = land & utils.isin(level.objects, PLAIN_FLOOR) | land & (level.objects == -1)
+        floor &= ~utils.isin(level.objects, G.DOORS) & ~level.shop & ~level.shop_interior
+        wet_count = ndimage.convolve(water.astype(int), np.ones((3, 3), dtype=int), mode='constant')
+        dry = floor & (wet_count == 0)
+        for (k, (by, bx)) in self._bad_dig_spots:
+            if k == level.key():
+                dry[by, bx] = False
+        if (dry & (labels == here)).any():
+            return None   # a dry square on our own land: the ordinary walk-and-dig
+        good = set(int(v) for v in np.unique(labels[dry]) if v) - {int(here)}
+        if not good:
+            return None
+        dis = agent.bfs()
+        mons = agent.monster_tracker.monster_mask
+        h, w = land.shape
+        best = None
+        for wy, wx in zip(*water.nonzero()):
+            if mons[wy, wx]:
+                continue   # an eel or a jellyfish in the channel: stepping there attacks it
+            ours, far, free = [], 0, 0
+            for dy in (-1, 0, 1):
+                for dx in (-1, 0, 1):
+                    y, x = wy + dy, wx + dx
+                    if (dy, dx) == (0, 0) or not (0 <= y < h and 0 <= x < w) or not land[y, x]:
+                        continue
+                    if labels[y, x] == here:
+                        if dis[y, x] >= 0:
+                            ours.append((int(dis[y, x]), (int(y), int(x))))
+                        free += 1
+                    elif not mons[y, x]:
+                        free += 1
+                        far += int(labels[y, x]) in good
+            if not ours or not far:
+                continue
+            d, origin = min(ours)
+            key = (-far / max(free, 1), d)
+            if best is None or key < best[0]:
+                best = (key, origin, (int(wy), int(wx)))
+        if best is None:
+            return None
+        _, origin, channel = best
+        if (agent.blstats.y, agent.blstats.x) != origin and \
+                not utils.adjacent((agent.blstats.y, agent.blstats.x), channel):
+            return ('walk', origin)
+        return ('hop', channel)
+
+    def _medusa_hop(self, plan):
+        agent = self.agent
+        kind, (y, x) = plan
+        if kind == 'walk':
+            self._task('medusa hop: to the channel')
+            agent.log(f'DIVE MEDUSA_HOP: walking to {(y, x)} beside a moat channel toward dry land')
+            agent.go_to(y, x)
+            return
+        y0, x0 = agent.blstats.y, agent.blstats.x
+        self._medusa_hops += 1
+        self._task('medusa hop')
+        agent.log(f'DIVE MEDUSA_HOP {self._medusa_hops}: stepping into the moat at {(y, x)} from {(y0, x0)}')
+        with agent.atom_operation():
+            agent.direction(agent.calc_direction(y0, x0, y, x))
+        agent.log(f'DIVE MEDUSA_HOP: now at {(agent.blstats.y, agent.blstats.x)} ({agent.message[-100:]!r})')
+
     def _medusa_reroll_stairs(self, max_wet):
         """DIG_ESCAPE on Medusa's level, stranded where every reachable square has >= MEDUSA_REROLL_WET moat
         neighbours: a hole there floods with odds n/(n+1) at the pit and again at the hole (dig.c fillholetyp:
@@ -4280,7 +4436,14 @@ class DiveLogic:
         (u_on_rndspot; Medusa-4's holds dry squares in its north part). Returns the '<' (y, x) or None."""
         # (max_wet None: every reachable square flooded or refused -- base-jf27 s5 then sat 3000 turns on the '<'
         # of a Medusa-3 island, searching, until an invisible stalker killed it)
-        if not (DIG_ESCAPE and self.on_medusa_level()) or self.agent.blstats.time < self._medusa_reroll_blocked_until:
+        if not (DIG_ESCAPE and self.on_medusa_level()):
+            return None
+        stranded = jf_config.MEDUSA_STRANDED_REROLL and max_wet is None
+        if jf_config.MEDUSA_STRANDED_REROLL:
+            # (see MEDUSA_STRANDED_REROLL) remembered for a climb some other strategy makes from here (update())
+            bl = self.agent.blstats
+            self._medusa_stranded = (self.agent.current_level().key(), (int(bl.y), int(bl.x))) if stranded else None
+        if self.agent.blstats.time < self._medusa_reroll_blocked_until:
             return None
         if MEDUSA_SKIP:
             # A hole or trap door drops an extra level 1 time in 4 (trap.c fall_through: newlevel++ while
@@ -4297,6 +4460,11 @@ class DiveLogic:
             skip_first = MEDUSA_SKIP_FIRST and self.medusa_level in self._raven_levels and \
                 max_wet is not None and max_wet >= 1
             if not (wet_enough or skip_first) or self._medusa_rerolls >= MEDUSA_SKIP_REROLLS:
+                return None
+        elif stranded:
+            # (see MEDUSA_STRANDED_REROLL) nothing here can be dug at all: climb, Medusa-3 included -- searching on an
+            # isolated '<' only waits for the ravens
+            if self._medusa_rerolls >= jf_config.MEDUSA_STRANDED_REROLLS:
                 return None
         else:
             if (max_wet is not None and max_wet < MEDUSA_REROLL_WET) or self._medusa_rerolls >= MEDUSA_REROLLS:
@@ -4849,6 +5017,8 @@ class DiveLogic:
         agent = self.agent
         bl = agent.blstats
         if self._ditch_state == 0:
+            if bl.time < getattr(self, '_ditch_retry_after', -1):
+                return False   # DITCH_RETRY
             if level.key() != first or not agent.has_pet or agent.get_visible_monsters() or \
                     bl.hitpoints < 0.8 * bl.max_hitpoints:
                 return False
@@ -4869,6 +5039,13 @@ class DiveLogic:
             self._ditch_pet_came = False
         if bl.time - self._ditch_started > DITCH_PET_BUDGET:
             agent.log(f'DITCH pet: out of time (state {self._ditch_state})')
+            if jf_config.DITCH_RETRY and self._ditch_tries < DITCH_PET_TRIES:
+                # DITCH_RETRY: one timed-out walk to the stairs (the pet wandered off) ended the ditch for good, and a
+                # Knight fed the pony its apples and carrots until they ran out; the starving horse then kicked it to
+                # death (nhbot all_v1 kni s1, T4494). Try again later.
+                self._ditch_state = 0
+                self._ditch_retry_after = bl.time + DITCH_RETRY_WAIT
+                return False
             self._ditch_state = 3
             return False
         return True
@@ -5725,7 +5902,12 @@ class DiveLogic:
         floor = [p for p in zip(*candidates.nonzero()) if dis[p] >= 0]
         max_wet = 0
         if not any(self._diggable_spot(*p) for p in floor):
-            # all reachable floor borders water: take the square with the fewest wet neighbours
+            # all reachable floor borders water: first a moat channel toward dry land (MEDUSA_HOP)
+            hop = self._medusa_hop_plan() if MEDUSA_HOP and tool is not None else None
+            if hop is not None:
+                self._medusa_hop(hop)
+                return True
+            # ... else take the square with the fewest wet neighbours
             wet = [self._wet_neighbours(*p) for p in floor if self._diggable_spot(*p, max_wet=8)]
             up = self._medusa_reroll_stairs(min(wet) if wet else None) if tool is not None else None
             if up is not None:
@@ -5836,9 +6018,15 @@ class DiveLogic:
             return False   # on our scroll of scare monster: nothing melees us, and the pit doesn't remove it
         blind = agent.character.prop.blind
         self._look_after_sight()   # MEDUSA_BLIND_DIG
-        if not blind and (agent.inventory.engraving_below_me or '').lower() == 'elbereth':
-            return False
         bl = agent.blstats
+        tries = self.__dict__.setdefault('_elbereth_tries', {})
+        # ELBERETH_REWRITE_FIX: the writes up to the last whole read-back don't count against the cap
+        held = self.__dict__.setdefault('_elbereth_held', {})
+        if not blind and (agent.inventory.engraving_below_me or '').lower() == 'elbereth':
+            if jf_config.ELBERETH_REWRITE_FIX:
+                spot = (agent.current_level().key(), bl.y, bl.x, self._in_own_pit())
+                held[spot] = tries.get(spot, 0)
+            return False
         near = [m for m in agent.get_visible_monsters()
                 if max(abs(m[1] - bl.y), abs(m[2] - bl.x)) <= ELBERETH_DIG_RADIUS and
                 not self._melee_ignores_elbereth(m[3])]
@@ -5846,7 +6034,6 @@ class DiveLogic:
         # base-jf16 s13: a giant ant, base-jf16 s9: a panther -- all Elbereth-respecting -- killed fainted
         # diggers); the engraving holds them off while we're out
         spot = (agent.current_level().key(), bl.y, bl.x, self._in_own_pit())
-        tries = self.__dict__.setdefault('_elbereth_tries', {})
         # the pit erased the Elbereth we needed before it: the monsters that made us engrave are still around
         # even if out of sight now (base-public s14: an invisible ogre king hit us in the fresh pit; s1: a
         # chameleon)
@@ -5863,7 +6050,7 @@ class DiveLogic:
             last = self.__dict__.setdefault('_engrave_turn', {}).get(spot)
             if tries.get(spot, 0) >= ELBERETH_TRIES_BLIND or (last is not None and not self._hurt_since(last)):
                 return False
-        elif tries.get(spot, 0) >= ELBERETH_TRIES_ESCAPE:
+        elif tries.get(spot, 0) - (held.get(spot, 0) if jf_config.ELBERETH_REWRITE_FIX else 0) >= ELBERETH_TRIES_ESCAPE:
             return False
         tries[spot] = tries.get(spot, 0) + 1
         self.__dict__.setdefault('_engrave_turn', {})[spot] = bl.time
@@ -5999,6 +6186,9 @@ class DiveLogic:
                     any(s in msg for s in ('You can hear again', 'You regain consciousness', 'You faint')):
                 self._dig_tries[key] = tries - 1
                 if agent.blstats.hunger_state <= Hunger.FAINTING:   # not passed out again
+                    if jf_config.ELBERETH_REWRITE_FIX and not agent.character.prop.blind and \
+                            (agent.inventory.engraving_below_me or '').lower() != 'elbereth':
+                        return   # the faint's wipes: the next call writes it again first (_elbereth_before_digging)
                     continue
             break
         if prompted and 'dig a pit in the' in msg:
@@ -7445,6 +7635,8 @@ class DiveLogic:
         level = self.agent.current_level()
         if level.dungeon_number != Level.DUNGEONS_OF_DOOM or self.agent.blstats.depth < jf_config.CASTLE_SCARE_DEPTH:
             return False
+        if jf_config.MEDUSA_NOT_CASTLE and self.on_medusa_level():
+            return False   # (see MEDUSA_NOT_CASTLE) Medusa's level at depth 25+ is no castle landing
         return not self.castle.committed()
 
     def _scare_hold(self):
@@ -7673,6 +7865,8 @@ class DiveLogic:
             return None
         if not self.on_medusa_level():
             return self._deep_charge_plan()
+        if jf_config.MEDUSA_ZAP_FIRST and self._medusa_zap_ready():
+            return None   # (see jf_config.MEDUSA_ZAP_FIRST) the kept wand holes the floor from here: no gamble before it
         bl = agent.blstats
         level = agent.current_level()
         key = level.key()
@@ -7759,6 +7953,15 @@ class DiveLogic:
                     (self._in_own_pit() or self._diggable_spot(pos[0], pos[1], max_wet=8)):
                 return ('deep_dig', tool)
         return None
+
+    def _medusa_zap_ready(self):
+        """MEDUSA_ZAP_FIRST: on Medusa's level the next DIG_ESCAPE action is WAND_RESERVE's wand of digging zapped down
+        where we stand (or MEDUSA_FREEZE's ice right before that zap). No agent step here (a preempt condition)."""
+        if not (WAND_RESERVE and DIG_WAND_ESCAPE and self.diving and self.on_medusa_level()) or \
+                self._dig_wand() is None:
+            return False
+        act = self._dig_escape_action()
+        return act is not None and act[0] in ('zap', 'freeze')
 
     def _deep_items_act(self, plan):
         agent = self.agent

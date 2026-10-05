@@ -1415,6 +1415,99 @@ SHOP_DIG_AFTER = 300
 # also blocked it while stunned (1 in 4 per letter, ~7% whole): 30 stunned blocks in da-all2's 270 games, no gain.
 ELBERETH_FUTILE = True
 
+# ---------------------------------------------------------------------------------------------------------------
+# P37 (2026-10-04): switches ported from zarutskiysy/nethack `nhbot` (branch v12pub, 96ef326; the same pf_s25p/dag25
+# base). All default OFF here (nhbot ships them ON unless noted) so the engine is byte-identical to the head until a
+# JF_CFG override turns one on. nhbot's readings are its own dev held-out A/Bs (all roles). MINES_TOOL_TRIP and
+# MEDUSA_HOP live in dive_logic.py (module constants, JF_CFG-overridable there). See P37_FLAGS.md at the repo root.
+# LMINION_ELBERETH (dive_logic._melee_ignores_elbereth, elbereth_rest): lawful minions (every A: Aleax, couatl, Angel,
+# ki-rin, Archon -- M2_MINION) melee through Elbereth (monmove.c onscary: is_lminion). With the flag they count as melee
+# Elbereth-ignorers for every role (the head has the Barbarian-only S_ANGEL rule, kept) and no Elbereth rest is taken
+# next to one. nhbot: 29 of 1150 games killed by one; A/B +0.0004 (z 1.5-2.5, 'close').
+LMINION_ELBERETH = False
+# MEDUSA_NOT_CASTLE (dive_logic.gehennom_scare, castle_power.deep_poly_escape_strategy): CASTLE_SCARE's scroll drop and
+# CASTLE_POLY's deep self-zap are gated by depth alone (CASTLE_SCARE_DEPTH 25) and so also fired on Medusa's own level
+# when it lies at depth 25-28 (nhbot: 73 of 205 such arrivals, 47 died there). With the flag neither acts on her level.
+MEDUSA_NOT_CASTLE = False
+# DEEP_PRAY_FIRST (agent.emergency_strategy): diving at depth >= DEEP_PRAY_FIRST_DEPTH (not Gehennom, not polymorphed),
+# at pray.c's critically_low_hp with the prayer model's safe 'hp' decision (never the doom gamble), pray BEFORE casting
+# healing / quaffing a healing potion (a safe prayer heals to full and its 3 turns are invulnerable). nhbot: 39 deaths
+# within 3 turns of a heal with a safe prayer unused; part of v4's deep-game set (+0.0021 +- 0.0012 over 512 pairs).
+DEEP_PRAY_FIRST = False
+DEEP_PRAY_FIRST_DEPTH = 10
+# PET_HUNGER_FIX (agent.eat_corpses_from_ground): after '<pet> is confused from hunger.' (dogmove.c: it bites us at
+# random) eat no corpse off the floor for PET_HUNGER_TURNS turns or until a pet is seen eating, unless we are Weak.
+PET_HUNGER_FIX = False
+PET_HUNGER_TURNS = 250
+# RECORD_MODEL_FIX (nhmodel/prayer.py on_prayer): the alignment record +1 of pray.c:941 only for prayers made without
+# major trouble (limit < 200); the old rule also counted hunger prayers. nhbot v3 set.
+RECORD_MODEL_FIX = False
+# PRAYER_RECORD_FIX (agent.pray): a prayer whose PRAY step is interrupted by a preempting strategy is still recorded
+# (last_prayer_turn, the model's timeout/result). nhbot: 13 of 17 such losses were lycanthropy-cure prayers.
+PRAYER_RECORD_FIX = False
+# HOSTILE_RECHECK (monster_tracker.update): a peaceful-marked domestic animal (cat/dog/horse kinds) next to us that a
+# message says attacked us is taken for hostile when it is the only one of its name adjacent (a former pet turned).
+HOSTILE_RECHECK = False
+# HEAVY_LIFT_GUARD (item/inventory.pickup, item/item_manager): answer 'n' to 'You have much trouble / extreme difficulty
+# lifting X. Continue?' (not a digging tool, not gold) and read a lycanthrope's corpse as its human form (cwt 1450).
+HEAVY_LIFT_GUARD = False
+# MEDUSA_TITAN_MSG (dive_logic.update, with MEDUSA_TITAN_DETECT): Medusa-2 is also recognised by a titan NAMED in a
+# message ('The titan casts a spell!'), not only by its glyph; both titan rules skip a level where 'You hear a door
+# open.' was heard (the castle's throne room may hold a titan). nhbot: 31 of ~135 Medusa-2 arrivals never recognised.
+MEDUSA_TITAN_MSG = False
+# MEDUSA_ZAP_FIRST (dive_logic._deep_items_plan): on Medusa's level DEEP_ITEMS' gambles (unknown horn, bugle, taming
+# scroll, eyewear, scare scroll) wait while dig_first's next action is the kept wand of digging zapped down.
+MEDUSA_ZAP_FIRST = False
+# MINO_TAME (mino_guard): an awake minotaur adjacent and a KNOWN scroll of taming not known cursed -> read it (MR 0:
+# never resists); the guard then ignores minotaurs shown as pets or peaceful.
+MINO_TAME = False
+# MINO_DIG_GUARD (mino_guard): the guard's 'dig out now' plans only while nothing else adjacent will stop the dig
+# (an Elbereth-ignorer, or anything without an intact Elbereth under us).
+MINO_DIG_GUARD = False
+# MINO_CASTLE_ZAP (mino_guard): no wand-of-digging zap down where the level has shown itself to be the castle before
+# the dive recognised it (below Medusa 'You hear a door open.', or a refused dig): on the castle it only digs a pit.
+MINO_CASTLE_ZAP = False
+# MEDUSA_STRANDED_REROLL (dive_logic._medusa_reroll_stairs, update): a dive stranded on Medusa's '<' (no diggable
+# square at all) rerolls on Medusa-3 too (up to MEDUSA_STRANDED_REROLLS climbs), and after any climb off a stranded
+# '<' the '>' above stays closed so the dive digs back down. nhbot: 6 of 152 Medusa-3 arrivals, 5 died there.
+MEDUSA_STRANDED_REROLL = False
+MEDUSA_STRANDED_REROLLS = 6
+# PYTHON_HOLD (dive_logic._eel_escape_wanted): ESCAPE_V2's hold escape (Elbereth at once) also for a python's wrap
+# (mhitu.c AD_WRAP drowns like an eel's from a pool; Medusa-4's S often include swimming pythons).
+PYTHON_HOLD = False
+# UNSEEN_PET_GUARD (combat/fight_heur.unseen_pet_may_be_at, eL1fe 76b511c -- ALREADY the head's behaviour, so this
+# defaults ON): no throw or shot whose line or overshoot crosses an unseen square the pet could have reached within
+# UNSEEN_PET_TURNS. nhbot v10b: Rangers WITHOUT it +0.022 +- 0.012 (420 pairs). The experiment here is {"UNSEEN_PET_GUARD": false}.
+UNSEEN_PET_GUARD = True
+UNSEEN_PET_TURNS = 20
+# SPORE_TRAP_FIX (fight_heur.melee_monster_priority): the trapped-by-a-gas-spore melee only when its 4d6 blast can't
+# kill us (HP > 24); the old test was a ratio, true at any HP.
+SPORE_TRAP_FIX = False
+# PANIC_TILE_FIX (agent._note_repeated_panic): the loop breaker also parses 'Monster on a next tile when moving: (y,x)'
+# and forbids that square (one nhbot grind sat 38k turns behind a floating eye).
+PANIC_TILE_FIX = False
+# DIG_TOOL_MELEE (agent._keep_digging_tool_wielded, fight2's melee): diving with the pick-axe/mattock in hand, keep
+# fighting with it unless the best melee weapon beats it by DIG_TOOL_MELEE_MARGIN in expected damage (each swap is a
+# free round for the attacker and the next dig swaps back).
+DIG_TOOL_MELEE = False
+DIG_TOOL_MELEE_MARGIN = 1.3
+# RAY_BOUNCE_FIX (known_items): known cold/fire wands need the same free run behind the target as the other rays
+# (a Valkyrie's cold excepted). nhbot: 7 logged deaths were the bot's own bounced ray.
+RAY_BOUNCE_FIX = False
+# SELF_ZAP_FIX (combat/fight_heur.get_potential_wand_usages): fight2's wand plans charge SELF_ZAP_PENALTY (not 30) per
+# expected pass of the ray through us (a Valkyrie's cold excepted). RAY_CRIT_RUN (known_items, 0: off): at critical HP a
+# known sleep/lightning/magic-missile ray still needs this many free squares behind its target.
+SELF_ZAP_FIX = False
+SELF_ZAP_PENALTY = 300
+RAY_CRIT_RUN = 0
+# DITCH_RETRY (dive_logic._ditch_pet_check): a pet ditch that ran out of time is retried after dive_logic.DITCH_RETRY_WAIT
+# turns (up to DITCH_PET_TRIES) instead of ending the ditch for good.
+DITCH_RETRY = False
+# ELBERETH_REWRITE_FIX (dive_logic._elbereth_before_digging_escape, dig_with_tool): waking from a faint mid-dig, a
+# garbled Elbereth is rewritten before the pick goes on; the per-square engrave cap counts only the writes since the
+# engraving last read back whole.
+ELBERETH_REWRITE_FIX = False
+
 _raw = os.environ.get('JF_CFG')
 if _raw:
     for _name, _value in json.loads(_raw).items():

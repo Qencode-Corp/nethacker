@@ -712,9 +712,23 @@ class Inventory:
                     for current_screen in range(max(screens) + 1)))
                 self.agent.step(A.Command.PICKUP, iter(list(text) + [A.MiscAction.MORE]))
 
+            refused_heavy = False
             while re.search('You have [a-z ]+ lifting ', self.agent.message) and \
                     'Continue?' in self.agent.message:
+                if jf_config.HEAVY_LIFT_GUARD and \
+                        re.search('You have (much trouble|extreme difficulty) lifting ', self.agent.message) and \
+                        not re.search(r'pick-axe|mattock|broad pick|gold piece', self.agent.message):
+                    # pickup.c lift_object: 'much trouble' means Stressed once lifted, 'extreme difficulty'
+                    # Strained or worse ('You cannot fight while so heavily loaded'); the item split never plans
+                    # that, so its weight was misread (a lycanthrope's corpse, see item_manager) -- leave it
+                    # (not a digging tool, which the dive needs whatever it costs, nor gold)
+                    self.agent.type_text('n')
+                    refused_heavy = True
+                    continue
                 self.agent.type_text('y')
+            if refused_heavy:
+                self.unreachable_items_until[self._here()] = self.agent.blstats.time + 300
+                raise AgentPanic('too heavy to lift without becoming Stressed')
             if 'You cannot reach the bottom of the pit' in self.agent.message:
                 # standing at a pit's edge: its items are out of reach until we are in it; the gatherer
                 # retried without the clock moving until the 'turn inactivity' guard fired (54 times)

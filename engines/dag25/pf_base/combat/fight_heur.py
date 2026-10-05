@@ -85,8 +85,12 @@ def melee_monster_priority(agent, monsters, monster):
         if spore_blast_hits_friend(agent, y, x):
             return ret - 200
         # handle a specific case when you are trapped by a gas spore
-        if len(agent.get_visible_monsters()) == 1 \
-                and agent.blstats.hitpoints / agent.blstats.max_hitpoints:
+        # SPORE_TRAP_FIX: the HP test was a ratio, true at any HP: a trapped hero hit the spore at 9 HP and its
+        # 4d6 blast (explode.c, up to 24) killed it. A spore never attacks (AT_BOOM only when it dies), so waiting
+        # for it to float off is safe; hit it only when the blast cannot kill us.
+        if len(agent.get_visible_monsters()) == 1 and \
+                (agent.blstats.hitpoints > 24 if jf_config.SPORE_TRAP_FIX
+                 else agent.blstats.hitpoints / agent.blstats.max_hitpoints):
             dis = agent.bfs()
             for y2, x2 in zip(*np.nonzero(dis != -1)):
                 if not adjacent((y, x), (y2, x2)):
@@ -161,16 +165,18 @@ def ranger_point_blank_priority(agent, monster, default):
 # seed 0 died that way at T3395 on Dlvl 1; seed 13 hit an unseen pet twice: "It yelps!  The dagger hits it").
 # Only visible floor squares are known to be free of the pet. Every role that throws or fires (Rogue daggers,
 # Ranger arrows) faces the same risk, so it is not gated by role.
-UNSEEN_PET_TURNS = 20
+UNSEEN_PET_TURNS = 20   # (the value in use is jf_config.UNSEEN_PET_TURNS)
 
 
 def unseen_pet_may_be_at(agent, y, x):
+    if not jf_config.UNSEEN_PET_GUARD:
+        return False
     where = getattr(agent, '_last_pet_where', None)
     if where is None or agent.glyphs[y, x] in G.VISIBLE_FLOOR or utils.any_in(agent.glyphs, G.PETS):
         return False
     key, turn, positions = where
     elapsed = agent.blstats.time - turn
-    if key != (agent.blstats.dungeon_number, agent.blstats.level_number) or elapsed > UNSEEN_PET_TURNS:
+    if key != (agent.blstats.dungeon_number, agent.blstats.level_number) or elapsed > jf_config.UNSEEN_PET_TURNS:
         return False
     reach = 2 + int(1.5 * elapsed)   # a kitten is speed 18 against our 12
     if any(max(abs(py - y), abs(px - x)) <= reach for py, px in positions):
@@ -327,7 +333,15 @@ def simulate_wand_path(agent, wand, monsters, dy, dx):
         yield y, x, hit_object, expected_hit_count
 
 
+_WAN_COLD = None
+
+
 def get_potential_wand_usages(agent, monsters, dy, dx):
+    global _WAN_COLD
+    if _WAN_COLD is None:
+        from .. import objects as O
+        import nle.nethack as nh
+        _WAN_COLD = O.from_name('cold', nh.WAND_CLASS)
     ret = []
     if missiles_risk_the_watch(agent):
         return ret
@@ -354,7 +368,16 @@ def get_potential_wand_usages(agent, monsters, dy, dx):
             elif monster == 'peaceful':
                 priority -= p * 200
             elif monster == 'self':
-                priority -= p * 30
+                # SELF_ZAP_FIX: our own bounce costs what the ray does to us, not a flat 30 per expected hit --
+                # 6d6 lightning (and blindness), fire, cold, 2d6 magic missile, death. nhbot: a known wand of
+                # lightning at an adjacent giant ant with a wall behind it scored +25 per pass against -30 for the
+                # return through us (tr0 val-hum-law-fem s210 zapped it 4 times from 68/68 HP and died of its own
+                # bolts; v2a val-dwa-law-fem s206 the same). Only a Valkyrie's cold keeps the old weight.
+                if jf_config.SELF_ZAP_FIX and not (item.objs[0] == _WAN_COLD and
+                                                   agent.character.role == agent.character.VALKYRIE):
+                    priority -= p * jf_config.SELF_ZAP_PENALTY
+                else:
+                    priority -= p * 30
             elif monster is not None:
                 _, y, x, mon, _ = monster
                 if mon.mname in WEAK_MONSTERS:
