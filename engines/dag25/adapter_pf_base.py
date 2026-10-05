@@ -128,14 +128,15 @@ class AutoAscendDriver:
 
     # Timing: the arena kills a bot (and zeroes the episode) when one act() takes over 120 s.
     # Only the episode's first action may need a cold numba JIT compile (up to FIRST_ACTION_TIMEOUT);
-    # afterwards the worst case is HANG + RECOVER + RESTART = 20 + 5 + 20 = 45 s. The hang threshold
+    # afterwards the worst case is HANG + RECOVER + RESTART = 60 + 5 + 20 = 85 s (under the arena's 120; the 20 s hang
+    # guard fired on slow pool workers in legit long actions and re-rolled 4 of 4,000 games, P37 close). The hang threshold
     # stays well above slow-but-legit actions under CPU contention (p99 of per-episode max ~16 s,
     # mostly the cold first action), so it only fires on real livelocks.
     FIRST_ACTION_TIMEOUT = 100.0
     RECOVER_TIMEOUT = 5.0
     RESTART_TIMEOUT = 20.0
 
-    def __init__(self, action_timeout: float = 100.0, hang_timeout: float = 20.0) -> None:
+    def __init__(self, action_timeout: float = 100.0, hang_timeout: float = 60.0) -> None:
         if jf_config.WARM_JIT:
             _warm_jit()
         self._action_timeout = action_timeout

@@ -732,7 +732,7 @@ class Agent:
     _JF_SZ_FEATS = (('thrones', SS.S_throne), ('fountains', SS.S_fountain), ('altars', SS.S_altar), ('sinks', SS.S_sink))
     _JF_SZ_MSGS = ('courtly conversation', 'sceptre pounded', 'Off with', 'bubbling water', 'water falling on coins',
                    'You hear a gurgling noise', 'slow drip', 'tumbler', 'gear', 'drawbridge', 'You feel a wrenching',
-                   'You may wish', 'water demon', 'djinni', 'throne')
+                   'You may wish', 'water demon', 'djinni', 'throne', 'for sale', 'zorkmids', 'no door')
     _JF_SZ_INSTRUMENTS = ('flute', 'horn', 'harp', 'bugle', 'drum')
 
     def _jf_sizing(self):
@@ -756,6 +756,8 @@ class Agent:
             if any(w in msg for w in self._JF_SZ_MSGS):
                 self.log(f'MSG {msg[:240]}')
         castle = getattr(getattr(getattr(self, 'global_logic', None), 'dive', None), 'castle', None)
+        if int(bl.depth) >= 5 and 'dlvl5' not in sz['kit']:
+            sz['kit'].add('dlvl5'); self._jf_sizing_kit('dlvl5')
         if int(bl.depth) >= 20 and 'dlvl20' not in sz['kit']:
             sz['kit'].add('dlvl20'); self._jf_sizing_kit('dlvl20')
         if castle is not None and getattr(castle, 'castle_key', None) == key and 'castle' not in sz['kit']:
@@ -793,6 +795,7 @@ class Agent:
         if sz['key'] is not None:
             self._jf_sizing_level(sz['key'], int(self.blstats.time) - sz['arrive'])
             sz['key'] = None
+        self._jf_sizing_kit('end')   # the hero's kit at the game's close (the grind read: AC, armour, hunger at death)
 
     def _jf_sizing_kit(self, why):
         def names(items):
@@ -807,7 +810,12 @@ class Agent:
         known = lambda xs: [i for i in xs if i.is_unambiguous()]
         unknown = lambda xs: sum(1 for i in xs if not i.is_unambiguous())
         inst = ';'.join((i.text or '').replace(' ', '_') for i in instruments) or '-'
-        self.log(f'KIT why={why} dlvl={int(self.blstats.depth)} turn={int(self.blstats.time)} instruments={inst} '
+        armor = [i for i in items if i.is_armor()]
+        worn = [i for i in armor if i.equipped]; carried = [i for i in armor if not i.equipped]
+        bl = self.blstats
+        self.log(f'KIT why={why} dlvl={int(bl.depth)} turn={int(bl.time)} xl={int(bl.experience_level)} ac={int(bl.armor_class)} '
+                 f'hp={int(bl.hitpoints)}/{int(bl.max_hitpoints)} hunger={int(bl.hunger_state)} worn={names(worn)} armor_carried={names(carried)} '
+                 f'instruments={inst} '
                  f'unknown_wands={unknown(wands)} known_wands={names(known(wands))} '
                  f'scrolls={names(known(scrolls))} scrolls_unknown={unknown(scrolls)} '
                  f'rings={names(known(rings))} rings_unknown={unknown(rings)} '
